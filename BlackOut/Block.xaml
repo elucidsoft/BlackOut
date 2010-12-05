@@ -7,9 +7,64 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="90" d:DesignWidth="90">
+    d:DesignHeight="90" d:DesignWidth="90" Loaded="UserControl_Loaded" Unloaded="UserControl_Unloaded">
+	<UserControl.Resources>
+		<Storyboard x:Name="HintAnimation" AutoReverse="True">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.097"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.85"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.845"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill).(GradientBrush.GradientStops)[1].(GradientStop.Offset)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="0.388"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.247"/>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.StrokeThickness)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="ShowHintAnimation">
+			<DoubleAnimation Duration="0:0:0.5" To="0.845" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ellipse" d:IsOptimized="True"/>
+		</Storyboard>
+		<Storyboard x:Name="HideHintAnimation">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ellipse">
+				<EasingDoubleKeyFrame KeyTime="0" Value="1"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="TurnRight">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="LayoutRoot">
+				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="90"/>
+				<DiscreteDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Name="TurnLeft">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="LayoutRoot">
+				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-90"/>
+				<DiscreteDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="Black">
+    <Grid x:Name="LayoutRoot" Background="#00000000" RenderTransformOrigin="0.5,0.5">
+    	<Grid.Projection>
+    		<PlaneProjection/>
+    	</Grid.Projection>
+    	<Grid.RenderTransform>
+    		<CompositeTransform/>
+    	</Grid.RenderTransform>
         <Button Width="90" Height="90" BorderThickness="0" Opacity="0" Click="Button_Click" Background="{x:Null}" />
+        <Ellipse x:Name="ellipse" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Height="65" StrokeThickness="0" Opacity="0" IsHitTestVisible="False">
+        	<Ellipse.Fill>
+        		<RadialGradientBrush Center="32.5,32.5" GradientOrigin="32.5,32.5" MappingMode="Absolute" Opacity="0.85" RadiusY="32.5" RadiusX="32.5">
+        			<GradientStop Color="White" Offset="0.097"/>
+        			<GradientStop Color="Transparent" Offset="0.388"/>
+        		</RadialGradientBrush>
+        	</Ellipse.Fill>
+        </Ellipse>
             </Grid>
 </UserControl>

@@ -18,13 +18,14 @@ namespace BlackOut
         public int column = -1;
         public bool isBlockLit = false;
 
-        Storyboard TurnOnAnimation = new Storyboard();
-        Storyboard TurnOffAnimation = new Storyboard();
+        public Storyboard TurnOnAnimation = new Storyboard();
+        public Storyboard TurnOffAnimation = new Storyboard();
+        public Storyboard FlashOnAnimation = new Storyboard();
 
-        SolidColorBrush backgroundBrush = new SolidColorBrush();
+        public SolidColorBrush backgroundBrush = new SolidColorBrush();
 
-        Color accentColor;
-        Color backgroundColor;
+        public Color accentColor;
+        public Color backgroundColor;
 
         public Block()
         {
@@ -40,6 +41,7 @@ namespace BlackOut
 
             InitializeTurnOnStoryBoardAnimation();
             InitializeTurnOffStoryBoardAnimation();
+            InitializeFlashOnStoryBoardAnimation();
         }
 
         private void InitializeTurnOffStoryBoardAnimation()
@@ -72,6 +74,26 @@ namespace BlackOut
             TurnOnAnimation.Children.Add(ckf);
         }
 
+        private void InitializeFlashOnStoryBoardAnimation()
+        {
+            ColorAnimationUsingKeyFrames ckf = new ColorAnimationUsingKeyFrames();
+
+            Storyboard.SetTargetProperty(FlashOnAnimation, new PropertyPath("Color"));
+            Storyboard.SetTarget(FlashOnAnimation, backgroundBrush);
+
+            EasingColorKeyFrame lck0 = new EasingColorKeyFrame();
+            lck0.KeyTime = TimeSpan.FromMilliseconds(0);
+            lck0.Value = accentColor;
+
+            EasingColorKeyFrame lck1 = new EasingColorKeyFrame();
+            lck1.KeyTime = TimeSpan.FromMilliseconds(600);
+            lck1.Value = backgroundColor;
+
+            ckf.KeyFrames.Add(lck0);
+            ckf.KeyFrames.Add(lck1);
+            FlashOnAnimation.Children.Add(ckf);
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             GameManager.Instance.BlockClicked(row, column);
@@ -79,25 +101,72 @@ namespace BlackOut
 
         public void TurnOn()
         {
-            if(!isBlockLit)
+
+            HintAnimation.Stop();
+            ellipse.Opacity = 0;
+
+            if (!isBlockLit)
             {
                 isBlockLit = true;
-                TurnOnAnimation.Begin();
+
+                    TurnOnAnimation.Begin();
+                  //  TurnOnAnimation.SkipToFill();
+                
             }
+
         }
 
         public void TurnOff()
         {
+
+            HintAnimation.Stop();
+            ellipse.Opacity = 0;
+
+
             isBlockLit = false;
-            TurnOffAnimation.Begin();
+
+    
+                TurnOffAnimation.Begin();
+                //TurnOffAnimation.SkipToFill();
+            
         }
 
         public void FlashOn()
         {
             Dispatcher.BeginInvoke(() =>
             {
-                //TurnOnAnimation.Begin();
+                TurnOnAnimation.Begin();
             });
+        }
+
+        internal void ShowHint()
+        {
+            HintAnimation.RepeatBehavior = new RepeatBehavior(5);
+            HintAnimation.AutoReverse = true;
+
+            ShowHintAnimation.Begin();
+            
+        }
+
+        void ShowHintAnimation_Completed(object sender, EventArgs e)
+        {
+            HintAnimation.Begin();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            ShowHintAnimation.Completed += new EventHandler(ShowHintAnimation_Completed);
+            HintAnimation.Completed += new EventHandler(HintAnimation_Completed);
+        }
+
+        void HintAnimation_Completed(object sender, EventArgs e)
+        {
+            HideHintAnimation.Begin();
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            ShowHintAnimation.Completed -= new EventHandler(ShowHintAnimation_Completed);
         }
 
     }

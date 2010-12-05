@@ -8,5 +8,5 @@
 _ReSharper.*
 *.sln.cache
 *.xap
-*/TestResults
+TestResults
 *.testsettings

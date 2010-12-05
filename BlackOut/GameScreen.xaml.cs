@@ -18,23 +18,30 @@ namespace BlackOut
         public GameScreen()
         {
             InitializeComponent();
-            
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.LevelWon += new EventHandler<EventArgs>(Instance_LevelWon);
-            GameManager.Instance.uiElementCollection = grid.Children;
-            GameManager.Instance.color = (Color)Resources["PhoneAccentColor"];
-            GameManager.Instance.DisplayGrid(false, true);
+            GameManager.Instance.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
+            GameManager.Instance.LevelLoaded += new EventHandler<EventArgs>(Instance_LevelLoaded);
+
+            GameManager.Instance.Initialize(grid.Children);
+            GameManager.Instance.DisplayGrid(false);
         }
 
-        void Instance_LevelWon(object sender, EventArgs e)
+        void Instance_LevelLoaded(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke(() =>
             {
-                MessageBox.Show("Woo! You Won!!");
-                NavigationService.GoBack();
+                tbLevel.Text = GameManager.Instance.Level.ToString();
+            });
+        }
+
+        void Instance_LevelCompleted(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                tbLevel.Text = GameManager.Instance.Level.ToString();
             });
         }
 
@@ -50,8 +57,13 @@ namespace BlackOut
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.LevelWon -= new EventHandler<EventArgs>(Instance_LevelWon);
+            GameManager.Instance.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
+            grid.Children.Clear();
+        }
 
+        private void appBarBtnHint_Click(object sender, System.EventArgs e)
+        {
+            GameManager.Instance.ShowHint();
         }   
     }
 }

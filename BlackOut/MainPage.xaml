@@ -28,11 +28,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="Level 1" Height="72" HorizontalAlignment="Left" Margin="0,8,0,0" Name="button1" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Click" />
-            <Button Content="Level 2" Height="72" HorizontalAlignment="Left" Margin="0,84,0,0" x:Name="button1_Copy" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Copy_Click" />
-            <Button Content="Level 3" Height="72" HorizontalAlignment="Left" Margin="0,156,0,0" x:Name="button1_Copy1" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Copy1_Click" />
-            <Button Content="Level 4" Height="72" HorizontalAlignment="Left" Margin="0,232,0,0" x:Name="button1_Copy2" VerticalAlignment="Top" Width="232" Click="button1_Copy2_Click" />
-            <Button Content="Level 5" Height="72" HorizontalAlignment="Left" Margin="0,308,0,0" x:Name="button1_Copy3" VerticalAlignment="Top" Width="232" Click="button1_Copy3_Click" />
+            <Button Content="Start Game" Height="72" HorizontalAlignment="Left" Margin="0,8,0,0" Name="button1" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Click" />
         </Grid>
     </Grid>
  

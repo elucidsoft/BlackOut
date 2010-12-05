@@ -23,32 +23,8 @@ namespace BlackOut
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.level = TempLevels.Level1Board;
+            GameManager.Instance.Start(1);
             NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
-        private void button1_Copy_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.level = TempLevels.Level2Board;
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
-        private void button1_Copy1_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.level = TempLevels.Level3Board;
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
-        private void button1_Copy2_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.level = TempLevels.Level4Board;
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
-        private void button1_Copy3_Click(object sender, RoutedEventArgs e)
-        {
-            GameManager.Instance.level = TempLevels.Level5Board;
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));            
         }
     }
 }

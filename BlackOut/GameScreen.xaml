@@ -13,12 +13,8 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded">
 
-    <StackPanel Margin="0,0,0,189" Orientation="Vertical" d:LayoutOverrides="Height">
-		<Canvas Height="100">
-			<TextBlock TextWrapping="Wrap" Text="BlackOut" FontSize="64" FontFamily="Segoe WP Light" Canvas.Left="8"/>
-		</Canvas>
-
-		<Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" Name="grid">
+    <StackPanel Margin="0,0,0,74" Orientation="Vertical" d:LayoutOverrides="Height" Height="768">
+        <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="96" />
 				<RowDefinition Height="96" />
@@ -34,15 +30,25 @@
 				<ColumnDefinition Width="96" />
 			</Grid.ColumnDefinitions>
 		</Grid>
+		<Grid Height="104">
+			<TextBlock HorizontalAlignment="Left" Margin="296,10,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top"/>
+			<TextBlock Margin="403,8,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Name="tbLevel" />
+			<TextBlock Margin="8,54,0,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" HorizontalAlignment="Left" Width="154" Height="45" VerticalAlignment="Top" />
+			<TextBlock Margin="139,54,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Left" Width="94" Height="75" VerticalAlignment="Top" Name="tbMoves" />
+			<TextBlock Margin="0,54,96,0" TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Right" Width="88"/>
+			<TextBlock Margin="0,54,6,0" TextWrapping="Wrap" Text="0/3" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" Name="tbHints" />
+            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Time" TextWrapping="Wrap" Width="154" Height="45" VerticalAlignment="Top" />
+            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="139,10,0,0" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" Height="41" VerticalAlignment="Top" Name="tbTime" />
+        </Grid>
 
 	</StackPanel>
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.65">
-            <shell:ApplicationBarIconButton IconUri="/icons/appbar.add.rest.png" Text="New Game"/>
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.back.rest.png" Text="last level"/>
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True"/>
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.refresh.rest.png" Text="reset" IsEnabled="True" x:Name="appBarBtnReset" Click="appBarBtnReset_Click" />
+            <shell:ApplicationBarIconButton x:Name="appBarBtnHint" IconUri="/icons/appbar.share.rest.png" Text="hint" IsEnabled="True" Click="appBarBtnHint_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Main Menu" Click="ApplicationBarMenuItem_Click"/>
                 <shell:ApplicationBarMenuItem Text="high scores"/>

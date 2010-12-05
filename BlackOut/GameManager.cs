@@ -15,25 +15,50 @@ namespace BlackOut
 {
     public class GameManager
     {
-        public event EventHandler<EventArgs> LevelWon;
-
-        public int[,] level;
-
-        private Block[,] board = new Block[5, 5];
-
-        private static GameManager instance;
-
-        public UIElementCollection uiElementCollection;
-        public Color color;
-
+        private static GameManager _instance;
         public static GameManager Instance
         {
             get
             {
-                if (instance == null)
-                    instance = new GameManager();
-                return instance;
+                if (_instance == null)
+                    _instance = new GameManager();
+                return _instance;
             }
+        }
+
+        public event EventHandler<EventArgs> LevelLoaded;
+        public event EventHandler<EventArgs> LevelCompleted;
+
+        private Block[,] _boardBlocks;
+        public int[,] _boardLevel = new int[5, 5]
+                                    {
+                                      {0, 0, 0, 0, 0},
+                                      {0, 0, 0, 0, 0},
+                                      {0, 0, 0, 0, 0},
+                                      {0, 0, 0, 0, 0},
+                                      {0, 0, 0, 0, 0}
+                                    };
+
+        private UIElementCollection _gridBlockDisplayCollection;
+        private GameSettings _gameSettings = new GameSettings();
+        private BoardAnimationManager _boardAnimationManager;
+
+        private int _level = 0;
+        private int _usedHints = 0;
+
+        public int Level
+        {
+            get { return _level; }
+        }
+
+        public int UsedHints
+        {
+            get { return _usedHints; }
+        }
+
+        public int[,] ActiveBoardLevel 
+        {
+            get { return _boardLevel; } 
         }
 
         public GameManager()
@@ -41,9 +66,20 @@ namespace BlackOut
             InitializeBlocks();
         }
 
-        private void InitializeBlocks()
+        public void Initialize(UIElementCollection uiElementCollection)
         {
-            board = new Block[5, 5]
+            _gridBlockDisplayCollection = uiElementCollection;
+            LoadLevel(_level);
+        }
+
+        public void Start(int level)
+        {
+            _level = level;
+        }
+
+        public void InitializeBlocks()
+        {
+            _boardBlocks = new Block[5, 5]
                 { 
                      { new Block(), new Block(), new Block(), new Block(), new Block() },
                      { new Block(), new Block(), new Block(), new Block(), new Block() },   
@@ -51,21 +87,42 @@ namespace BlackOut
                      { new Block(), new Block(), new Block(), new Block(), new Block() },   
                      { new Block(), new Block(), new Block(), new Block(), new Block() }   
                 };
+            _boardAnimationManager = new BoardAnimationManager(this, _boardBlocks);
         }
 
-        public void DisplayGrid(bool isRefresh, bool isInitialize)
+        public void LoadLevel(int currentLevel)
         {
-            if (isInitialize)
+            if (currentLevel - 1 >= _gameSettings.Levels.Length)
             {
-                uiElementCollection.Clear();
-                InitializeBlocks();
+                currentLevel = 1;
+                this._level = 1;
             }
 
+            int[,] levelToLoad = _gameSettings.Levels[currentLevel - 1];
             for (int row = 0; row < 5; row++)
             {
                 for (int column = 0; column < 5; column++)
                 {
-                    Block block = board[column, row];
+                    _boardLevel[column, row] = levelToLoad[column, row];
+                }
+            }
+
+            if (LevelLoaded != null)
+                LevelLoaded(this, new EventArgs());
+        }
+
+        public void DisplayGrid(bool isRefresh)
+        {
+            DisplayGrid(isRefresh, _boardLevel);
+        }
+
+        public void DisplayGrid(bool isRefresh, int[,] level)
+        {
+            for (int row = 0; row < 5; row++)
+            {
+                for (int column = 0; column < 5; column++)
+                {
+                    Block block = _boardBlocks[column, row];
                     block.SetValue(Grid.RowProperty, row);
                     block.SetValue(Grid.ColumnProperty, column);
                     block.Width = 88;
@@ -86,7 +143,24 @@ namespace BlackOut
 
                     if (!isRefresh)
                     {
-                        uiElementCollection.Add(block);
+                        _gridBlockDisplayCollection.Add(block);
+                    }
+                }
+            }
+        }
+
+        public void ShowHint()
+        {
+            Solver solver = new Solver(_boardLevel);
+            solver.GetHint();
+            for (int row = 0; row < 5; row++)
+            {
+                for (int column = 0; column < 5; column++)
+                {
+                    if (solver.hint_board[column, row] == 1)
+                    {
+                        _boardBlocks[column, row].ShowHint();
+                        return;
                     }
                 }
             }
@@ -98,7 +172,7 @@ namespace BlackOut
             {
                 for (int column = 0; column < 5; column++)
                 {
-                    if (level[column, row] == 1)
+                    if (_boardLevel[column, row] == 1)
                     {
                         return false;
                     }
@@ -110,39 +184,14 @@ namespace BlackOut
 
         public void ResetBoard()
         {
-            level = TempLevels.EmptyBoard;
-            DisplayGrid(false, true);
+            _gridBlockDisplayCollection.Dispatcher.BeginInvoke(() =>
+               {
+                   DisplayGrid(true, TempLevels.EmptyBoard);
 
-            int delay = 0;
-            TimeSpan beginTime = TimeSpan.FromSeconds(delay);
-            for (int i = 0; i < 5; i++)
-            {
-                if (i > 0)
-                {
-                    if (delay == 0)
-                        delay = 45;
-
-                    beginTime = TimeSpan.FromMilliseconds(delay);
-                    delay = delay += delay;
-                }
-
-                //board[0, i].FlashOnAnimation.BeginTime = beginTime;
-                //board[0, i].FlashOnAnimation.Begin();
-
-                //board[1, i].FlashOnAnimation.BeginTime = beginTime;
-                //board[1, i].FlashOnAnimation.Begin();
-
-                //board[2, i].FlashOnAnimation.BeginTime = beginTime;
-                //board[2, i].FlashOnAnimation.Begin();
-
-                //board[3, i].FlashOnAnimation.BeginTime = beginTime;
-                //board[3, i].FlashOnAnimation.Begin();
-
-                //board[4, i].FlashOnAnimation.BeginTime = beginTime;
-                //board[4, i].FlashOnAnimation.Begin();
-            }
+                   _boardAnimationManager.RotateBoardBlocks(0);
+                   int endTime = _boardAnimationManager.FlashDown(0, 35);
+               });
         }
-
 
         internal void BlockClicked(int row, int column)
         {
@@ -168,21 +217,30 @@ namespace BlackOut
                 FlipBlock(column - 1, row);
             }
 
-            DisplayGrid(true, false);
+            DisplayGrid(true);
+            CheckIfLevelCompleted();
+        }
 
-            Timer timer = new Timer((Object obj) =>
+        private void CheckIfLevelCompleted()
+        {
+            if (CheckForWin())
             {
-                if (CheckForWin())
+                _level++; 
+                Timer timer = null;
+                timer = new Timer((object a) =>
                 {
-                    if (LevelWon != null)
-                        LevelWon(this, new EventArgs());               
-                }
-            }, null, 500, Timeout.Infinite);
+                    ResetBoard();
+                    if (LevelCompleted != null)
+                        LevelCompleted(this, new EventArgs());
+
+                    timer.Dispose();
+                }, null, TimeSpan.FromMilliseconds(300), TimeSpan.FromMilliseconds(-1));
+            }
         }
 
         private void FlipBlock(int column, int row)
         {
-            level[column, row] = Math.Abs(level[column, row] - 1);
+            _boardLevel[column, row] = Math.Abs(_boardLevel[column, row] - 1);
         }
     }
 }
