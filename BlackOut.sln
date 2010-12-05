@@ -3,11 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackOut", "BlackOut\BlackOut.csproj", "{D6D88769-9A5A-48B6-94C6-A472CAB379BF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FE6A8930-F18B-4B73-903B-A0F5D8C52A65}"
-	ProjectSection(SolutionItems) = preProject
-		BlackOut.vsmdi = BlackOut.vsmdi
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = BlackOut.vsmdi

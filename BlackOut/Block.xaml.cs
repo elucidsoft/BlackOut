@@ -52,7 +52,7 @@ namespace BlackOut
             Storyboard.SetTarget(TurnOffAnimation, backgroundBrush);
 
             LinearColorKeyFrame lck0 = new LinearColorKeyFrame();
-            lck0.KeyTime = TimeSpan.FromMilliseconds(200);
+            lck0.KeyTime = TimeSpan.FromMilliseconds(300);
             lck0.Value = backgroundColor;
 
             ckf.KeyFrames.Add(lck0);
@@ -67,7 +67,7 @@ namespace BlackOut
             Storyboard.SetTarget(TurnOnAnimation, backgroundBrush);
 
             LinearColorKeyFrame lck0 = new LinearColorKeyFrame();
-            lck0.KeyTime = TimeSpan.FromMilliseconds(200);
+            lck0.KeyTime = TimeSpan.FromMilliseconds(300);
             lck0.Value = accentColor;
 
             ckf.KeyFrames.Add(lck0);

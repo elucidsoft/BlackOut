@@ -38,6 +38,7 @@
 		</Storyboard>
 		<Storyboard x:Name="TurnRight">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.Rotation)" Storyboard.TargetName="LayoutRoot">
+				<DiscreteDoubleKeyFrame KeyTime="0" Value="0"/>
 				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="90"/>
 				<DiscreteDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>

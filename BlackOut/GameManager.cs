@@ -132,6 +132,11 @@ namespace BlackOut
                     block.column = column;
                     block.row = row;
 
+                    RotateTransform rotateTransform = new RotateTransform();
+                    rotateTransform.Angle = 0;
+
+                    block.RenderTransform = rotateTransform;
+
                     if (level[column, row] > 0)
                     {
                         block.TurnOn();
@@ -189,7 +194,7 @@ namespace BlackOut
                    DisplayGrid(true, TempLevels.EmptyBoard);
 
                    _boardAnimationManager.RotateBoardBlocks(0);
-                   int endTime = _boardAnimationManager.FlashDown(0, 35);
+                   _boardAnimationManager.FlashDown(0, 35);
                });
         }
 
