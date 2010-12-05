@@ -128,7 +128,7 @@ namespace BlackOut
         {
             _board[4, 4].FlashOnAnimation.Completed -= new EventHandler(FlashOnColumnsAnimation_Completed);
             _gameManager.LoadLevel(_gameManager.Level);
-            _gameManager.DisplayGrid(true, _gameManager.ActiveBoardLevel);//
+            _gameManager.DisplayGrid(true, _gameManager.ActiveBoardLevel);
         }
 
         void FlashOnRowsAnimation_Completed(object sender, EventArgs e)
