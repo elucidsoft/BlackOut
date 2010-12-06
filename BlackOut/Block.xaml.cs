@@ -109,9 +109,8 @@ namespace BlackOut
             {
                 isBlockLit = true;
 
-                    TurnOnAnimation.Begin();
-                  //  TurnOnAnimation.SkipToFill();
-                
+                TurnOnAnimation.Begin();
+                //  TurnOnAnimation.SkipToFill();
             }
 
         }

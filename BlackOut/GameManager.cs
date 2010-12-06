@@ -41,7 +41,9 @@ namespace BlackOut
 
         private UIElementCollection _gridBlockDisplayCollection;
         private GameSettings _gameSettings = new GameSettings();
-        private BoardAnimationManager _boardAnimationManager;
+
+        private LevelTransitionAnimationManager _levelTransitionAnimationManager;
+        private ResetBoardAnimationManager _resetBoardAnimationManager;
 
         private int _level = 0;
         private int _usedHints = 0;
@@ -87,7 +89,8 @@ namespace BlackOut
                      { new Block(), new Block(), new Block(), new Block(), new Block() },   
                      { new Block(), new Block(), new Block(), new Block(), new Block() }   
                 };
-            _boardAnimationManager = new BoardAnimationManager(this, _boardBlocks);
+            _levelTransitionAnimationManager = new LevelTransitionAnimationManager(this, _boardBlocks);
+            _resetBoardAnimationManager = new ResetBoardAnimationManager(this, _boardBlocks);
         }
 
         public void LoadLevel(int currentLevel)
@@ -193,9 +196,25 @@ namespace BlackOut
                {
                    DisplayGrid(true, TempLevels.EmptyBoard);
 
-                   _boardAnimationManager.RotateBoardBlocks(0);
-                   _boardAnimationManager.FlashDown(0, 35);
+                   _resetBoardAnimationManager.Begin(0, () =>
+                   {
+                       LoadLevel(_level);
+                       DisplayGrid(true);
+                   });
                });
+        }
+
+        private void LevelTransition()
+        {
+            _gridBlockDisplayCollection.Dispatcher.BeginInvoke(() =>
+            {
+                DisplayGrid(true, TempLevels.EmptyBoard);
+                _levelTransitionAnimationManager.Begin(0, 35, () =>
+                {
+                    LoadLevel(_level);
+                    DisplayGrid(true);
+                });
+            });
         }
 
         internal void BlockClicked(int row, int column)
@@ -234,7 +253,7 @@ namespace BlackOut
                 Timer timer = null;
                 timer = new Timer((object a) =>
                 {
-                    ResetBoard();
+                    LevelTransition();
                     if (LevelCompleted != null)
                         LevelCompleted(this, new EventArgs());
 

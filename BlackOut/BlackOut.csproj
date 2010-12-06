@@ -67,8 +67,9 @@
     <Compile Include="Block.xaml.cs">
       <DependentUpon>Block.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BoardAnimationManager.cs" />
+    <Compile Include="LevelTransitionAnimationManager.cs" />
     <Compile Include="GameSettings.cs" />
+    <Compile Include="ResetBoardAnimationManager.cs" />
     <Compile Include="Solver.cs" />
     <Compile Include="ColorConverter.cs" />
     <Compile Include="ColorExtensions.cs" />

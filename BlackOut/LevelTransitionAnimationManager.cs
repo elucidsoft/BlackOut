@@ -11,12 +11,13 @@ using System.Windows.Shapes;
 
 namespace BlackOut
 {
-    public class BoardAnimationManager
+    public class LevelTransitionAnimationManager
     {
         private Block[,] _board;
         private GameManager _gameManager;
+        Action _action;
 
-        public BoardAnimationManager(GameManager gameManager, Block[,] board)
+        public LevelTransitionAnimationManager(GameManager gameManager, Block[,] board)
         {
             _gameManager = gameManager;
             _board = board;
@@ -28,10 +29,11 @@ namespace BlackOut
             {
                 for (int column = 0; column < 5; column++)
                 {
-                    _board[column, row].TurnLeft.BeginTime = TimeSpan.FromMilliseconds(startTime);
                     _board[column, row].FlashOnAnimation.Begin();
                     _board[column, row].FlashOnAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
-                    _board[column, row].TurnLeft.Begin();
+
+                    _board[column, row].TurnLeftAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
+                    _board[column, row].TurnLeftAnimation.Begin();
                 }
             }
         }
@@ -57,10 +59,13 @@ namespace BlackOut
             return delay;
         }
 
-        public int FlashDown(int startTime, int speed)
+        public int Begin(int startTime, int speed, Action action)
         {
             int delay = 0;
             TimeSpan beginTime = new TimeSpan();
+            _action = action;
+
+            RotateBoardBlocks(0);
             for (int i = 0; i < 5; i++)
             {
                 beginTime = TimeSpan.FromMilliseconds(startTime) + TimeSpan.FromMilliseconds(delay);
@@ -127,8 +132,7 @@ namespace BlackOut
         void FlashOnColumnsAnimation_Completed(object sender, EventArgs e)
         {
             _board[4, 4].FlashOnAnimation.Completed -= new EventHandler(FlashOnColumnsAnimation_Completed);
-            _gameManager.LoadLevel(_gameManager.Level);
-            _gameManager.DisplayGrid(true, _gameManager.ActiveBoardLevel);
+            _action();
         }
 
         void FlashOnRowsAnimation_Completed(object sender, EventArgs e)
