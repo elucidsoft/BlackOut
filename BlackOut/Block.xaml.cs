@@ -26,6 +26,7 @@ namespace BlackOut
 
         public Color accentColor;
         public Color backgroundColor;
+        public bool TestBlock = false;
 
         public Block()
         {
@@ -96,7 +97,17 @@ namespace BlackOut
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.BlockClicked(row, column);
+            if (!TestBlock)
+            {
+               App.GameManager.BlockClicked(row, column);
+            }
+            else
+            {
+                if (!isBlockLit)
+                    TurnOn();
+                else
+                    TurnOff();
+            }
         }
 
         public void TurnOn()

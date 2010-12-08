@@ -29,6 +29,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Button Content="Start Game" Height="72" HorizontalAlignment="Left" Margin="0,8,0,0" Name="button1" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Click" />
+            <Button Content="Create Levels" Height="72" HorizontalAlignment="Left" Margin="0,86,0,0" Name="button2" VerticalAlignment="Top" Width="232" Click="button2_Click" />
         </Grid>
     </Grid>
  

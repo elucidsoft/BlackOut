@@ -53,6 +53,9 @@
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Polenter.SharpSerializer.Silverlight">
+      <HintPath>Shared\Polenter.SharpSerializer.Silverlight.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -67,9 +70,13 @@
     <Compile Include="Block.xaml.cs">
       <DependentUpon>Block.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CreateLevel.xaml.cs">
+      <DependentUpon>CreateLevel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LevelTransitionAnimationManager.cs" />
-    <Compile Include="GameSettings.cs" />
+    <Compile Include="GameData.cs" />
     <Compile Include="ResetBoardAnimationManager.cs" />
+    <Compile Include="GameState.cs" />
     <Compile Include="Solver.cs" />
     <Compile Include="ColorConverter.cs" />
     <Compile Include="ColorExtensions.cs" />
@@ -89,6 +96,10 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="Block.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreateLevel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -118,6 +129,12 @@
     <Content Include="icons\appbar.back.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="icons\appbar.edit.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\appbar.folder.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="icons\appbar.new.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -125,6 +142,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icons\appbar.refresh.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\appbar.save.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="icons\appbar.share.rest.png">

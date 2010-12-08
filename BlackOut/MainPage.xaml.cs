@@ -23,8 +23,17 @@ namespace BlackOut
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.Start(1);
+            GameManager.Reset();
+           App.GameManager.Start(1);
             NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            GameManager.Reset();
+           App.GameManager.Start(-1);
+            NavigationService.Navigate(new Uri("/CreateLevel.xaml", UriKind.Relative));
+
         }
     }
 }

@@ -22,18 +22,18 @@ namespace BlackOut
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
-            GameManager.Instance.LevelLoaded += new EventHandler<EventArgs>(Instance_LevelLoaded);
+            App.GameManager.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
+            App.GameManager.LevelLoaded += new EventHandler<EventArgs>(Instance_LevelLoaded);
 
-            GameManager.Instance.Initialize(grid.Children);
-            GameManager.Instance.DisplayGrid(false);
+           App.GameManager.Initialize(grid);
+           App.GameManager.DisplayGrid(false);
         }
 
         void Instance_LevelLoaded(object sender, EventArgs e)
         {
             Dispatcher.BeginInvoke(() =>
             {
-                tbLevel.Text = GameManager.Instance.Level.ToString();
+                tbLevel.Text = App.GameManager.Level.ToString();
             });
         }
 
@@ -41,7 +41,7 @@ namespace BlackOut
         {
             Dispatcher.BeginInvoke(() =>
             {
-                tbLevel.Text = GameManager.Instance.Level.ToString();
+                tbLevel.Text = App.GameManager.Level.ToString();
             });
         }
 
@@ -52,18 +52,18 @@ namespace BlackOut
 
         private void appBarBtnReset_Click(object sender, System.EventArgs e)
         {
-            GameManager.Instance.ResetBoard();
+           App.GameManager.ResetBoard();
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            GameManager.Instance.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
+           App.GameManager.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
             grid.Children.Clear();
         }
 
         private void appBarBtnHint_Click(object sender, System.EventArgs e)
         {
-            GameManager.Instance.ShowHint();
+           App.GameManager.ShowHint();
         }   
     }
 }

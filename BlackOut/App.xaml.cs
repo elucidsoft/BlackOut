@@ -23,6 +23,8 @@ namespace BlackOut
         /// <returns>The root frame of the Phone Application.</returns>
         public PhoneApplicationFrame RootFrame { get; private set; }
 
+        public static GameManager GameManager;
+
         /// <summary>
         /// Constructor for the Application object.
         /// </summary>
@@ -56,19 +58,25 @@ namespace BlackOut
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            GameManager.Instance.InitializeBlocks();
+            if (GameManager == null)
+            {
+                GameManager = new GameManager(GameData.LoadGameData());
+            }
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            GameData gameData = GameData.LoadGameData();
+            GameManager = new GameManager(gameData);
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            GameData.SaveGameData(GameManager.GameData);
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
