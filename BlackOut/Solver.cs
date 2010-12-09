@@ -17,7 +17,7 @@ namespace BlackOut
     {
         int[,] current_board;
 
-        int [,] goal_board = new int[5, 5] {
+        static readonly int [,] goal_board = new int[5, 5] {
                                 {1, 1, 1, 1, 1},
 			                    {1, 1, 1, 1, 1},
 			                    {1, 1, 1, 1, 1},
@@ -25,7 +25,7 @@ namespace BlackOut
 			                    {1, 1, 1, 1, 1}
                              };
 
-        public int[,] hint_board = new int[5, 5] {
+        static readonly int[,] hint_board = new int[5, 5] {
                                 {0, 0, 0, 0, 0},
 			                    {0, 0, 0, 0, 0},
 			                    {0, 0, 0, 0, 0},
@@ -33,7 +33,7 @@ namespace BlackOut
 			                    {0, 0, 0, 0, 0}
                              };
 
-        int[, ] hint_matrix = {
+        static readonly int[, ] hint_matrix = {
                                 { 0,1,1,1,0,0,0,1,0,1,0,0,0,1,1,0,0,0,0,1,0,0,0 },
                                 { 1,1,0,1,1,0,1,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,0 },
                                 { 1,0,1,1,1,1,0,1,1,0,0,0,1,1,0,1,1,1,1,1,0,1,0 },
@@ -58,8 +58,8 @@ namespace BlackOut
                                 { 0,0,1,1,1,0,1,0,1,0,1,1,1,0,0,0,0,0,0,0,1,1,1 },
                                 { 0,0,0,1,0,0,0,1,1,1,0,1,0,0,0,1,1,0,1,1,0,1,0 }
                               };
-        int[] n1 = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1 };
-        int[] n2 = { 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1 };
+        static readonly int[] n1 = { 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1 };
+        static readonly int[] n2 = { 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1 };
 
 
         public Solver(int[,] board)
@@ -67,7 +67,7 @@ namespace BlackOut
             this.current_board = board;
         }
 
-        private void acpy(int[] src, int[] dest)
+        private void CopyArray(int[] src, int[] dest)
         {
             int i;
             for (i = 0; i < src.Length; i++)
@@ -76,7 +76,7 @@ namespace BlackOut
             }
         }
 
-        private void addto(int[] src, int[] v)
+        private void AddToArray(int[] src, int[] v)
         {
             int i;
             for (i = 0; i < src.Length; i++)
@@ -85,7 +85,7 @@ namespace BlackOut
             }
         }
 
-        private int wt(int[] v)
+        private int Weight(int[] v)
         {
             int i, t = 0;
             for (i = 0; i < v.Length; i++)
@@ -131,25 +131,25 @@ namespace BlackOut
             // and h+n1+n2 to see which has the lowest weight, giving a
             // shortest solution.
 
-            acpy(hint_vector, best);
-            acpy(hint_vector, next);
-            addto(next, n1);
-            if (wt(next) < wt(best))
+            CopyArray(hint_vector, best);
+            CopyArray(hint_vector, next);
+            AddToArray(next, n1);
+            if (Weight(next) < Weight(best))
             {
-                acpy(next, best);
+                CopyArray(next, best);
             }
-            acpy(hint_vector, next);
-            addto(next, n2);
-            if (wt(next) < wt(best))
+            CopyArray(hint_vector, next);
+            AddToArray(next, n2);
+            if (Weight(next) < Weight(best))
             {
-                acpy(next, best);
+                CopyArray(next, best);
             }
-            acpy(hint_vector, next);
-            addto(next, n1);
-            addto(next, n2);
-            if (wt(next) < wt(best))
+            CopyArray(hint_vector, next);
+            AddToArray(next, n1);
+            AddToArray(next, n2);
+            if (Weight(next) < Weight(best))
             {
-                acpy(next, best);
+                CopyArray(next, best);
             }
 
             for (i = 0; i < 25; i++)
@@ -159,6 +159,42 @@ namespace BlackOut
             }
 
             return hint_board;
+        }
+
+        public static bool IsSolvable(int[,] current_board)
+        {
+            int[] current_state = new int[25];
+            int i = 0; 
+            int dotprod = 0;
+
+            for (i = 0; i < 25; i++)
+            {
+                if (current_board[i % 5, i / 5] == 1)
+                {
+                    current_state[i] = 0;
+                }
+                else
+                {
+                    current_state[i] = 1;
+                }
+            }
+
+            dotprod = 0;
+            for (i = 0; i < 25; i++)
+            {
+                dotprod = (dotprod + current_state[i] * n1[i]) % 2;
+            }
+
+            if (dotprod != 0) { return (false); }
+
+            dotprod = 0;
+            for (i = 0; i < 25; i++)
+            {
+                dotprod = (dotprod + current_state[i] * n2[i]) % 2;
+            }
+
+            if (dotprod != 0) { return (false); }
+            else { return (true); }
         }
 
     }

@@ -52,7 +52,7 @@ namespace BlackOut
 
         private void appBarBtnReset_Click(object sender, System.EventArgs e)
         {
-           App.GameManager.ResetBoard();
+           App.GameManager.ResetBoard(true);
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
@@ -64,6 +64,13 @@ namespace BlackOut
         private void appBarBtnHint_Click(object sender, System.EventArgs e)
         {
            App.GameManager.ShowHint();
+        }
+
+        private void appBarBtnNextLevel_Click(object sender, System.EventArgs e)
+        {
+            int[,] board = App.GameManager.GenerateRandomBoard();
+            App.GameManager.SetBoard(board);
+            App.GameManager.ResetBoard(false);
         }   
     }
 }

@@ -10,18 +10,26 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Resources;
 using System.Threading;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace BlackOut
 {
     public class GameManager
     {
-        public static void Reset()
+        public void Reset()
         {
-            
+            if(_grid != null)
+                _grid.Children.Clear();
+
+            InitializeBlocks();
         }
 
         public event EventHandler<EventArgs> LevelLoaded;
         public event EventHandler<EventArgs> LevelCompleted;
+        public event EventHandler<EventArgs> OnGridBlockClicked;
+
+        private List<int> randomBoards = new List<int>();
 
         private Block[,] _boardBlocks;
 
@@ -44,6 +52,18 @@ namespace BlackOut
         public void Initialize(Grid grid)
         {
             _grid = grid;
+            InitializeGridBlocks();
+        }
+
+        private void InitializeGridBlocks()
+        {
+            for (int row = 0; row < 5; row++)
+            {
+                for (int column = 0; column < 5; column++)
+                {
+                    _grid.Children.Add(_boardBlocks[column, row]);
+                }
+            }
         }
 
         public void Start(int level)
@@ -110,7 +130,7 @@ namespace BlackOut
             }
 
             if (LevelLoaded != null)
-                LevelLoaded(this, new EventArgs());
+                LevelLoaded(this, EventArgs.Empty);
         }
 
         public void DisplayGrid(bool isRefresh)
@@ -150,24 +170,60 @@ namespace BlackOut
                     {
                         block.TurnOff();
                     }
-
-                    if (!isRefresh)
-                    {
-                        _grid.Children.Add(block);
-                    }
                 }
             }
+        }
+
+        public int[,] GenerateRandomBoard()
+        {
+            int[,] board;
+            Random numberOfBlocks = new Random();
+            Random onOff1 = new Random();
+            Random onOff2 = new Random();
+
+            if (randomBoards.Count > 200)
+                randomBoards.Clear();
+
+            int tries = 0;
+            do
+            {
+                board = new int[5, 5];
+                for (int i = 0; i < numberOfBlocks.Next(0, 25); i++)
+                {
+                    board[i % 5, i / 5] = onOff1.Next(0, 2);
+                }
+
+                for (int i = 0; i < numberOfBlocks.Next(0, 25); i++)
+                {
+                    board[i / 5, i % 5] = onOff2.Next(0, 2);
+                }
+
+                for (int i = 24; i > numberOfBlocks.Next(0, 25); i--)
+                {
+                    board[i / 5, i % 5] = onOff2.Next(0, 2);
+                }
+
+                tries++;
+
+                if (tries > 20)
+                    break;
+            } while (!(CheckEmptyBoard(board) > 3 && Solver.IsSolvable(board) && !randomBoards.Contains(board.GetHashCode())));
+
+            randomBoards.Add(board.GetHashCode());
+            
+            Debug.WriteLine(board.GetHashCode() + " " + tries);
+            return board;
         }
 
         public void ShowHint()
         {
             Solver solver = new Solver(_gameState.BoardLevel);
-            solver.GetHint();
+            int[,] hintBoard = solver.GetHint();
             for (int row = 0; row < 5; row++)
             {
                 for (int column = 0; column < 5; column++)
                 {
-                    if (solver.hint_board[column, row] == 1)
+                    if (hintBoard[column, row] == 1)
                     {
                         _boardBlocks[column, row].ShowHint();
                         return;
@@ -192,7 +248,7 @@ namespace BlackOut
             return true;
         }
 
-        public void ResetBoard()
+        public void ResetBoard(bool loadLevel)
         {
             _grid.Dispatcher.BeginInvoke(() =>
                {
@@ -200,7 +256,10 @@ namespace BlackOut
 
                    _resetBoardAnimationManager.Begin(0, () =>
                    {
-                       LoadLevel(_gameState.Level);
+                       if (loadLevel)
+                       {
+                           LoadLevel(_gameState.Level);
+                       }
                        DisplayGrid(true);
                    });
                });
@@ -257,7 +316,7 @@ namespace BlackOut
                 {
                     LevelTransition();
                     if (LevelCompleted != null)
-                        LevelCompleted(this, new EventArgs());
+                        LevelCompleted(this, EventArgs.Empty);
 
                     timer.Dispose();
                 }, null, TimeSpan.FromMilliseconds(300), TimeSpan.FromMilliseconds(-1));
@@ -267,6 +326,19 @@ namespace BlackOut
         private void FlipBlock(int column, int row)
         {
             _gameState.BoardLevel[column, row] = Math.Abs(_gameState.BoardLevel[column, row] - 1);
+        }
+
+        public int CheckEmptyBoard(int[,] board)
+        {
+            int total = 0;
+            for (int row = 0; row < 5; row++)
+            {
+                for (int column = 0; column < 5; column++)
+                {
+                    total += board[column, row];
+                }
+            }
+            return total;
         }
 
         public int Level
@@ -297,6 +369,12 @@ namespace BlackOut
         public void SetBoard(int[,] boardLevel)
         {
             _gameState.BoardLevel = boardLevel;
+        }
+
+        internal void TestBlockClicked(int row, int column)
+        {
+            if (OnGridBlockClicked != null)
+                OnGridBlockClicked(this, EventArgs.Empty);
         }
     }
 }

@@ -46,7 +46,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.65">
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.back.rest.png" Text="last level"/>
-            <shell:ApplicationBarIconButton IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True"/>
+            <shell:ApplicationBarIconButton x:Name="appBarBtnNextLevel" IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True" Click="appBarBtnNextLevel_Click"/>
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.refresh.rest.png" Text="reset" IsEnabled="True" x:Name="appBarBtnReset" Click="appBarBtnReset_Click" />
             <shell:ApplicationBarIconButton x:Name="appBarBtnHint" IconUri="/icons/appbar.share.rest.png" Text="hint" IsEnabled="True" Click="appBarBtnHint_Click"/>
             <shell:ApplicationBar.MenuItems>

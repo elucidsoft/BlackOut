@@ -107,6 +107,8 @@ namespace BlackOut
                     TurnOn();
                 else
                     TurnOff();
+
+                App.GameManager.TestBlockClicked(row, column);
             }
         }
 
