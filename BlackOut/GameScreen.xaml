@@ -1,19 +1,36 @@
-﻿<phone:PhoneApplicationPage 
-    x:Class="BlackOut.GameScreen"
+﻿<phone:PhoneApplicationPage
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Microsoft_Advertising_Mobile_UI="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" 
+    x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded">
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black">
+	<phone:PhoneApplicationPage.Foreground>
+		<SolidColorBrush Color="White"/>
+	</phone:PhoneApplicationPage.Foreground>
 
-    <StackPanel Margin="0,0,0,74" Orientation="Vertical" d:LayoutOverrides="Height" Height="768">
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.65">
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Main Menu" Click="ApplicationBarMenuItem_Click"/>
+                <shell:ApplicationBarMenuItem Text="high scores"/>
+            </shell:ApplicationBar.MenuItems>
+            <shell:ApplicationBarIconButton IconUri="/icons/appbar.back.rest.png" Text="last level"/>
+            <shell:ApplicationBarIconButton x:Name="appBarBtnNextLevel" IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True" Click="appBarBtnNextLevel_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/icons/appbar.refresh.rest.png" Text="reset" IsEnabled="True" x:Name="appBarBtnReset" Click="appBarBtnReset_Click" />
+            <shell:ApplicationBarIconButton x:Name="appBarBtnHint" IconUri="/icons/appbar.share.rest.png" Text="hint" IsEnabled="True" Click="appBarBtnHint_Click"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+    <StackPanel Margin="0,0,0,72" Orientation="Vertical">
+        <Microsoft_Advertising_Mobile_UI:AdControl Width="480" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Name="adControl" Height="80" RotationEnabled="True" Foreground="Black" Background="Black" Margin="0,0,0,20" />
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="96" />
@@ -30,30 +47,17 @@
 				<ColumnDefinition Width="96" />
 			</Grid.ColumnDefinitions>
 		</Grid>
-		<Grid Height="104">
-			<TextBlock HorizontalAlignment="Left" Margin="296,10,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top"/>
-			<TextBlock Margin="403,8,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" Height="44" VerticalAlignment="Top" HorizontalAlignment="Left" Width="71" Name="tbLevel" />
-			<TextBlock Margin="8,54,0,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" HorizontalAlignment="Left" Width="154" Height="45" VerticalAlignment="Top" />
-			<TextBlock Margin="139,54,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Left" Width="94" Height="75" VerticalAlignment="Top" Name="tbMoves" />
-			<TextBlock Margin="0,54,96,0" TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Right" Width="88"/>
-			<TextBlock Margin="0,54,6,0" TextWrapping="Wrap" Text="0/3" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" Name="tbHints" />
-            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Margin="10,10,0,0" Text="Time" TextWrapping="Wrap" Width="154" Height="45" VerticalAlignment="Top" />
-            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="139,10,0,0" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" Height="41" VerticalAlignment="Top" Name="tbTime" />
+		<Grid Height="216" Background="Black">
+			<TextBlock HorizontalAlignment="Left" Margin="296,7,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" Foreground="White"/>
+			<TextBlock Margin="403,5,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Height="44" VerticalAlignment="Top" Foreground="White" />
+			<TextBlock Margin="8,51,0,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" HorizontalAlignment="Left" Width="154" Height="45" VerticalAlignment="Top" Foreground="White" />
+			<TextBlock Margin="139,54,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Left" Width="94" Height="75" VerticalAlignment="Top" x:Name="tbMoves" Foreground="White" />
+			<TextBlock Margin="0,51,96,0" TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Right" Width="88" Foreground="White"/>
+			<TextBlock Margin="0,51,6,0" TextWrapping="Wrap" Text="0/3" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" x:Name="tbHints" Foreground="White" />
+            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Margin="10,7,0,0" Text="Time" TextWrapping="Wrap" Width="154" Height="45" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment" Foreground="White" />
+            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="139,7,0,0" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" x:Name="tbTime" Height="41" VerticalAlignment="Top" Foreground="White" />
         </Grid>
 
 	</StackPanel>
-
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.65">
-            <shell:ApplicationBarIconButton IconUri="/icons/appbar.back.rest.png" Text="last level"/>
-            <shell:ApplicationBarIconButton x:Name="appBarBtnNextLevel" IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True" Click="appBarBtnNextLevel_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/icons/appbar.refresh.rest.png" Text="reset" IsEnabled="True" x:Name="appBarBtnReset" Click="appBarBtnReset_Click" />
-            <shell:ApplicationBarIconButton x:Name="appBarBtnHint" IconUri="/icons/appbar.share.rest.png" Text="hint" IsEnabled="True" Click="appBarBtnHint_Click"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Main Menu" Click="ApplicationBarMenuItem_Click"/>
-                <shell:ApplicationBarMenuItem Text="high scores"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

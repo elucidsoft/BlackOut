@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Microsoft.Advertising.Mobile.UI;
 
 namespace BlackOut
 {
@@ -17,11 +18,21 @@ namespace BlackOut
     {
         public GameScreen()
         {
+
             InitializeComponent();
+
+//#if DEBUG
+//            adControl.ApplicationId = "test_client";
+//            adControl.AdUnitId = "Image480_80";
+//#else
+//            adControl.ApplicationId = "7a6e48b6-2793-4796-9323-162bdbbf364a";
+//            adControl.AdUnitId = "10012784";
+//#endif
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+
             App.GameManager.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
             App.GameManager.LevelLoaded += new EventHandler<EventArgs>(Instance_LevelLoaded);
 
