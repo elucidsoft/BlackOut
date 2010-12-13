@@ -9,7 +9,9 @@ namespace BlackOut
     {
         int[,] _boardLevel = new int[5, 5];
         public int Level { get; set; }
-
+        public long Seconds { get; set; }
+        public int Moves { get; set; }
+        public int HintsUsed { get; set; }
         public int[,] BoardLevel 
         {
             get

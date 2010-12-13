@@ -15,11 +15,23 @@ namespace BlackOut
     {
         public static void CopyMultiTo(int[] src, int[] dest)
         {
-            int i;
-            for (i = 0; i < src.Length; i++)
+            for (int i = 0; i < src.Length; i++)
             {
                 dest[i] = src[i];
             }
+        }
+
+        public static int GetHashCode(int[,] src)
+        {
+            int hashCode = src.Length;
+            for (int i = 0; i <= src.GetUpperBound(0); i++)
+            {
+                for (int x = 0; x <= src.GetUpperBound(1); x++)
+                {
+                    hashCode = unchecked(hashCode * 314159 + src[i,x]);
+                }
+            }
+            return hashCode;
         }
     }
 }

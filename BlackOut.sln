@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackOut", "BlackOut\BlackOut.csproj", "{D6D88769-9A5A-48B6-94C6-A472CAB379BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WP7FileCopyClient", "DevDependencies\WP7FileCopy\WP7FileCopy\WP7FileCopyClient\WP7FileCopyClient.csproj", "{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = BlackOut.vsmdi
@@ -18,6 +20,12 @@ Global
 		{D6D88769-9A5A-48B6-94C6-A472CAB379BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6D88769-9A5A-48B6-94C6-A472CAB379BF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6D88769-9A5A-48B6-94C6-A472CAB379BF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

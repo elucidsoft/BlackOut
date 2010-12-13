@@ -20,31 +20,39 @@ namespace BlackOut
         {
 
             InitializeComponent();
-
-//#if DEBUG
-//            adControl.ApplicationId = "test_client";
-//            adControl.AdUnitId = "Image480_80";
-//#else
-//            adControl.ApplicationId = "7a6e48b6-2793-4796-9323-162bdbbf364a";
-//            adControl.AdUnitId = "10012784";
-//#endif
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-
             App.GameManager.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
-            App.GameManager.LevelLoaded += new EventHandler<EventArgs>(Instance_LevelLoaded);
+            App.GameManager.LevelLoaded += new EventHandler<LevelLoadedEventArgs>(Instance_LevelLoaded);
+            App.GameManager.OnTimerChanged += new EventHandler<GameTimerTickEventArgs>(GameManager_OnTimerChanged);
+            App.GameManager.OnGridBlockClicked += new EventHandler<GridBlockClickedEventArgs>(GameManager_OnGridBlockClicked);
 
-           App.GameManager.Initialize(grid);
-           App.GameManager.DisplayGrid(false);
+            App.GameManager.Initialize(grid);
+            App.GameManager.DisplayGrid(false);
+
+            tbLevel.Text = App.GameManager.Level.ToString();
         }
 
-        void Instance_LevelLoaded(object sender, EventArgs e)
+        void GameManager_OnGridBlockClicked(object sender, GridBlockClickedEventArgs e)
+        {
+            tbMoves.Text = e.Moves.ToString();
+        }
+
+        void GameManager_OnTimerChanged(object sender, GameTimerTickEventArgs e)
         {
             Dispatcher.BeginInvoke(() =>
             {
-                tbLevel.Text = App.GameManager.Level.ToString();
+                tbTime.Text = String.Format("{0:HH:mm:ss}", new DateTime(TimeSpan.FromSeconds(e.Seconds).Ticks));
+            });
+        }
+
+        void Instance_LevelLoaded(object sender, LevelLoadedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                tbLevel.Text = e.Level.ToString();
             });
         }
 
@@ -52,7 +60,9 @@ namespace BlackOut
         {
             Dispatcher.BeginInvoke(() =>
             {
-                tbLevel.Text = App.GameManager.Level.ToString();
+                tbMoves.Text = "0";
+                tbHints.Text = "0";
+                tbTime.Text = String.Format("{0:HH:mm:ss}", new DateTime(TimeSpan.FromSeconds(0).Ticks));
             });
         }
 
@@ -63,18 +73,20 @@ namespace BlackOut
 
         private void appBarBtnReset_Click(object sender, System.EventArgs e)
         {
-           App.GameManager.ResetBoard(true);
+            App.GameManager.ResetBoard(true);
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
-           App.GameManager.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
+            App.GameManager.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
+            App.GameManager.LevelLoaded -= new EventHandler<LevelLoadedEventArgs>(Instance_LevelLoaded);
+            App.GameManager.OnTimerChanged -= new EventHandler<GameTimerTickEventArgs>(GameManager_OnTimerChanged);
             grid.Children.Clear();
         }
 
         private void appBarBtnHint_Click(object sender, System.EventArgs e)
         {
-           App.GameManager.ShowHint();
+            App.GameManager.ShowHint();
         }
 
         private void appBarBtnNextLevel_Click(object sender, System.EventArgs e)
@@ -82,6 +94,6 @@ namespace BlackOut
             int[,] board = App.GameManager.GenerateRandomBoard();
             App.GameManager.SetBoard(board);
             App.GameManager.ResetBoard(false);
-        }   
+        }
     }
 }

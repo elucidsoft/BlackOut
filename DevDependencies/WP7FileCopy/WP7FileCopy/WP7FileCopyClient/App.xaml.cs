@@ -12,41 +12,21 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Microsoft.Advertising.Mobile.UI;
 
-namespace BlackOut
+namespace WP7FileCopyClient
 {
     public partial class App : Application
     {
-        /// <summary>
-        /// Provides easy access to the root frame of the Phone Application.
-        /// </summary>
-        /// <returns>The root frame of the Phone Application.</returns>
+
+        // Easy access to the root frame
         public PhoneApplicationFrame RootFrame { get; private set; }
 
-        public static GameManager GameManager;
-
-        /// <summary>
-        /// Constructor for the Application object.
-        /// </summary>
+        // Constructor
         public App()
         {
             // Global handler for uncaught exceptions. 
+            // Note that exceptions thrown by ApplicationBarItem.Click will not get caught here.
             UnhandledException += Application_UnhandledException;
-
-            // Show graphics profiling information while debugging.
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                // Display the current frame rate counters.
-                Application.Current.Host.Settings.EnableFrameRateCounter = true;
-
-                // Show the areas of the app that are being redrawn in each frame.
-                //Application.Current.Host.Settings.EnableRedrawRegions = true;
-
-                // Enable non-production analysis visualization mode, 
-                // which shows areas of a page that are being GPU accelerated with a colored overlay.
-                //Application.Current.Host.Settings.EnableCacheVisualization = true;
-            }
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -59,36 +39,28 @@ namespace BlackOut
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            if (GameManager == null)
-            {
-                GameManager = new GameManager(GameData.LoadGameData());
-            }
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            GameData gameData = GameData.LoadGameData();
-            GameManager = new GameManager(gameData);
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            GameData.SaveGameData(GameManager.GameData);
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            GameData.SaveGameData(GameManager.GameData);
         }
 
         // Code to execute if a navigation fails
-        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -128,12 +100,6 @@ namespace BlackOut
 
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
-
-#if DEBUG
-            AdControl.TestMode = true;
-#else
-            AdControl.TestMode = false;
-#endif
         }
 
         // Do not add any additional code to this method

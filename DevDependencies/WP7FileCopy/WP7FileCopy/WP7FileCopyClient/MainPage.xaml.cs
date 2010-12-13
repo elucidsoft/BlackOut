@@ -11,29 +11,32 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 
-namespace BlackOut
+namespace WP7FileCopyClient
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private FileCopyViewModel _viewModel;
+        public FileCopyViewModel ViewModel
+        {
+            get { return _viewModel;  }
+            set
+            {
+                _viewModel = value;
+                DataContext = value;
+            }
+        }
         // Constructor
         public MainPage()
         {
             InitializeComponent();
+            ViewModel = new FileCopyViewModel();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void cmdUploadText_Click(object sender, EventArgs e)
         {
-           App.GameManager.ReInitialize();
-           App.GameManager.Start(1);
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
+            _viewModel.BeginUpload();
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-           App.GameManager.ReInitialize();
-           App.GameManager.Start(-1);
-            NavigationService.Navigate(new Uri("/CreateLevel.xaml", UriKind.Relative));
 
-        }
     }
 }

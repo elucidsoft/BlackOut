@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D6D88769-9A5A-48B6-94C6-A472CAB379BF}</ProjectGuid>
+    <ProjectGuid>{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlackOut</RootNamespace>
-    <AssemblyName>BlackOut</AssemblyName>
+    <RootNamespace>WP7FileCopyClient</RootNamespace>
+    <AssemblyName>WP7FileCopyClient</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <TargetFrameworkProfile>WindowsPhone</TargetFrameworkProfile>
@@ -20,13 +20,13 @@
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>BlackOut.xap</XapFilename>
+    <XapFilename>WP7FileCopyClient.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>BlackOut.App</SilverlightAppEntry>
+    <SilverlightAppEntry>WP7FileCopyClient.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.20901.0</ExpressionBlendVersion>
+    <ExpressionBlendVersion>4.1.20618.30</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,16 +50,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Advertising.Mobile.UI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Advertising SDK for Windows Phone 7\Microsoft.Advertising.Mobile.UI.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="Polenter.SharpSerializer.Silverlight">
-      <HintPath>Shared\Polenter.SharpSerializer.Silverlight.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Servicemodel" />
     <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -69,59 +65,48 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ArrayExtension.cs" />
-    <Compile Include="Block.xaml.cs">
-      <DependentUpon>Block.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CreateLevel.xaml.cs">
-      <DependentUpon>CreateLevel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="GameTimerTickEventArgs.cs" />
-    <Compile Include="GridBlockClickedEventArgs.cs" />
-    <Compile Include="LevelLoadedEventArgs.cs" />
-    <Compile Include="LevelTransitionAnimationManager.cs" />
-    <Compile Include="GameData.cs" />
-    <Compile Include="ResetBoardAnimationManager.cs" />
-    <Compile Include="GameState.cs" />
-    <Compile Include="Solver.cs" />
-    <Compile Include="ColorConverter.cs" />
-    <Compile Include="ColorExtensions.cs" />
-    <Compile Include="GameManager.cs" />
-    <Compile Include="GameScreen.xaml.cs">
-      <DependentUpon>GameScreen.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="FileCopyViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TempLevels.cs" />
+    <Compile Include="Service References\MyCopyService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Uploader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Block.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="CreateLevel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="GameScreen.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="levels.dat" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Service References\MyCopyService\configuration91.svcinfo" />
+    <None Include="Service References\MyCopyService\configuration.svcinfo" />
+    <None Include="Service References\MyCopyService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Service References\MyCopyService\service.wsdl" />
+    <None Include="Service References\MyCopyService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MyCopyService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -130,47 +115,16 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="icons\appbar.add.rest.png">
+    <Content Include="icons\appbar.upload.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="icons\appbar.back.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.edit.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.folder.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.new.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.next.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.refresh.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.save.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="icons\appbar.share.rest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icons\MB_0029_programs.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevDependencies\WP7FileCopy\WP7FileCopy\WP7FileCopyClient\WP7FileCopyClient.csproj">
-      <Project>{0C3F32EE-2C86-49C8-9DE0-F7D50D168E0F}</Project>
-      <Name>WP7FileCopyClient</Name>
-    </ProjectReference>
+    <WCFMetadataStorage Include="Service References\MyCopyService\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

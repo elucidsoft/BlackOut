@@ -1,0 +1,19 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <basicHttpBinding>
+                <binding name="BasicHttpBinding_ICopyService" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                    <readerQuotas maxArrayLength="2147483647" maxStringContentLength="2147483647"/>
+                </binding>
+                
+            </basicHttpBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://eric-pc:8001/FileCopy/" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_ICopyService" contract="MyCopyService.ICopyService"
+                name="BasicHttpBinding_ICopyService" />
+        </client>
+    </system.serviceModel>
+</configuration>

@@ -14,15 +14,18 @@ using System.Xml.Serialization;
 using System.IO;
 using Polenter.Serialization;
 using Microsoft.Phone.Shell;
+using Microsoft.Xna.Framework;
 
 namespace BlackOut
 {
     public class GameData
     {
+        private const string LEVEL_DATA_FILENAME = "levelData.bin";
         private const string GAME_DATA_FILENAME = "gameData.bin";
         private const string GAME_DATA_MEMORY_KEY = "GameData";
 
-        public List<int[,]> levels { get; set; }
+        //this wont get serialized in GameData since its not a property
+        public List<int[,]> Levels = new List<int[,]>();
 
         private GameState gameState = new GameState();
 
@@ -32,14 +35,11 @@ namespace BlackOut
             set { gameState = value; }
         }
 
-        public GameData()
-        {
-            if (levels == null)
-                levels = new List<int[,]>();
-        }
+        public GameData() { }
 
-        private static GameData LoadGameDataFromIsolatedStorage()
+        public static GameData LoadGameData()
         {
+            GameData gameData = null;
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 //isf.DeleteFile(GAME_DATA_FILENAME);
@@ -48,42 +48,66 @@ namespace BlackOut
                     using (var stream = isf.OpenFile(GAME_DATA_FILENAME, System.IO.FileMode.Open))
                     {
                         SharpSerializer serializer = new SharpSerializer(true);
-                        return (GameData)serializer.Deserialize(stream);
+                        gameData = (GameData)serializer.Deserialize(stream);
                     }
                 }
 
-                return new GameData();
+                gameData = gameData ?? new GameData();
+
+                //using (var stream = isf.OpenFile(LEVEL_DATA_FILENAME, System.IO.FileMode.Open))
+                using (Stream stream = TitleContainer.OpenStream("levels.dat"))
+                {
+                    SharpSerializer serializer = new SharpSerializer(true);
+                    gameData.Levels = (List<int[,]>)serializer.Deserialize(stream);
+                }
+
+
+                return gameData;
             }
         }
 
-        public static GameData LoadGameData()
+#if DEBUG
+
+        public static void PushLevelOut()
         {
-            return LoadGameDataFromIsolatedStorage();
+            byte[] bytes = null;
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                using (var stream = isf.OpenFile(LEVEL_DATA_FILENAME, System.IO.FileMode.Open))
+                {
+                    bytes = new byte[stream.Length];
+                    while (stream.Position < stream.Length)
+                    {
+                        bytes[stream.Position] = (byte)stream.ReadByte();
+                    }
+                }
+            }
+
+            WP7FileCopyClient.Uploader.Upload(bytes);
         }
+#endif
 
         public static void SaveGameData(GameData gameData)
-        {
-            SaveGameDataToIsolatedStorage(gameData);
-        }
-
-        private static void SaveGameDataToIsolatedStorage(GameData gameData)
         {
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (isf.FileExists(GAME_DATA_FILENAME))
                     isf.DeleteFile(GAME_DATA_FILENAME);
 
-                using (var stream = isf.OpenFile(GAME_DATA_FILENAME, System.IO.FileMode.CreateNew))
+                using (var stream = isf.OpenFile(GAME_DATA_FILENAME, System.IO.FileMode.Create))
                 {
                     SharpSerializer serializer = new SharpSerializer(true);
                     serializer.Serialize(gameData, stream);
                 }
-            }
-        }
 
-        public int[][,] Levels
-        {
-            get { return levels.ToArray(); }
+                using (var stream = isf.OpenFile(LEVEL_DATA_FILENAME, System.IO.FileMode.Create))
+                {
+                    SharpSerializer serializer = new SharpSerializer(true);
+                    serializer.Serialize(gameData.Levels, stream);
+                }
+            }
+
+
         }
     }
 }
