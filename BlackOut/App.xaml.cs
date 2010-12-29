@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Advertising.Mobile.UI;
+using Microsoft.Phone.Notification;
 
 namespace BlackOut
 {
@@ -31,6 +32,7 @@ namespace BlackOut
         /// </summary>
         public App()
         {
+
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 
@@ -53,6 +55,19 @@ namespace BlackOut
 
             // Phone-specific initialization
             InitializePhoneApplication();
+
+
+            ShellTileSchedule mySchedule = new ShellTileSchedule();
+
+            mySchedule = new ShellTileSchedule();
+
+            mySchedule.Recurrence = UpdateRecurrence.Onetime;
+            mySchedule.StartTime = DateTime.Now;
+            mySchedule.RemoteImageUri = new Uri(@"http://www.elucidsoft.com/images/blackout/tile_icons/blue.png");
+            // Start the schedule two hours from now.
+            mySchedule.StartTime = DateTime.Now.AddMinutes(1);
+
+            mySchedule.Start();
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -71,6 +86,7 @@ namespace BlackOut
         {
             GameData gameData = GameData.LoadGameData();
             GameManager = new GameManager(gameData);
+            GameManager.LoadLevel(gameData.GameState.Level);
         }
 
         // Code to execute when the application is deactivated (sent to background)

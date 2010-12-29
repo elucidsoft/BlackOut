@@ -12,6 +12,8 @@ namespace BlackOut
         public long Seconds { get; set; }
         public int Moves { get; set; }
         public int HintsUsed { get; set; }
+        public int HintMax { get; set; }
+
         public int[,] BoardLevel 
         {
             get

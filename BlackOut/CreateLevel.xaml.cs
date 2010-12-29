@@ -76,7 +76,7 @@ namespace BlackOut
         private void appBarBtnAddLevel_Click(object sender, System.EventArgs e)
         {
             App.GameManager.SetBoard(TempLevels.EmptyBoard);
-            App.GameManager.ResetBoard(true);
+            App.GameManager.BeginResetBoard(true);
 
             int[,] board = TempLevels.EmptyBoard;
             gameData.Levels.Add(board);
@@ -88,7 +88,7 @@ namespace BlackOut
 
         private void appBarBtnLoadLevel_Click(object sender, System.EventArgs e)
         {
-            App.GameManager.ResetBoard(true);
+            App.GameManager.BeginResetBoard(true);
             App.GameManager.SetBoard(gameData.Levels[Convert.ToInt32(tbxLevel.Text) - 1]);
         }
 
@@ -101,7 +101,7 @@ namespace BlackOut
                 tbxLevel.Text = index.ToString();
                 int[,] board = gameData.Levels[Convert.ToInt32(tbxLevel.Text) - 1];
                 App.GameManager.SetBoard(board);
-                App.GameManager.ResetBoard(true);
+                App.GameManager.BeginResetBoard(true);
                 CheckForSolution(board);
             }
         }
@@ -116,7 +116,7 @@ namespace BlackOut
                 
                 int[,] board = gameData.Levels[Convert.ToInt32(tbxLevel.Text) - 1];
                 App.GameManager.SetBoard(board);
-                App.GameManager.ResetBoard(true);
+                App.GameManager.BeginResetBoard(true);
                 CheckForSolution(board);
             }
         }
@@ -140,7 +140,7 @@ namespace BlackOut
         private void appBarMnuClear_Click(object sender, System.EventArgs e)
         {
             App.GameManager.SetBoard(TempLevels.EmptyBoard);
-            App.GameManager.ResetBoard(true);
+            App.GameManager.BeginResetBoard(true);
         }
 
         private void appBarEditLevel_Click(object sender, System.EventArgs e)

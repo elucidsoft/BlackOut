@@ -9,10 +9,12 @@
     x:Class="BlackOut.CreateLevel"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress" Unloaded="PhoneApplicationPage_Unloaded">
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress" Unloaded="PhoneApplicationPage_Unloaded" Background="Black">
+	<phone:PhoneApplicationPage.Foreground>
+		<SolidColorBrush Color="White"/>
+	</phone:PhoneApplicationPage.Foreground>
  
     <!--Sample code showing usage of ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>
@@ -41,10 +43,10 @@
 </phone:PhoneApplicationPage.ApplicationBar>
     
     <!--TitlePanel contains the name of the application and page title-->
-	<StackPanel>
+	<StackPanel Background="Black">
 <!--TitlePanel contains the name of the application and page title-->
 		<TextBlock x:Name="ApplicationTitle" Text="Level Creator" Style="{StaticResource PhoneTextNormalStyle}" Margin="8,0,0,6"/>
-		<Microsoft_Advertising_Mobile_UI:AdControl Width="480" d:LayoutOverrides="Height" Margin="0,0,0,20" BorderThickness="0,0,0,20" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" AdUnitId="10012784" />
+		<Microsoft_Advertising_Mobile_UI:AdControl Width="480" d:LayoutOverrides="Height" Margin="0,0,0,20" BorderThickness="0" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" AdUnitId="10012784" Background="Black" />
 		<Grid Background="Black" Height="480" HorizontalAlignment="Center" x:Name="grid" VerticalAlignment="Top" Width="480" ManipulationCompleted="grid_ManipulationCompleted" Margin="0,0,0,10">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="96" />

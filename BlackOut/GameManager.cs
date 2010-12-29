@@ -21,10 +21,15 @@ namespace BlackOut
         public event EventHandler<EventArgs> LevelCompleted;
         public event EventHandler<GridBlockClickedEventArgs> OnGridBlockClicked;
         public event EventHandler<GameTimerTickEventArgs> OnTimerChanged;
+        public event EventHandler<EventArgs> OnHintUsed;
+        public event EventHandler<EventArgs> OnResetBoardCompleted;
 
-        private List<int> randomBoardHashes = new List<int>();
-
+        private List<int> _randomBoardHashes = new List<int>();
+        private List<int> _usedHints = new List<int>();
         private Block[,] _boardBlocks;
+
+        private bool _levelTransitionInProgress = false;
+        private bool _resetBoardInProgress = false;
 
         private Grid _grid;
         private GameData _gameData;
@@ -38,6 +43,12 @@ namespace BlackOut
         {
             _gameData = gameData;
             _gameState = gameData.GameState;
+
+            if (_gameState.HintMax == 0)
+            {
+                _gameState.HintMax = 5;
+            }
+
             InitializeBlocks();
 
             TimerCallback tcb = Timer_Tick;
@@ -48,9 +59,8 @@ namespace BlackOut
         {
             _grid = grid;
             InitializeGridBlocks();
-            _timer.Change(0, 1000);
+            _timer.Change(1000, 1000);
         }
-
 
         private void Timer_Tick(object obj)
         {
@@ -73,6 +83,7 @@ namespace BlackOut
 
         public void Start(int level)
         {
+            Reset();
             _gameState.Level = level;
             LoadLevel(_gameState.Level);
         }
@@ -195,8 +206,8 @@ namespace BlackOut
             Random onOff1 = new Random();
             Random onOff2 = new Random();
 
-            if (randomBoardHashes.Count > 200)
-                randomBoardHashes.Clear();
+            if (_randomBoardHashes.Count > 200)
+                _randomBoardHashes.Clear();
 
             int tries = 0;
             do
@@ -221,9 +232,9 @@ namespace BlackOut
 
                 if (tries > 20)
                     break;
-            } while (!(CheckEmptyBoard(board) > 3 && Solver.IsSolvable(board) && !randomBoardHashes.Contains(board.GetHashCode())));
+            } while (!(CheckEmptyBoard(board) > 3 && Solver.IsSolvable(board) && !_randomBoardHashes.Contains(board.GetHashCode())));
 
-            randomBoardHashes.Add(board.GetHashCode());
+            _randomBoardHashes.Add(board.GetHashCode());
 
             Debug.WriteLine(board.GetHashCode() + " " + tries);
             return board;
@@ -247,10 +258,29 @@ namespace BlackOut
                 }
             }
 
+            _gameState.HintMax = hints.Count;
+
             //give a more natural feel to the hints
             Random random = new Random();
             int[] hint = hints[random.Next(0, hints.Count)];
+            int count = 0;
+            while (_usedHints.Count != 0 && _usedHints.Contains(ArrayHelper.GetHashCode(hint)))
+            {
+                if (count > hints.Count)
+                    return;
+
+                hint = hints[random.Next(0, hints.Count)];
+                count++;
+            }
+
             _boardBlocks[hint[0], hint[1]].ShowHint();
+            _usedHints.Add(ArrayHelper.GetHashCode(hint));
+
+            _gameState.HintsUsed++;
+
+            if (OnHintUsed != null)
+                OnHintUsed(this, EventArgs.Empty);
+
         }
 
         public bool CheckForWin()
@@ -269,50 +299,67 @@ namespace BlackOut
             return true;
         }
 
-        public void ResetBoard(bool loadLevel)
+        public void BeginResetBoard(bool loadLevel)
         {
-            Reset();
-            _grid.Dispatcher.BeginInvoke(() =>
-               {
-                   DisplayGrid(true, TempLevels.EmptyBoard);
-
-                   _resetBoardAnimationManager.Begin(0, () =>
+            if (_resetBoardInProgress == false)
+            {
+                _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                _resetBoardInProgress = true;
+                Reset();
+                _grid.Dispatcher.BeginInvoke(() =>
                    {
-                       if (loadLevel)
+                       DisplayGrid(true, TempLevels.EmptyBoard);
+
+                       _resetBoardAnimationManager.Begin(0, 35, () =>
                        {
-                           LoadLevel(_gameState.Level);
-                       }
-                       DisplayGrid(true);
-                       _timer.Change(0, 1000); //TODO: Refactor the way the timer works here...
+                           if (loadLevel)
+                           {
+                               LoadLevel(_gameState.Level);
+                           }
+                           DisplayGrid(true);
+                           _timer.Change(500, 1000); //TODO: Refactor the way the timer works here...
+                           _resetBoardInProgress = false;
+                       });
                    });
-               });
+            }
         }
 
-        private void LevelTransition()
+        public void BeginLevelTransition()
         {
-            Reset();
-            _grid.Dispatcher.BeginInvoke(() =>
+            if (_levelTransitionInProgress == false) //prevents stacking animations
             {
-                DisplayGrid(true, TempLevels.EmptyBoard);
-                _levelTransitionAnimationManager.Begin(0, 35, () =>
+                _timer.Change(Timeout.Infinite, Timeout.Infinite);
+                _levelTransitionInProgress = true;
+                Reset();
+                _grid.Dispatcher.BeginInvoke(() =>
                 {
-                    LoadLevel(_gameState.Level);
-                    DisplayGrid(true);
-                    _timer.Change(0, 1000); //TOD: Refactor the way the timer works here...
+                    DisplayGrid(true, TempLevels.EmptyBoard);
+                    _levelTransitionAnimationManager.Begin(0, 35, () =>
+                    {
+                        LoadLevel(_gameState.Level);
+                        DisplayGrid(true);
+                        _timer.Change(500, 1000); //TOD: Refactor the way the timer works here...
+                        _levelTransitionInProgress = false;
+                    });
                 });
-            });
+            }
         }
 
         private void Reset()
         {
-            _timer.Change(Timeout.Infinite, Timeout.Infinite);
-            _gameState.Seconds = -1;
+            _gameState.Seconds = 0;
             _gameState.Moves = 0;
             _gameState.HintsUsed = 0;
+
+            if (OnResetBoardCompleted != null)
+                OnResetBoardCompleted(this, EventArgs.Empty);
         }
 
         internal void BlockClicked(int row, int column)
         {
+            if (_levelTransitionInProgress || _resetBoardInProgress)
+                return;
+
             FlipBlock(column, row);
 
             if (row > 0)
@@ -339,6 +386,7 @@ namespace BlackOut
             CheckIfLevelCompleted();
 
             _gameState.Moves++;
+            _usedHints.Clear();
             if (OnGridBlockClicked != null)
                 OnGridBlockClicked(this, new GridBlockClickedEventArgs(_gameState.Moves));
         }
@@ -351,7 +399,7 @@ namespace BlackOut
                 Timer timer = null;
                 timer = new Timer((object a) =>
                 {
-                    LevelTransition();
+                    BeginLevelTransition();
                     if (LevelCompleted != null)
                         LevelCompleted(this, EventArgs.Empty);
 
@@ -409,5 +457,19 @@ namespace BlackOut
             get { return _gameState.Level; }
         }
 
+        public int Moves
+        {
+            get { return _gameState.Moves; }
+        }
+
+        public int HintsUsed
+        {
+            get { return _gameState.HintsUsed; }
+        }
+
+        public long Seconds
+        {
+            get { return _gameState.Seconds; }
+        }
     }
 }

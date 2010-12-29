@@ -52,8 +52,8 @@
 		<Storyboard x:Name="FlipAnimation">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="LayoutRoot">
 				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-180"/>
-				<DiscreteDoubleKeyFrame KeyTime="0:0:0.3"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.333" Value="-180"/>
+				<DiscreteDoubleKeyFrame KeyTime="0:0:0.5"/>
 			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
 	</UserControl.Resources>

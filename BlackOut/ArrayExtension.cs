@@ -28,8 +28,18 @@ namespace BlackOut
             {
                 for (int x = 0; x <= src.GetUpperBound(1); x++)
                 {
-                    hashCode = unchecked(hashCode * 314159 + src[i,x]);
+                    hashCode = unchecked(hashCode * 314159 + src[i, x]);
                 }
+            }
+            return hashCode;
+        }
+
+        public static int GetHashCode(int[] src)
+        {
+            int hashCode = src.Length;
+            for (int i = 0; i < src.Length; i++)
+            {
+                hashCode = unchecked(hashCode * 314159 + src[i]);
             }
             return hashCode;
         }

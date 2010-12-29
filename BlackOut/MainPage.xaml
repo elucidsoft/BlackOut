@@ -6,15 +6,67 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+     Background="Black">
+	<phone:PhoneApplicationPage.Resources>
+		<Style x:Key="TextBlockStyle1" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
+			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeExtraExtraLarge}"/>
+			<Setter Property="Foreground" Value="#DEFFFFFF"/>
+		</Style>
+		<Style x:Key="TextBlockStyle2" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="#DEFFFFFF"/>
+		</Style>
+		<Style x:Key="ButtonWhite" TargetType="Button">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
+			<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
+			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+			<Setter Property="Padding" Value="10,3,10,5"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Grid Background="Transparent">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="MouseOver"/>
+									<VisualState x:Name="Pressed">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneForegroundBrush}"/>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Disabled">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Border x:Name="ButtonBackground" BorderBrush="#DEFFFFFF" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="0" Margin="{StaticResource PhoneTouchTargetOverhang}">
+								<ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="#DEFFFFFF" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</phone:PhoneApplicationPage.Resources>
+	<phone:PhoneApplicationPage.Foreground>
+		<SolidColorBrush Color="#FFFFFFFF"/>
+	</phone:PhoneApplicationPage.Foreground>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Black">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -22,14 +74,18 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="BLACKOUT" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="GAME" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="BLACKOUT" Style="{StaticResource TextBlockStyle2}"/>
+            <TextBlock x:Name="PageTitle" Text="GAME" Margin="9,-7,0,0" Style="{StaticResource TextBlockStyle1}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Button Content="Start Game" Height="72" HorizontalAlignment="Left" Margin="0,8,0,0" Name="button1" VerticalAlignment="Top" Width="232" d:LayoutOverrides="VerticalAlignment" Click="button1_Click" />
-            <Button Content="Create Levels" Height="72" HorizontalAlignment="Left" Margin="0,86,0,0" Name="button2" VerticalAlignment="Top" Width="232" Click="button2_Click" />
+            <Button Content="Play Game" Height="72" HorizontalAlignment="Left" Margin="0,8,0,0" Name="button1" VerticalAlignment="Top" Width="279" d:LayoutOverrides="VerticalAlignment" Click="button1_Click" Style="{StaticResource ButtonWhite}" />
+            <Button Content="Create Levels" Height="72" HorizontalAlignment="Left" Margin="0,231,0,0" Name="button2" VerticalAlignment="Top" Width="279" Click="button2_Click" Style="{StaticResource ButtonWhite}" />
+            <Button Content="Play Custom Levels" Height="72" HorizontalAlignment="Left" Margin="0,161,0,0" Name="button3" VerticalAlignment="Top" Width="279" Click="button3_Click" Style="{StaticResource ButtonWhite}" />
+            <Button Content="Continue..." Height="72" HorizontalAlignment="Left" Margin="0,73,0,0" Name="btnContinue" VerticalAlignment="Top" Width="279" Click="btnContinue_Click" Loaded="btnContinue_Loaded" IsEnabled="True" Visibility="Collapsed" />
+            <TextBlock Height="28" HorizontalAlignment="Left" Margin="6,539,0,0" Name="textBlock1" Text="For DEMO Purposes only" VerticalAlignment="Top" Width="444" TextWrapping="Wrap" DataContext="{Binding}" TextAlignment="Center" />
+            <TextBlock DataContext="{Binding}" Height="28" HorizontalAlignment="Left" Margin="6,569,0,0" Name="textBlock2" Text="Intellectual Property of Elucidsoft LLC." TextWrapping="Wrap" VerticalAlignment="Top" Width="444" TextAlignment="Center" />
         </Grid>
     </Grid>
  

@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework;
 
 namespace BlackOut
 {
+    public enum LevelLoadedType { None, PreBuilt, Custom };
+
     public class GameData
     {
         private const string LEVEL_DATA_FILENAME = "levelData.bin";
@@ -26,6 +28,7 @@ namespace BlackOut
 
         //this wont get serialized in GameData since its not a property
         public List<int[,]> Levels = new List<int[,]>();
+        public LevelLoadedType LevelLoadedType = LevelLoadedType.None;
 
         private GameState gameState = new GameState();
 
@@ -53,16 +56,39 @@ namespace BlackOut
                 }
 
                 gameData = gameData ?? new GameData();
+                LoadPreBuiltLevels(gameData);
+                return gameData;
+            }
+        }
 
-                //using (var stream = isf.OpenFile(LEVEL_DATA_FILENAME, System.IO.FileMode.Open))
+        public static void LoadCustomLevels(GameData gameData)
+        {
+            //don't check if already custom cause their could be changes...just always reload custom
+            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (isf.FileExists(GAME_DATA_FILENAME))
+                {
+                    using (Stream stream = TitleContainer.OpenStream("levels.dat"))
+                    {
+                        SharpSerializer serializer = new SharpSerializer(true);
+                        gameData.Levels = (List<int[,]>)serializer.Deserialize(stream);
+                        gameData.LevelLoadedType = LevelLoadedType.Custom;
+                    }
+                }
+            }
+            gameData.Levels = gameData.Levels ?? new List<int[,]>();
+        }
+
+        public static void LoadPreBuiltLevels(GameData gameData)
+        {
+            if (gameData.LevelLoadedType != LevelLoadedType.PreBuilt) //prevent reloading pre-built
+            {
                 using (Stream stream = TitleContainer.OpenStream("levels.dat"))
                 {
                     SharpSerializer serializer = new SharpSerializer(true);
                     gameData.Levels = (List<int[,]>)serializer.Deserialize(stream);
+                    gameData.LevelLoadedType = LevelLoadedType.PreBuilt;
                 }
-
-
-                return gameData;
             }
         }
 
