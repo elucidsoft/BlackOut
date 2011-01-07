@@ -22,30 +22,6 @@ namespace BlackOut
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-           App.GameManager.ReInitialize();
-           GameData.LoadPreBuiltLevels(App.GameManager.GameData);
-           App.GameManager.Start(1);
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-           App.GameManager.ReInitialize();
-           App.GameManager.Start(-1);
-            NavigationService.Navigate(new Uri("/CreateLevel.xaml", UriKind.Relative));
-
-        }
-
-        private void button3_Click(object sender, RoutedEventArgs e)
-        {
-            App.GameManager.ReInitialize();
-            GameData.LoadCustomLevels(App.GameManager.GameData);
-            App.GameManager.Start(1);
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-        }
-
         private void btnContinue_Click(object sender, RoutedEventArgs e)
         {
             App.GameManager.ReInitialize();
@@ -56,12 +32,38 @@ namespace BlackOut
         {
             if (App.GameManager.GameData.GameState.Seconds > 0)
             {
-                btnContinue.Visibility = Visibility.Visible;
+               // btnContinue.Visibility = Visibility.Visible;
             }
             else
             {
-                btnContinue.Visibility = Visibility.Collapsed;
+               // btnContinue.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            App.GameManager.ReInitialize();
+            GameData.LoadPreBuiltLevels(App.GameManager.GameData);
+            //GameData.LoadCustomLevels(App.GameManager.GameData);
+            App.GameManager.Start(1);
+            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
+        }
+
+        private void btnChangeColor_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	// TODO: Add event handler implementation here.
+        }
+
+        private void btnDesignBoard_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            App.GameManager.ReInitialize();
+            App.GameManager.Start(-1);
+            NavigationService.Navigate(new Uri("/CreateLevel.xaml", UriKind.Relative));
+        }
+
+        private void btnSettings_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+        	// TODO: Add event handler implementation here.
         }
     }
 }

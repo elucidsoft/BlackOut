@@ -165,5 +165,10 @@ namespace BlackOut
         {
             // TODO: Add event handler implementation here.
         }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //GameData.SaveGameData(App.GameManager.GameData);
+        }
     }
 }

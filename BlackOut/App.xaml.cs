@@ -55,19 +55,6 @@ namespace BlackOut
 
             // Phone-specific initialization
             InitializePhoneApplication();
-
-
-            ShellTileSchedule mySchedule = new ShellTileSchedule();
-
-            mySchedule = new ShellTileSchedule();
-
-            mySchedule.Recurrence = UpdateRecurrence.Onetime;
-            mySchedule.StartTime = DateTime.Now;
-            mySchedule.RemoteImageUri = new Uri(@"http://www.elucidsoft.com/images/blackout/tile_icons/blue.png");
-            // Start the schedule two hours from now.
-            mySchedule.StartTime = DateTime.Now.AddMinutes(1);
-
-            mySchedule.Start();
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -84,9 +71,12 @@ namespace BlackOut
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            GameData gameData = GameData.LoadGameData();
-            GameManager = new GameManager(gameData);
-            GameManager.LoadLevel(gameData.GameState.Level);
+            if (GameManager == null)
+            {
+                GameData gameData = GameData.LoadGameData();
+                GameManager = new GameManager(gameData);
+                GameManager.LoadLevel(gameData.GameState.Level);
+            }
         }
 
         // Code to execute when the application is deactivated (sent to background)

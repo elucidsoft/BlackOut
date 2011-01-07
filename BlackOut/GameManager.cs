@@ -242,6 +242,9 @@ namespace BlackOut
 
         public void ShowHint()
         {
+            if (_resetBoardInProgress || _levelTransitionInProgress)
+                return;
+
             Solver solver = new Solver(_gameState.BoardLevel);
             int[,] hintBoard = solver.GetHint();
             List<int[]> hints = new List<int[]>();
@@ -301,7 +304,7 @@ namespace BlackOut
 
         public void BeginResetBoard(bool loadLevel)
         {
-            if (_resetBoardInProgress == false)
+            if (!_levelTransitionInProgress && _resetBoardInProgress == false)
             {
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 _resetBoardInProgress = true;
@@ -326,7 +329,7 @@ namespace BlackOut
 
         public void BeginLevelTransition()
         {
-            if (_levelTransitionInProgress == false) //prevents stacking animations
+            if (!_resetBoardInProgress && _levelTransitionInProgress == false) //prevents stacking animations
             {
                 _timer.Change(Timeout.Infinite, Timeout.Infinite);
                 _levelTransitionInProgress = true;
@@ -334,11 +337,12 @@ namespace BlackOut
                 _grid.Dispatcher.BeginInvoke(() =>
                 {
                     DisplayGrid(true, TempLevels.EmptyBoard);
+
                     _levelTransitionAnimationManager.Begin(0, 35, () =>
                     {
                         LoadLevel(_gameState.Level);
                         DisplayGrid(true);
-                        _timer.Change(500, 1000); //TOD: Refactor the way the timer works here...
+                        _timer.Change(500, 1000); //TODO: Refactor the way the timer works here...
                         _levelTransitionInProgress = false;
                     });
                 });
