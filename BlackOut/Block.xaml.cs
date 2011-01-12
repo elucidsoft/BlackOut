@@ -32,7 +32,7 @@ namespace BlackOut
         {
             InitializeComponent();
 
-            accentColor = ((Color)Resources["PhoneAccentColor"]).Lerp(Colors.Black, 0.15f);
+            accentColor = ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor).Lerp(Colors.Black, 0.15f);
             backgroundColor = accentColor.Lerp(Colors.Black, 0.65f);
 
             backgroundBrush = new SolidColorBrush(backgroundColor);

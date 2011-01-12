@@ -4,7 +4,7 @@ namespace BlackOut
 {
     public static class ColorConverter
     {
-        public static object Convert(object value)
+        public static Color Convert(string value)
         {
             string val = value.ToString();
             val = val.Replace("#", "");
@@ -27,7 +27,7 @@ namespace BlackOut
 
             Color col = Color.FromArgb(a, r, g, b);
 
-            return new SolidColorBrush(col);
+            return col;
         }
 
         public static object ConvertBack(object value)

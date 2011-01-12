@@ -49,14 +49,13 @@ namespace BlackOut
                 _gameState.HintMax = 5;
             }
 
-            InitializeBlocks();
-
             TimerCallback tcb = Timer_Tick;
             _timer = new Timer(tcb, null, Timeout.Infinite, Timeout.Infinite);
         }
 
         public void Initialize(Grid grid)
         {
+            InitializeBlocks();
             _grid = grid;
             InitializeGridBlocks();
             _timer.Change(1000, 1000);

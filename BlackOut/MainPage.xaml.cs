@@ -16,10 +16,38 @@ namespace BlackOut
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        public Storyboard PhaseBackgroundAnimation = new Storyboard();
+        public SolidColorBrush backgroundBrush = new SolidColorBrush();
+
+        bool isDirty = false;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
+
+            if (App.GameManager.GameData.GameSettings.BackgroundColor == null)
+            {
+                App.GameManager.GameData.GameSettings.BackgroundColor = Resources["PhoneAccentColor"].ToString();
+            }
+        }
+
+        private void CreatePhaseBackgroundAnimation()
+        {
+            PhaseBackgroundAnimation = new Storyboard();
+            backgroundBrush = (SolidColorBrush)LayoutRoot.Background;
+
+            ColorAnimationUsingKeyFrames ckf = new ColorAnimationUsingKeyFrames();
+
+            Storyboard.SetTargetProperty(PhaseBackgroundAnimation, new PropertyPath("Color"));
+            Storyboard.SetTarget(PhaseBackgroundAnimation, backgroundBrush);
+
+            LinearColorKeyFrame lck0 = new LinearColorKeyFrame();
+            lck0.KeyTime = TimeSpan.FromMilliseconds(500);
+            lck0.Value = ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor);
+
+            ckf.KeyFrames.Add(lck0);
+
+            PhaseBackgroundAnimation.Children.Add(ckf);
         }
 
         private void btnContinue_Click(object sender, RoutedEventArgs e)
@@ -32,11 +60,11 @@ namespace BlackOut
         {
             if (App.GameManager.GameData.GameState.Seconds > 0)
             {
-               // btnContinue.Visibility = Visibility.Visible;
+               btnContinue.Visibility = Visibility.Visible;
             }
             else
             {
-               // btnContinue.Visibility = Visibility.Collapsed;
+               btnContinue.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -51,7 +79,7 @@ namespace BlackOut
 
         private void btnChangeColor_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-        	// TODO: Add event handler implementation here.
+            NavigationService.Navigate(new Uri("/ChangeColor.xaml", UriKind.Relative));
         }
 
         private void btnDesignBoard_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -64,6 +92,21 @@ namespace BlackOut
         private void btnSettings_Click(object sender, System.Windows.RoutedEventArgs e)
         {
         	// TODO: Add event handler implementation here.
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (isDirty == true)
+            {
+                CreatePhaseBackgroundAnimation();
+                PhaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(750);
+                PhaseBackgroundAnimation.Begin();
+            }
+            else
+            {
+                LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
+            }
+            isDirty = true;
         }
     }
 }

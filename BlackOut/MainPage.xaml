@@ -6,11 +6,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
+    xmlns:local="clr-namespace:BlackOut" 
     x:Class="BlackOut.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     SupportedOrientations="Portrait" Orientation="Portrait"
-     Background="Black" Foreground="#FFFFFFFF">
+     Background="Black" Foreground="#FFFFFFFF" Loaded="PhoneApplicationPage_Loaded">
 	<phone:PhoneApplicationPage.Resources>
+		<local:Score x:Key="ScoreDataSource" d:IsDataSource="True"/>
+		<local:GameSettings x:Key="GameSettingsDataSource" d:IsDataSource="True"/>
 		<Style x:Key="TextBlockStyle1" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
 			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiLight}"/>
 			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeExtraExtraLarge}"/>
@@ -123,7 +126,7 @@
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
 							<Border Background="{TemplateBinding Background}" Margin="{StaticResource PhoneHorizontalMargin}" Padding="{TemplateBinding Padding}">
-								<TextBlock x:Name="TextElement" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Text="{TemplateBinding Content}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" FontFamily="Segoe WP Semibold" FontSize="40" Opacity="0.8"/>
+								<TextBlock x:Name="TextElement" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Text="{TemplateBinding Content}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" FontFamily="Segoe WP Semibold" FontSize="40" Opacity="0.8" Foreground="#DEFFFFFF"/>
 							</Border>
 						</Border>
 					</ControlTemplate>
@@ -134,7 +137,30 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ContentControl">
-						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="384" Height="36">
+							<Grid>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Level}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100">
+									<TextBlock.DataContext>
+										<local:Score/>
+									</TextBlock.DataContext>
+								</TextBlock>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Moves}" VerticalAlignment="Center" Margin="108,0,179,0">
+									<TextBlock.DataContext>
+										<local:Score/>
+									</TextBlock.DataContext>
+								</TextBlock>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" VerticalAlignment="Center" Margin="0,0,117,0" HorizontalAlignment="Right" Width="55">
+									<TextBlock.DataContext>
+										<local:Score/>
+									</TextBlock.DataContext>
+								</TextBlock>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="105" TextAlignment="Right" Margin="0,0,8,0">
+									<TextBlock.DataContext>
+										<local:Score/>
+									</TextBlock.DataContext>
+								</TextBlock>
+							</Grid>
+						</ContentPresenter>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
@@ -180,6 +206,7 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		<Storyboard x:Name="AnimateBackgroundColor"/>
 	</phone:PhoneApplicationPage.Resources>
  
     <!--Sample code showing usage of ApplicationBar-->
@@ -202,12 +229,9 @@
 	</phone:PhoneApplicationPage.FontSize>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot">
-    	<Grid.Background>
-    		<SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-    	</Grid.Background>
+    <Grid x:Name="LayoutRoot" Background="{Binding BackgroundColor}" DataContext="{Binding Source={StaticResource GameSettingsDataSource}}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" MinHeight="45"/>
+            <RowDefinition Height="0"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -219,9 +243,9 @@
     		<controls:PanoramaItem Header="game" Width="434" FontSize="24" Height="617" Style="{StaticResource PanoramaItemStyle1}" Foreground="#DEFFFFFF">
     			<Grid>
     				<HyperlinkButton x:Name="btnNewGame" Content="new game" Margin="24,0,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnNewGame_Click"/>
-    				<HyperlinkButton x:Name="btnContinue" Content="continue..." Margin="24,58,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click"/>
-    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,236,0,232" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" d:LayoutOverrides="Height" Click="btnDesignBoard_Click"/>
-    				<HyperlinkButton x:Name="btnChangeColor" Content="change color" Margin="24,178,0,0" FontSize="26.667" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Top" Click="btnChangeColor_Click"/>
+    				<HyperlinkButton x:Name="btnContinue" Content="continue..." Margin="24,68,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click"/>
+    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom"/>
+    				<HyperlinkButton x:Name="btnChangeColor" Content="change color" Margin="24,0,0,73" FontSize="26.667" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnChangeColor_Click"/>
     				<HyperlinkButton x:Name="btnSettings" Content="settings" Margin="24,0,0,8" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnSettings_Click"/>
     			</Grid>
     		</controls:PanoramaItem>

@@ -31,11 +31,18 @@ namespace BlackOut
         public LevelLoadedType LevelLoadedType = LevelLoadedType.None;
 
         private GameState gameState = new GameState();
+        private GameSettings gameSettings = new GameSettings();
 
         public GameState GameState
         {
             get { return gameState; }
             set { gameState = value; }
+        }
+
+        public GameSettings GameSettings
+        {
+            get { return gameSettings; }
+            set { gameSettings = value; }
         }
 
         public GameData() { }
@@ -120,11 +127,13 @@ namespace BlackOut
                 if (isf.FileExists(GAME_DATA_FILENAME))
                     isf.DeleteFile(GAME_DATA_FILENAME);
 
-                using (var stream = isf.OpenFile(GAME_DATA_FILENAME, System.IO.FileMode.Create))
-                {
-                    SharpSerializer serializer = new SharpSerializer(true);
-                    serializer.Serialize(gameData, stream);
-                }
+             
+                    using (var stream = isf.OpenFile(GAME_DATA_FILENAME, System.IO.FileMode.Create))
+                    {
+                        SharpSerializer serializer = new SharpSerializer(true);
+                        serializer.Serialize(gameData, stream);
+                    }
+                
 
                 using (var stream = isf.OpenFile(LEVEL_DATA_FILENAME, System.IO.FileMode.Create))
                 {
