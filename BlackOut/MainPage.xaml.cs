@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Notification;
+using System.Threading;
 
 namespace BlackOut
 {
@@ -29,13 +30,14 @@ namespace BlackOut
             {
                 App.GameManager.GameData.GameSettings.BackgroundColor = Resources["PhoneAccentColor"].ToString();
             }
+
+            LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
         }
 
         private void CreatePhaseBackgroundAnimation()
         {
             PhaseBackgroundAnimation = new Storyboard();
             backgroundBrush = (SolidColorBrush)LayoutRoot.Background;
-
             ColorAnimationUsingKeyFrames ckf = new ColorAnimationUsingKeyFrames();
 
             Storyboard.SetTargetProperty(PhaseBackgroundAnimation, new PropertyPath("Color"));
@@ -46,7 +48,6 @@ namespace BlackOut
             lck0.Value = ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor);
 
             ckf.KeyFrames.Add(lck0);
-
             PhaseBackgroundAnimation.Children.Add(ckf);
         }
 
@@ -98,15 +99,39 @@ namespace BlackOut
         {
             if (isDirty == true)
             {
+                panItemScores.Opacity = 0;           
                 CreatePhaseBackgroundAnimation();
-                PhaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(750);
+                PhaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(2000);
                 PhaseBackgroundAnimation.Begin();
+                PhaseBackgroundAnimation.Completed += new EventHandler(PhaseBackgroundAnimation_Completed);
             }
             else
             {
                 LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
             }
+
+            AddHighScores();
             isDirty = true;
+        }
+
+        void PhaseBackgroundAnimation_Completed(object sender, EventArgs e)
+        {
+            panItemScores.Opacity = 1;
+            PhaseBackgroundAnimation.Completed -= new EventHandler(PhaseBackgroundAnimation_Completed);
+        }
+
+        private void AddHighScores()
+        {
+            lstScores.Items.Clear();
+            for (int i = 0; i < App.GameManager.GameData.Scores.Count; i++)
+            {
+                Score s = App.GameManager.GameData.Scores[i];
+                ListBoxItem lbi = new ListBoxItem();
+                lbi.Style = (Style)Resources["ListBoxItemStyle1"];
+                lbi.DataContext = s;
+                lbi.ApplyTemplate();
+                lstScores.Items.Add(lbi);
+            }
         }
     }
 }

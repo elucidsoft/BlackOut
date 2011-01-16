@@ -33,6 +33,14 @@ namespace BlackOut
         private GameState gameState = new GameState();
         private GameSettings gameSettings = new GameSettings();
 
+        private List<Score> _scores = new List<Score>();
+
+        public List<Score> Scores
+        {
+            get { return _scores; }
+            set { _scores = value; }
+        }
+
         public GameState GameState
         {
             get { return gameState; }

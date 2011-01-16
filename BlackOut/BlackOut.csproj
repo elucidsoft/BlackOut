@@ -78,7 +78,7 @@
     <Compile Include="ChangeColor.xaml.cs">
       <DependentUpon>ChangeColor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Score.cs" />
     <Compile Include="CreateLevel.xaml.cs">
       <DependentUpon>CreateLevel.xaml</DependentUpon>
     </Compile>

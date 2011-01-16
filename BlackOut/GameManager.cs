@@ -398,6 +398,7 @@ namespace BlackOut
         {
             if (CheckForWin())
             {
+                AddScore();
                 _gameState.Level++;
                 Timer timer = null;
                 timer = new Timer((object a) =>
@@ -406,6 +407,7 @@ namespace BlackOut
                     if (LevelCompleted != null)
                         LevelCompleted(this, EventArgs.Empty);
 
+                    
                     timer.Dispose();
                 }, null, TimeSpan.FromMilliseconds(300), TimeSpan.FromMilliseconds(-1));
             }
@@ -427,6 +429,30 @@ namespace BlackOut
                 }
             }
             return total;
+        }
+
+        private void AddScore()
+        {
+            GameState gs = _gameState;
+
+            if (_gameData.Scores.Count < _gameState.Level)
+            {
+                _gameData.Scores.Add(new Score(gs.Level, gs.Level, gs.HintsUsed, gs.Seconds));
+            }
+            else
+            {
+                for (int i = 0; i < _gameData.Scores.Count; i++)
+                {
+                    Score s = _gameData.Scores[i];
+                    if (s.Level == Level)
+                    {
+                        s.Hints = gs.HintsUsed;
+                        s.Level = gs.Level;
+                        s.Moves = gs.Moves;
+                        s.Seconds = gs.Seconds;
+                    }
+                }
+            }
         }
 
         public int[,] ActiveBoardLevel

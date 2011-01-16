@@ -63,6 +63,7 @@ namespace BlackOut
             if (GameManager == null)
             {
                 GameManager = new GameManager(GameData.LoadGameData());
+                //GameScreen gameScreen = new GameScreen();
             }
         }
 

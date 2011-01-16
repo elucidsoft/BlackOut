@@ -20,6 +20,8 @@ namespace BlackOut
         public GameScreen()
         {
             InitializeComponent();
+            App.GameManager.Initialize(grid);
+            App.GameManager.DisplayGrid(false);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -31,8 +33,7 @@ namespace BlackOut
             App.GameManager.OnHintUsed += new EventHandler<EventArgs>(GameManager_OnHintUsed);
             App.GameManager.OnResetBoardCompleted += new EventHandler<EventArgs>(GameManager_OnResetBoardCompleted);
 
-            App.GameManager.Initialize(grid);
-            App.GameManager.DisplayGrid(false);
+            
 
             ResetDisplay();
             UpdatePreviousAndNextButtons();

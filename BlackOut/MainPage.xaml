@@ -138,27 +138,11 @@
 				<Setter.Value>
 					<ControlTemplate TargetType="ContentControl">
 						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="384" Height="36">
-							<Grid>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Level}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="100">
-									<TextBlock.DataContext>
-										<local:Score/>
-									</TextBlock.DataContext>
-								</TextBlock>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Moves}" VerticalAlignment="Center" Margin="108,0,179,0">
-									<TextBlock.DataContext>
-										<local:Score/>
-									</TextBlock.DataContext>
-								</TextBlock>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" VerticalAlignment="Center" Margin="0,0,117,0" HorizontalAlignment="Right" Width="55">
-									<TextBlock.DataContext>
-										<local:Score/>
-									</TextBlock.DataContext>
-								</TextBlock>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="105" TextAlignment="Right" Margin="0,0,8,0">
-									<TextBlock.DataContext>
-										<local:Score/>
-									</TextBlock.DataContext>
-								</TextBlock>
+							<Grid Margin="0,0,-9,0">
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Level}" HorizontalAlignment="Left" Width="102" Margin="8,0,0,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Moves}" Margin="119,0,182,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" Margin="0,0,108,0" HorizontalAlignment="Right" Width="64" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding DisplayTime}" HorizontalAlignment="Right" Width="100" TextAlignment="Right" Margin="0,0,4,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
 							</Grid>
 						</ContentPresenter>
 					</ControlTemplate>
@@ -175,10 +159,11 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ListBoxItem">
-						<Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+						<Border x:Name="LayoutRoot" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}" DataContext="{Binding Source={StaticResource ScoreDataSource}}">
 							<VisualStateManager.VisualStateGroups>
 								<VisualStateGroup x:Name="CommonStates">
-									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="Normal" />
+										
 									<VisualState x:Name="MouseOver"/>
 									<VisualState x:Name="Disabled">
 										<Storyboard>
@@ -191,16 +176,12 @@
 								</VisualStateGroup>
 								<VisualStateGroup x:Name="SelectionStates">
 									<VisualState x:Name="Unselected"/>
-									<VisualState x:Name="Selected">
-										<Storyboard>
-											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
-												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneAccentBrush}"/>
-											</ObjectAnimationUsingKeyFrames>
-										</Storyboard>
-									</VisualState>
+									<VisualState x:Name="Selected"/>
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
-							<ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource ContentControlStyle2}"/>
+                            <ContentControl x:Name="ContentContainer" DataContext="{TemplateBinding DataContext}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource ContentControlStyle2}" Foreground="#DEFFFFFF" Width="395">
+								
+							</ContentControl>
 						</Border>
 					</ControlTemplate>
 				</Setter.Value>
@@ -236,24 +217,22 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <controls:Panorama Title="blackout" Grid.RowSpan="2" Foreground="#DEFFFFFF">
+        <controls:Panorama x:Name="panorama" Title="blackout" Grid.RowSpan="2" Foreground="#DEFFFFFF">
         	<controls:Panorama.Background>
         		<ImageBrush Stretch="None" ImageSource="main_bg.png"/>
         	</controls:Panorama.Background>
-    		<controls:PanoramaItem Header="game" Width="434" FontSize="24" Height="617" Style="{StaticResource PanoramaItemStyle1}" Foreground="#DEFFFFFF">
+    		<controls:PanoramaItem x:Name="panItemGame" Header="game" Width="434" FontSize="24" Height="617" Style="{StaticResource PanoramaItemStyle1}" Foreground="#DEFFFFFF">
     			<Grid>
     				<HyperlinkButton x:Name="btnNewGame" Content="new game" Margin="24,0,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnNewGame_Click"/>
     				<HyperlinkButton x:Name="btnContinue" Content="continue..." Margin="24,68,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click"/>
-    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom"/>
+    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom" Visibility="Collapsed"/>
     				<HyperlinkButton x:Name="btnChangeColor" Content="change color" Margin="24,0,0,73" FontSize="26.667" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnChangeColor_Click"/>
     				<HyperlinkButton x:Name="btnSettings" Content="settings" Margin="24,0,0,8" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnSettings_Click"/>
     			</Grid>
     		</controls:PanoramaItem>
-    		<controls:PanoramaItem Header="scores" Style="{StaticResource PanoramaItemStyle1}">
+    		<controls:PanoramaItem x:Name="panItemScores" Header="scores" Style="{StaticResource PanoramaItemStyle1}">
     			<Grid>
-    				<ListBox Margin="18,34,8,24" Background="{x:Null}" Foreground="{x:Null}">
-    					<ListBoxItem Content="Level 1          56                   0            01:52:34" BorderThickness="0" Margin="8,4,8,0" Style="{StaticResource ListBoxItemStyle1}" Foreground="White" Height="28" FontFamily="Segoe WP Light"/>
-    				</ListBox>
+    				<ListBox x:Name="lstScores" Margin="18,34,8,24" Background="{x:Null}" Foreground="{x:Null}" ItemContainerStyle="{StaticResource ListBoxItemStyle1}"/>
     				<Rectangle Height="43" VerticalAlignment="Top" StrokeThickness="2" Fill="#28000000" Margin="18,-9,8,0"/>
     				<TextBlock Height="27" Margin="26,-3,338,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
     				<TextBlock Height="27" Margin="133,-3,225,0" TextWrapping="Wrap" Text="Moves" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>

@@ -13,6 +13,16 @@ namespace BlackOut
 {
     public class Score
     {
+        public Score() { }
+
+        public Score(int moves, int level, int hints, long seconds)
+        {
+            this.Moves = moves;
+            this.Level = level;
+            this.Hints = hints;
+            this.Seconds = seconds;
+        }
+
         public int Moves { get; set; }
 
         public int Level { get; set; }
@@ -21,6 +31,12 @@ namespace BlackOut
 
         public long Seconds { get; set; }
 
-        public string DisplayTime { get; set; }
+        public string DisplayTime
+        {
+            get
+            {
+                return String.Format("{0:HH:mm:ss}", new DateTime(TimeSpan.FromSeconds(Seconds).Ticks));
+            }
+        }
     }
 }
