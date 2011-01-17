@@ -139,10 +139,10 @@
 					<ControlTemplate TargetType="ContentControl">
 						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="384" Height="36">
 							<Grid Margin="0,0,-9,0">
-                                <TextBlock TextWrapping="Wrap" Text="{Binding Level}" HorizontalAlignment="Left" Width="102" Margin="8,0,0,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Moves}" Margin="119,0,182,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
-								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" Margin="0,0,108,0" HorizontalAlignment="Right" Width="64" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
-								<TextBlock TextWrapping="Wrap" Text="{Binding DisplayTime}" HorizontalAlignment="Right" Width="100" TextAlignment="Right" Margin="0,0,4,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="21.333"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Level}" HorizontalAlignment="Left" Width="102" Margin="8,0,0,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="22"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Moves}" Margin="119,0,182,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="22"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding Hints}" Margin="0,0,108,0" HorizontalAlignment="Right" Width="64" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="22"/>
+								<TextBlock TextWrapping="Wrap" Text="{Binding DisplayTime}" HorizontalAlignment="Right" Width="100" TextAlignment="Right" Margin="0,0,4,0" DataContext="{TemplateBinding DataContext}" VerticalAlignment="Center" Height="26" FontSize="22"/>
 							</Grid>
 						</ContentPresenter>
 					</ControlTemplate>
@@ -231,7 +231,7 @@
     			</Grid>
     		</controls:PanoramaItem>
     		<controls:PanoramaItem x:Name="panItemScores" Header="scores" Style="{StaticResource PanoramaItemStyle1}">
-    			<Grid>
+    			<Grid Margin="11,0,-11,0">
     				<ListBox x:Name="lstScores" Margin="18,34,8,24" Background="{x:Null}" Foreground="{x:Null}" ItemContainerStyle="{StaticResource ListBoxItemStyle1}"/>
     				<Rectangle Height="43" VerticalAlignment="Top" StrokeThickness="2" Fill="#28000000" Margin="18,-9,8,0"/>
     				<TextBlock Height="27" Margin="26,-3,338,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
