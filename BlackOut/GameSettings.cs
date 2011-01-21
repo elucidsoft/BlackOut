@@ -14,6 +14,12 @@ namespace BlackOut
     public class GameSettings
     {
         private string _backgroundColor;
+        private bool? _playSounds;
+        private bool? _showMoveCounter;
+        private bool? _showTimer;
+        private bool? _showHintCount;
+        private bool? _showLevel;
+        private double? _soundVolume;
 
         public string BackgroundColor
         {
@@ -32,5 +38,90 @@ namespace BlackOut
                 _backgroundColor = value;
             }
         }
+
+        public bool PlaySounds
+        {
+            get
+            {
+                if (_playSounds == null)
+                    return true;
+
+                return _playSounds.Value;
+            }
+
+            set { _playSounds = value; }
+        }
+
+        public double SoundVolume
+        {
+            get
+            {
+                if (_soundVolume == null)
+                    return 100;
+
+                return _soundVolume.Value;
+            }
+            set
+            {
+                _soundVolume = value;
+            }
+
+        }
+
+        public bool ShowMoveCounter
+        {
+            get
+            {
+                if (_showMoveCounter == null)
+                    return true;
+
+                return _showMoveCounter.Value;
+            }
+            set { _showMoveCounter = value; }
+        }
+
+        public bool ShowTimer
+        {
+            get
+            {
+                if (_showTimer == null)
+                    return true;
+
+                return _showTimer.Value;
+            }
+            set { _showTimer = value; }
+        }
+
+        public bool ShowHintCount 
+        {
+            get
+            {
+                if (_showHintCount == null)
+                    return true;
+
+                return _showHintCount.Value;
+            }
+            set
+            {
+                _showHintCount = value;
+            }
+        }
+
+        public bool ShowLevel 
+        {
+            get
+            {
+                if (_showLevel == null)
+                    return true;
+
+                return _showLevel.Value;
+            }
+            set
+            {
+                _showLevel = value;
+            }
+        }
+
+
     }
 }

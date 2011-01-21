@@ -30,10 +30,36 @@ namespace BlackOut
         public List<int[,]> Levels = new List<int[,]>();
         public LevelLoadedType LevelLoadedType = LevelLoadedType.None;
 
-        private GameState gameState = new GameState();
-        private GameSettings gameSettings = new GameSettings();
+        private GameState _gameState = new GameState();
+        private GameSettings _gameSettings = new GameSettings();
 
+        private int? _difficulty;
+        private int? _highestLevel;
         private List<Score> _scores = new List<Score>();
+
+        public int Difficulty
+        {
+            get
+            {
+                if (_difficulty == null)
+                    return 2;
+
+                return _difficulty.Value; 
+            }
+            set { _difficulty = value; }
+        }
+
+        public int HighestLevel
+        {
+            get 
+            {
+                if (_highestLevel == null)
+                    return 1;
+
+                return _highestLevel.Value; 
+            }
+            set { _highestLevel = value; }
+        }
 
         public List<Score> Scores
         {
@@ -43,14 +69,14 @@ namespace BlackOut
 
         public GameState GameState
         {
-            get { return gameState; }
-            set { gameState = value; }
+            get { return _gameState; }
+            set { _gameState = value; }
         }
 
         public GameSettings GameSettings
         {
-            get { return gameSettings; }
-            set { gameSettings = value; }
+            get { return _gameSettings; }
+            set { _gameSettings = value; }
         }
 
         public GameData() { }

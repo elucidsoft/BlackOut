@@ -25,6 +25,12 @@ namespace BlackOut
             InitializeComponent();
             gameData = App.GameManager.GameData;
 
+            GenerateLevelHashCodes();
+        }
+
+        private void GenerateLevelHashCodes()
+        {
+            boardHashes.Clear();
             for (int i = 0; i < gameData.Levels.Count; i++)
             {
                 boardHashes.Add(ArrayHelper.GetHashCode(gameData.Levels[i]));
@@ -71,6 +77,26 @@ namespace BlackOut
             App.GameManager.SetBoard(gameData.Levels[Convert.ToInt32(tbxLevel.Text) - 1]);
             App.GameManager.DisplayGrid(false);
             CheckForSolution(App.GameManager.GetBoard());
+
+            RemoveDuplicates();
+        }
+
+        private void RemoveDuplicates()
+        {
+            GenerateLevelHashCodes();
+
+            for (int i = 0; i < gameData.Levels.Count; i++)
+            {
+               int hashCode = ArrayHelper.GetHashCode(gameData.Levels[i]);
+               if (gameData.Levels.Count(p => hashCode == ArrayHelper.GetHashCode(p)) > 1)
+               {
+                   gameData.Levels.RemoveAt(i);
+               }
+            }
+
+            tbxLevel.Text = gameData.Levels.Count.ToString();
+            tbCount.Text = gameData.Levels.Count.ToString();
+            isDirty = true;
         }
 
         private void appBarBtnAddLevel_Click(object sender, System.EventArgs e)
@@ -148,6 +174,7 @@ namespace BlackOut
             isDirty = true;
             int[,] board = App.GameManager.GetBoard();
 
+            GenerateLevelHashCodes();
             if(boardHashes.Contains(ArrayHelper.GetHashCode(board)))
             {
                 MessageBox.Show("Duplicate board found!");

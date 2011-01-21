@@ -8,17 +8,30 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.IO;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using System.Diagnostics;
 
 namespace BlackOut
 {
-    public class ResetBoardAnimationManager
+    public class ResetBoardAnimationManager : IDisposable
     {
+        private bool disposed = false;
+
         private Block[,] _board;
         private GameManager _gameManager;
-        Action _action;
+        private Action _action;
+        private SoundEffect _swooshSound = null;
+        private float volume = 0;
 
         public ResetBoardAnimationManager(GameManager gameManager, Block[,] board)
         {
+            volume = Convert.ToSingle(gameManager.GameData.GameSettings.SoundVolume / 100);
+
+            using (Stream stream = TitleContainer.OpenStream("swoosh2.wav"))
+                _swooshSound = SoundEffect.FromStream(stream);
+
             _gameManager = gameManager;
             _board = board;
         }
@@ -29,7 +42,6 @@ namespace BlackOut
             TimeSpan beginTime = new TimeSpan();
             _action = action;
 
-            //RotateBoardBlocks(0);
             for (int i = 0; i < 5; i++)
             {
                 beginTime = TimeSpan.FromMilliseconds(startTime) + TimeSpan.FromMilliseconds(delay);
@@ -70,6 +82,11 @@ namespace BlackOut
             _board[0, i].FlashOnAnimation.BeginTime = beginTime;
             _board[0, i].FlashOnAnimation.Begin();
 
+            if (_gameManager.GameData.GameSettings.PlaySounds)
+            {
+                _swooshSound.Play(volume, Convert.ToSingle(1 - (i + 1) * .10), 0);
+            }
+
             _board[1, i].FlashOnAnimation.BeginTime = beginTime;
             _board[1, i].FlashOnAnimation.Begin();
 
@@ -90,12 +107,40 @@ namespace BlackOut
 
         void FlashOnAnimation_Completed(object sender, EventArgs e)
         {
-            //
+            
         }
 
         void FlipAnimation_Completed(object sender, EventArgs e)
         {
             _action();
         }
+
+
+        #region Dispose
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (_swooshSound != null)
+                    _swooshSound.Dispose();
+            }
+
+            disposed = true;
+        }
+
+        ~ResetBoardAnimationManager()
+        {
+            Dispose(false);
+        }
+
+        #endregion
+
     }
 }

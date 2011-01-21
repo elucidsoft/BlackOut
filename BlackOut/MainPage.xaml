@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls" 
     xmlns:local="clr-namespace:BlackOut" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="BlackOut.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800"
     SupportedOrientations="Portrait" Orientation="Portrait"
@@ -179,15 +180,108 @@
 									<VisualState x:Name="Selected"/>
 								</VisualStateGroup>
 							</VisualStateManager.VisualStateGroups>
-                            <ContentControl x:Name="ContentContainer" DataContext="{TemplateBinding DataContext}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource ContentControlStyle2}" Foreground="#DEFFFFFF" Width="395">
-								
-							</ContentControl>
+                            <ContentControl x:Name="ContentContainer" DataContext="{TemplateBinding DataContext}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Style="{StaticResource ContentControlStyle2}" Foreground="#DEFFFFFF" Width="395"/>
 						</Border>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style>
+		<Style x:Key="ListPickerStyle1"  TargetType="toolkit:ListPicker"> 
+        <Setter Property="Background" Value="{StaticResource PhoneTextBoxBrush}"/> 
+        <Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/> 
+        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/> 
+        <Setter Property="HorizontalContentAlignment" Value="Left"/> 
+        <Setter Property="Margin" Value="{StaticResource PhoneTouchTargetOverhang}"/> 
+        <Setter Property="Template"> 
+            <Setter.Value> 
+                <ControlTemplate TargetType="toolkit:ListPicker"> 
+                    <StackPanel x:Name="stackPanel" Clip="{Binding Clip, ElementName=ItemsPresenter}"> 
+                        <VisualStateManager.VisualStateGroups> 
+                            <VisualStateGroup x:Name="PickerStates">
+                            	<VisualStateGroup.Transitions>
+                            		<VisualTransition GeneratedDuration="0" To="Expanded"/>
+                            	</VisualStateGroup.Transitions> 
+                                <VisualState x:Name="Normal">
+                            		<Storyboard>
+                                		<ColorAnimation Duration="0" To="#5A000000" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border" d:IsOptimized="True"/>
+                                		<ColorAnimation Duration="0" To="Transparent" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Border" d:IsOptimized="True"/>
+                                		<ColorAnimation Duration="0" To="#00000000" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ItemsPresenterHost" d:IsOptimized="True"/>
+                                	</Storyboard>
+                            	</VisualState> 
+                                <VisualState x:Name="Expanded"> 
+                                    <Storyboard>
+                                		<DoubleAnimation Duration="0" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="grid" d:IsOptimized="True"/>
+                                		<ColorAnimation Duration="0" To="#FF1F1F1F" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="border" d:IsOptimized="True"/>
+                                		<ColorAnimation Duration="0" To="#BEFFFFFF" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="Border" d:IsOptimized="True"/>
+                                		<ColorAnimation Duration="0" To="#A4000000" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="ItemsPresenterHost" d:IsOptimized="True"/> 
+                                	</Storyboard> 
+                                </VisualState> 
+                            </VisualStateGroup> 
+                        </VisualStateManager.VisualStateGroups> 
+                       <ContentControl 
+                            Content="{TemplateBinding Header}" 
+                            ContentTemplate="{TemplateBinding HeaderTemplate}" 
+                            Foreground="{x:Null}" 
+                            FontSize="{StaticResource PhoneFontSizeNormal}" 
+                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                            Margin="0 0 0 8" Background="Black"/> 
+                        <Grid x:Name="grid" Canvas.ZIndex="9999" Background="{x:Null}"> 
+                            <Border 
+                                x:Name="Border" 
+                                Background="{x:Null}" 
+                                BorderThickness="2" BorderBrush="#5AFFFFFF"> 
+                                <Canvas x:Name="ItemsPresenterHost" MinHeight="46" Background="Black"> 
+                                    <ItemsPresenter x:Name="ItemsPresenter"> 
+                                        <ItemsPresenter.RenderTransform> 
+                                            <TranslateTransform x:Name="ItemsPresenterTranslateTransform"/> 
+                                        </ItemsPresenter.RenderTransform> 
+                                    </ItemsPresenter> 
+                                </Canvas> 
+                            </Border> 
+                            <Popup x:Name="FullModePopup"> 
+                                <Border x:Name="border">
+                                	<Border.Background>
+                                		<SolidColorBrush Color="{StaticResource PhoneChromeColor}"/>
+                                	</Border.Background> <!-- Popup.Child should always be a Border --> 
+                                    <Grid> 
+                                        <Grid.RowDefinitions> 
+                                            <RowDefinition Height="Auto"/> 
+                                            <RowDefinition/> 
+                                        </Grid.RowDefinitions> 
+                                        <ContentControl 
+                                            Grid.Row="0" 
+                                            Content="{TemplateBinding FullModeHeader}" 
+                                            Foreground="{StaticResource PhoneForegroundBrush}" 
+                                            FontFamily="{StaticResource PhoneFontFamilySemiBold}" 
+                                            FontSize="{StaticResource PhoneFontSizeMedium}" 
+                                            HorizontalAlignment="Left" 
+                                            Margin="24 12 0 0"/> 
+                                       
+                                    </Grid> 
+                                </Border> 
+                            </Popup> 
+                        </Grid> 
+                        
+                    </StackPanel> 
+                </ControlTemplate> 
+            </Setter.Value> 
+        </Setter> 
+    </Style>
 		<Storyboard x:Name="AnimateBackgroundColor"/>
+		<ItemsPanelTemplate x:Key="ItemsPanelTemplate1">
+			<StackPanel Height="28"/>
+		</ItemsPanelTemplate>
+		<DataTemplate x:Key="DataTemplate1">
+			<Grid Height="21" Width="254">
+				<TextBlock x:Name="textBlock" TextWrapping="Wrap" Text="Difficulty" FontSize="18.667" Foreground="#BDFFFFFF" Margin="0,0,0,-10" RenderTransformOrigin="0.5,0.267"/>
+			</Grid>
+		</DataTemplate>
+		<DataTemplate x:Key="DataTemplate2">
+			<Grid/>
+		</DataTemplate>
+		<DataTemplate x:Key="DataTemplate3">
+			<Grid/>
+		</DataTemplate>
 	</phone:PhoneApplicationPage.Resources>
  
     <!--Sample code showing usage of ApplicationBar-->
@@ -217,27 +311,55 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <controls:Panorama x:Name="panorama" Title="blackout" Grid.RowSpan="2" Foreground="#DEFFFFFF">
+        <controls:Panorama x:Name="panorama" Title="blackout" Foreground="#DEFFFFFF" Grid.Row="1" RenderTransformOrigin="0.494,0.684">
         	<controls:Panorama.Background>
         		<ImageBrush Stretch="None" ImageSource="main_bg.png"/>
         	</controls:Panorama.Background>
     		<controls:PanoramaItem x:Name="panItemGame" Header="game" Width="434" FontSize="24" Height="617" Style="{StaticResource PanoramaItemStyle1}" Foreground="#DEFFFFFF">
     			<Grid>
+    				<HyperlinkButton x:Name="btnContinue" Content="continue game..." Margin="24,187,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click"/>
+    				<toolkit:ListPicker x:Name="lpBoard" Margin="137,101,57,0" Header="" HeaderTemplate="{StaticResource DataTemplate3}" Foreground="Transparent" Background="{x:Null}" FontSize="18.667" Style="{StaticResource ListPickerStyle1}" SelectedIndex="0" Height="124" VerticalAlignment="Top" Visibility="Collapsed" IsEnabled="False" IsHitTestVisible="False" IsTabStop="False">
+    					<toolkit:ListPickerItem Content="Default" FontSize="24" FontFamily="Segoe WP Semibold" Height="56" Background="{x:Null}"/>
+    					<toolkit:ListPickerItem Content="Custom" FontSize="24" FontFamily="Segoe WP Semibold" Height="56" Background="{x:Null}"/>
+    				</toolkit:ListPicker>
     				<HyperlinkButton x:Name="btnNewGame" Content="new game" Margin="24,0,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnNewGame_Click"/>
-    				<HyperlinkButton x:Name="btnContinue" Content="continue..." Margin="24,68,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click"/>
-    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom" Visibility="Collapsed"/>
+    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom"/>
     				<HyperlinkButton x:Name="btnChangeColor" Content="change color" Margin="24,0,0,73" FontSize="26.667" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnChangeColor_Click"/>
     				<HyperlinkButton x:Name="btnSettings" Content="settings" Margin="24,0,0,8" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnSettings_Click"/>
+    				<toolkit:ListPicker x:Name="lpDifficulty" Margin="169,48,122,0" VerticalAlignment="Top" Height="182" Header="" HeaderTemplate="{StaticResource DataTemplate3}" Foreground="#BFFFFFFF" Background="{x:Null}" FontSize="18.667" Style="{StaticResource ListPickerStyle1}" SelectedIndex="1" ListPickerMode="Expanded">
+    					<toolkit:ListPickerItem Content="Easy" FontSize="24" Height="56" VerticalAlignment="Center" FontFamily="Segoe WP Semibold" Background="{x:Null}" Width="125" HorizontalAlignment="Left"/>
+    					<toolkit:ListPickerItem Content="Normal" FontSize="24" FontFamily="Segoe WP Semibold" Height="56" Background="{x:Null}" Width="125" HorizontalAlignment="Left"/>
+    					<toolkit:ListPickerItem Content="Expert" FontSize="24" FontFamily="Segoe WP Semibold" Height="56" Background="{x:Null}" Width="125" HorizontalAlignment="Left"/>
+    				</toolkit:ListPicker>
+    				<TextBlock Height="36" Margin="55,70,0,0" TextWrapping="Wrap" Text="Difficulty:" VerticalAlignment="Top" FontSize="24" FontFamily="Segoe WP Semibold" Foreground="#BEFFFFFF" HorizontalAlignment="Left" Width="114"/>
+    				<TextBlock Height="36" Margin="55,122,0,0" TextWrapping="Wrap" Text="Board:" VerticalAlignment="Top" FontSize="24" FontFamily="Segoe WP Semibold" Foreground="#BEFFFFFF" HorizontalAlignment="Left" Width="78" Visibility="Collapsed"/>
     			</Grid>
     		</controls:PanoramaItem>
-    		<controls:PanoramaItem x:Name="panItemScores" Header="scores" Style="{StaticResource PanoramaItemStyle1}">
-    			<Grid Margin="11,0,-11,0">
+    		<controls:PanoramaItem x:Name="panItemScores" Header="scores" Style="{StaticResource PanoramaItemStyle1}" Margin="0,0,-15,0">
+    			<Grid Margin="11,0,7,0">
     				<ListBox x:Name="lstScores" Margin="18,34,8,24" Background="{x:Null}" Foreground="{x:Null}" ItemContainerStyle="{StaticResource ListBoxItemStyle1}"/>
-    				<Rectangle Height="43" VerticalAlignment="Top" StrokeThickness="2" Fill="#28000000" Margin="18,-9,8,0"/>
-    				<TextBlock Height="27" Margin="26,-3,338,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
-    				<TextBlock Height="27" Margin="133,-3,225,0" TextWrapping="Wrap" Text="Moves" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
+    				<Rectangle Height="43" VerticalAlignment="Top" StrokeThickness="2" Fill="#28000000" Margin="18,-9,0,0" HorizontalAlignment="Left" Width="391"/>
+    				<TextBlock Height="27" Margin="26,-3,324,0" TextWrapping="Wrap" Text="Level" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
+    				<TextBlock Height="27" Margin="133,-3,209,0" TextWrapping="Wrap" Text="Moves" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
     				<TextBlock Height="31" Margin="237,-3,124,0" TextWrapping="Wrap" Text="Hints" VerticalAlignment="Top" FontSize="21.333" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
     				<TextBlock Height="27" Margin="339,-3,16,0" TextWrapping="Wrap" Text="Time" VerticalAlignment="Top" FontSize="21.333" TextAlignment="Right" FontFamily="Segoe WP Semibold" CacheMode="BitmapCache"/>
+    				<Grid x:Name="gridNoScores" HorizontalAlignment="Left" Width="377.567" Margin="25.119,217.283,0,232.309" Background="#25000000" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" d:LayoutOverrides="VerticalAlignment">
+    					<Grid.RenderTransform>
+    						<CompositeTransform Rotation="-47"/>
+    					</Grid.RenderTransform>
+    					<TextBlock TextWrapping="Wrap" Text="No Scores" FontFamily="Segoe WP Black" FontSize="64" Foreground="#58FFFFFF" Margin="8,0,0,0" d:LayoutOverrides="VerticalAlignment" HorizontalAlignment="Center"/>
+    				</Grid>
+    			</Grid>
+    		</controls:PanoramaItem>
+    		<controls:PanoramaItem x:Name="panItemAbout" Header="about" Style="{StaticResource PanoramaItemStyle1}">
+    			<Grid>
+    				<TextBlock Height="228" Margin="19,8,19,0" TextWrapping="Wrap" VerticalAlignment="Top" CacheMode="BitmapCache" FontSize="24"><Run Text="BlackOut was created by Elucidsoft, if you have any feature suggestions, problems, or concerns you can contact us by using one of the methods below."/><LineBreak/><Run/><LineBreak/><Run Text="Thank you for using our products!"/></TextBlock>
+    				<Button x:Name="btnOtherGames" Content="More games by Elucidsoft" HorizontalAlignment="Right" Margin="0,0,7,8" Style="{StaticResource ButtonWhite}" VerticalAlignment="Bottom" Width="404" FontFamily="Segoe WP SemiLight" Click="btnOtherGames_Click"/>
+    				<HyperlinkButton x:Name="lnkSupportSite" Content="Support Forums" Margin="209,0,0,170" VerticalAlignment="Bottom" FontSize="21.333" Foreground="#BEFFFFFF" CacheMode="BitmapCache" Click="lnkSupportSite_Click" HorizontalAlignment="Left" Width="175"/>
+    				<HyperlinkButton x:Name="lnkSupportEmail" Content="support@elucidsoft.com" Margin="9,0,154,212" FontSize="21.333" Foreground="#BEFFFFFF" CacheMode="BitmapCache" Click="lnkSupportEmail_Click" VerticalAlignment="Bottom"/>
+    				<HyperlinkButton x:Name="lnkSite" Content="Elucidsoft Home" Margin="9,0,0,170" VerticalAlignment="Bottom" FontSize="21.333" Foreground="#BEFFFFFF" CacheMode="BitmapCache" HorizontalAlignment="Left" Width="177" Click="lnkSite_Click" d:LayoutOverrides="HorizontalAlignment"/>
+    				<TextBlock Height="33" Margin="190,0,0,166" TextWrapping="Wrap" Text="/" VerticalAlignment="Bottom" FontSize="21.333" Foreground="#BEFFFFFF" HorizontalAlignment="Left" Width="20"/>
+    				<TextBlock Margin="19,258,129,239" TextWrapping="Wrap" Text="Contact Information" FontFamily="Segoe WP Semibold" FontSize="26.667" Foreground="#BEFFFFFF"/>
     			</Grid>
     		</controls:PanoramaItem>
     	</controls:Panorama>

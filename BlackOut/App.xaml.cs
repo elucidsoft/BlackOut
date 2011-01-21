@@ -12,7 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Microsoft.Advertising.Mobile.UI;
+//using Microsoft.Advertising.Mobile.UI;
 using Microsoft.Phone.Notification;
 
 namespace BlackOut
@@ -75,7 +75,10 @@ namespace BlackOut
             {
                 GameData gameData = GameData.LoadGameData();
                 GameManager = new GameManager(gameData);
-                GameManager.LoadLevel(gameData.GameState.Level);
+                if (gameData.GameState.Level > 0)
+                {
+                    GameManager.LoadLevel(gameData.GameState.Level);
+                }
             }
         }
 
@@ -106,6 +109,9 @@ namespace BlackOut
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            if (e.ExceptionObject.Message == "error")
+                e.Handled = true;
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
@@ -117,6 +123,7 @@ namespace BlackOut
 
         // Avoid double-initialization
         private bool phoneApplicationInitialized = false;
+        public static int MainMenuSelectedIndex = 0;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()
@@ -135,11 +142,11 @@ namespace BlackOut
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
 
-#if DEBUG
-            AdControl.TestMode = true;
-#else
-            AdControl.TestMode = false;
-#endif
+//#if DEBUG
+//            AdControl.TestMode = true;
+//#else
+//            AdControl.TestMode = false;
+//#endif
         }
 
         // Do not add any additional code to this method

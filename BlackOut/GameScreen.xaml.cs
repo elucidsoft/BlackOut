@@ -10,18 +10,28 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using Microsoft.Advertising.Mobile.UI;
+//using Microsoft.Advertising.Mobile.UI;
 using Microsoft.Phone.Shell;
 
 namespace BlackOut
 {
     public partial class GameScreen : PhoneApplicationPage
     {
+        bool isDirty = false;
+
         public GameScreen()
         {
             InitializeComponent();
+
+#if DEBUG 
+            adControl.TestMode = true;
+#else
+            adControl.TestMode = false;
+#endif
+
             App.GameManager.Initialize(grid);
             App.GameManager.DisplayGrid(false);
+            isDirty = true;
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -33,10 +43,17 @@ namespace BlackOut
             App.GameManager.OnHintUsed += new EventHandler<EventArgs>(GameManager_OnHintUsed);
             App.GameManager.OnResetBoardCompleted += new EventHandler<EventArgs>(GameManager_OnResetBoardCompleted);
 
-            
+            App.MainMenuSelectedIndex = 0;
+            if (isDirty == false)
+            {
+                App.GameManager.Initialize(grid);
+                App.GameManager.DisplayGrid(false);
+            }
 
             ResetDisplay();
+            tbHints.Text = String.Format("{0}/{1}", App.GameManager.HintsUsed, App.GameManager.HintsMax);
             UpdatePreviousAndNextButtons();
+            isDirty = false;
         }
 
         void GameManager_OnResetBoardCompleted(object sender, EventArgs e)
@@ -44,30 +61,49 @@ namespace BlackOut
             Dispatcher.BeginInvoke(() =>
             {
                 ResetDisplay();
+                
             });
         }
 
         private void UpdatePreviousAndNextButtons()
         {
-            if (App.GameManager.GameData.GameState.Level == 1)
+            int currentLevel = App.GameManager.GameData.GameState.Level;
+            int totalLevels = App.GameManager.GameData.Levels.Count;
+            int highestLevel = App.GameManager.GameData.HighestLevel;
+            int hintMax = App.GameManager.GameData.GameState.HintMax;
+
+            ApplicationBarIconButton abiBtnHint = ((ApplicationBarIconButton)ApplicationBar.Buttons[3]);
+            ApplicationBarIconButton abiBtnPrev = ((ApplicationBarIconButton)ApplicationBar.Buttons[0]);
+            ApplicationBarIconButton abiBtnNext = ((ApplicationBarIconButton)ApplicationBar.Buttons[1]);
+
+            abiBtnHint.IsEnabled = false;
+            abiBtnPrev.IsEnabled = false;
+            abiBtnNext.IsEnabled = false;
+
+            if (hintMax > 0)
             {
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = false;
+                abiBtnHint.IsEnabled = true;
             }
-            else if (App.GameManager.GameData.GameState.Level == App.GameManager.GameData.Levels.Count)
+
+            if (currentLevel == 1 && highestLevel > 1)
             {
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = false;
+                abiBtnNext.IsEnabled = true;
             }
-            else
+
+            if (currentLevel > 1)
             {
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
-                ((ApplicationBarIconButton)ApplicationBar.Buttons[1]).IsEnabled = true;
+                abiBtnPrev.IsEnabled = true;
+            }
+
+            if (currentLevel < highestLevel)
+            {
+                abiBtnNext.IsEnabled = true;
             }
         }
 
         void GameManager_OnHintUsed(object sender, EventArgs e)
         {
-            tbHints.Text = App.GameManager.GameData.GameState.HintsUsed.ToString();
-
+            tbHints.Text = String.Format("{0}/{1}", App.GameManager.HintsUsed, App.GameManager.HintsMax);
         }
 
         void GameManager_OnGridBlockClicked(object sender, GridBlockClickedEventArgs e)
@@ -88,6 +124,7 @@ namespace BlackOut
             Dispatcher.BeginInvoke(() =>
             {
                 tbLevel.Text = e.Level.ToString();
+                tbHints.Text = String.Format("{0}/{1}", App.GameManager.HintsUsed, App.GameManager.HintsMax);
                 UpdatePreviousAndNextButtons();
             });
         }
@@ -102,15 +139,11 @@ namespace BlackOut
 
         private void ResetDisplay()
         {
+            tbHints.Foreground = new SolidColorBrush(Colors.White);
             tbLevel.Text = App.GameManager.Level.ToString();
             tbMoves.Text = App.GameManager.Moves.ToString();
-            tbHints.Text = App.GameManager.HintsUsed.ToString();
+            tbHints.Text = String.Format("{0}/{1}", "0", "-");
             tbTime.Text = String.Format("{0:HH:mm:ss}", new DateTime(TimeSpan.FromSeconds(App.GameManager.Seconds).Ticks));
-        }
-
-        private void ApplicationBarMenuItem_Click(object sender, System.EventArgs e)
-        {
-            NavigationService.GoBack();
         }
 
         private void appBarBtnReset_Click(object sender, System.EventArgs e)
@@ -134,6 +167,20 @@ namespace BlackOut
         private void appBarBtnHint_Click(object sender, System.EventArgs e)
         {
             App.GameManager.ShowHint();
+            if (App.GameManager.HintsUsed >= App.GameManager.HintsMax)
+            {
+                ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = false;
+            }
+            
+            if (((App.GameManager.HintsUsed ) / 3) == (App.GameManager.HintsMax / 3))
+            {
+                tbHints.Foreground = new SolidColorBrush(Colors.Yellow);
+            }
+            
+            if(((App.GameManager.HintsUsed ) / 2) == (App.GameManager.HintsMax / 2))
+            {
+                tbHints.Foreground = new SolidColorBrush(Colors.Red);
+            }
         }
 
         private void appBarBtnNextLevel_Click(object sender, System.EventArgs e)
@@ -162,14 +209,15 @@ namespace BlackOut
             }
         }
 
-        private void ApplicationBar_StateChanged(object sender, Microsoft.Phone.Shell.ApplicationBarStateChangedEventArgs e)
+        private void appBarMnuMainMenu_Click(object sender, System.EventArgs e)
         {
-            // TODO: Add event handler implementation here.
+        	NavigationService.GoBack();
         }
 
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        private void appBarMnuHighScores_Click(object sender, System.EventArgs e)
         {
-            //GameData.SaveGameData(App.GameManager.GameData);
+            App.MainMenuSelectedIndex = 1;
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
         }
     }
 }

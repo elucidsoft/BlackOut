@@ -99,7 +99,7 @@ namespace BlackOut
         {
             if (!TestBlock)
             {
-               App.GameManager.BlockClicked(row, column);
+               App.GameManager.BlockClicked(row, column, !isBlockLit);
             }
             else
             {
@@ -123,6 +123,7 @@ namespace BlackOut
                 isBlockLit = true;
 
                 TurnOnAnimation.Begin();
+                //App.GameManager.soundEffectTileOn.Play(.75f, 0, 0);
                 //  TurnOnAnimation.SkipToFill();
             }
 
@@ -139,6 +140,8 @@ namespace BlackOut
 
     
                 TurnOffAnimation.Begin();
+               // App.GameManager.soundEffectTileOff.Play(.75f, 0, 0);
+
                 //TurnOffAnimation.SkipToFill();
             
         }
@@ -179,6 +182,7 @@ namespace BlackOut
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             ShowHintAnimation.Completed -= new EventHandler(ShowHintAnimation_Completed);
+            HintAnimation.Completed -= new EventHandler(HintAnimation_Completed);
         }
 
     }

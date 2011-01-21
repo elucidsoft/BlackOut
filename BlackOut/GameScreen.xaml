@@ -5,29 +5,36 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Microsoft_Advertising_Mobile_UI="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" 
+     xmlns:AldarIT_SuperAds="clr-namespace:AldarIT.SuperAds;assembly=AldarIT.SuperAds" 
+    xmlns:AldarIT_SuperAds_AdProviders="clr-namespace:AldarIT.SuperAds.AdProviders;assembly=AldarIT.SuperAds"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White" BackKeyPress="PhoneApplicationPage_BackKeyPress">
+    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White">
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.9" StateChanged="ApplicationBar_StateChanged" BackgroundColor="Black" ForegroundColor="White">
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.9" BackgroundColor="Black" ForegroundColor="White">
             <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Main Menu" Click="ApplicationBarMenuItem_Click"/>
-                <shell:ApplicationBarMenuItem Text="high scores"/>
+                <shell:ApplicationBarMenuItem x:Name="appBarMnuMainMenu" Text="Main Menu" Click="appBarMnuMainMenu_Click"/>
+                <shell:ApplicationBarMenuItem x:Name="appBarMnuHighScores" Text="high scores" Click="appBarMnuHighScores_Click"/>
             </shell:ApplicationBar.MenuItems>
             <shell:ApplicationBarIconButton x:Name="appBarBtnPrevLevel" IconUri="/icons/appbar.back.rest.png" Text="prev level" Click="appBarBtnPrevLevel_Click"/>
-            <shell:ApplicationBarIconButton x:Name="appBarBtnNextLevel" IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="True" Click="appBarBtnNextLevel_Click"/>
+            <shell:ApplicationBarIconButton x:Name="appBarBtnNextLevel" IconUri="/icons/appbar.next.rest.png" Text="next level" IsEnabled="False" Click="appBarBtnNextLevel_Click"/>
             <shell:ApplicationBarIconButton IconUri="/icons/appbar.refresh.rest.png" Text="reset" IsEnabled="True" x:Name="appBarBtnReset" Click="appBarBtnReset_Click" />
             <shell:ApplicationBarIconButton x:Name="appBarBtnHint" IconUri="/icons/MB_0020_light.png" Text="hint" IsEnabled="True" Click="appBarBtnHint_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-
     <StackPanel Margin="0,0,0,72" Orientation="Vertical" Background="Black">
-        <Microsoft_Advertising_Mobile_UI:AdControl Width="480" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Name="adControl" Height="80" RotationEnabled="True" Foreground="Black" Background="Black" Margin="0" BorderBrush="Black" />
-		<TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,20,12,0" Height="60">
+            <AldarIT_SuperAds:AdControl x:Name="adControl" VerticalAlignment="Top">
+                <AldarIT_SuperAds:AdControl.AdProviders>
+                    <AldarIT_SuperAds_AdProviders:AdmobAdProvider PublisherID="a14c5eede2e2f35" Priority="1"/>
+                    <AldarIT_SuperAds_AdProviders:SmaatoAdProvider AdSpaceID="65736516" PublisherID="923832900" Priority="0"/>
+                </AldarIT_SuperAds:AdControl.AdProviders>
+            </AldarIT_SuperAds:AdControl>
+        </Grid>
+        <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid" Margin="0,13,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="96" />
@@ -44,7 +51,7 @@
 				<ColumnDefinition Width="96" />
 			</Grid.ColumnDefinitions>
 		</Grid>
-		<Grid Height="216" Background="Black">
+		<Grid Height="176" Background="Black">
 			<TextBlock HorizontalAlignment="Left" Margin="296,7,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" Foreground="White"/>
 			<TextBlock Margin="403,5,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Height="44" VerticalAlignment="Top" Foreground="White" />
 			<TextBlock Margin="8,51,0,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" HorizontalAlignment="Left" Width="154" Height="45" VerticalAlignment="Top" Foreground="White" />

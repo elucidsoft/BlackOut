@@ -8,17 +8,33 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using System.IO;
 
 namespace BlackOut
 {
-    public class LevelTransitionAnimationManager
+    public class LevelTransitionAnimationManager : IDisposable
     {
+        private bool disposed = false;
+
         private Block[,] _board;
         private GameManager _gameManager;
-        Action _action;
+        private Action _action;
+        private SoundEffect _swooshSound1 = null;
+        private SoundEffect _swooshSound2 = null;
+        private float volume = 0;
 
         public LevelTransitionAnimationManager(GameManager gameManager, Block[,] board)
         {
+            volume = Convert.ToSingle(gameManager.GameData.GameSettings.SoundVolume / 100);
+
+            using (Stream stream = TitleContainer.OpenStream("swoosh1.wav"))
+                _swooshSound1 = SoundEffect.FromStream(stream);
+
+            using (Stream stream = TitleContainer.OpenStream("swoosh2.wav"))
+                _swooshSound2 = SoundEffect.FromStream(stream);
+
             _gameManager = gameManager;
             _board = board;
         }
@@ -27,11 +43,12 @@ namespace BlackOut
         {
             for (int row = 0; row < 5; row++)
             {
+                _swooshSound2.Play(1.00f, Convert.ToSingle(1 - (row + 1) * .10), 0);
                 for (int column = 0; column < 5; column++)
                 {
                     _board[column, row].FlashOnAnimation.Begin();
                     _board[column, row].FlashOnAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
-
+                    
                     _board[column, row].TurnLeftAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
                     _board[column, row].TurnLeftAnimation.Begin();
                 }
@@ -88,6 +105,11 @@ namespace BlackOut
             _board[0, i].FlashOnAnimation.BeginTime = beginTime;
             _board[0, i].FlashOnAnimation.Begin();
 
+            if (_gameManager.GameData.GameSettings.PlaySounds)
+            {
+                _swooshSound1.Play(volume, Convert.ToSingle(1 - (i + 1) * .10), 0);
+            }
+
             _board[1, i].FlashOnAnimation.BeginTime = beginTime;
             _board[1, i].FlashOnAnimation.Begin();
 
@@ -110,6 +132,11 @@ namespace BlackOut
         {
             _board[i, 0].FlashOnAnimation.BeginTime = beginTime;
             _board[i, 0].FlashOnAnimation.Begin();
+
+            if (_gameManager.GameData.GameSettings.PlaySounds)
+            {
+                _swooshSound1.Play(volume, Convert.ToSingle(1 - (i + 1) * .10), 0);
+            }
 
             _board[i, 1].FlashOnAnimation.BeginTime = beginTime;
             _board[i, 1].FlashOnAnimation.Begin();
@@ -140,5 +167,35 @@ namespace BlackOut
             FlashLeftRight(0, 35);
             _board[4, 4].FlashOnAnimation.Completed -= new EventHandler(FlashOnRowsAnimation_Completed);
         }
+
+        
+        #region Dispose
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (_swooshSound1 != null)
+                    _swooshSound1.Dispose();
+
+                if (_swooshSound2 != null)
+                    _swooshSound2.Dispose();
+            }
+
+            disposed = true;
+        }
+
+        ~LevelTransitionAnimationManager()
+        {
+            Dispose(false);
+        }
+
+        #endregion
     }
 }
