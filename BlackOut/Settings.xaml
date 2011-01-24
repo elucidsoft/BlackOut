@@ -6,29 +6,52 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded">
+	<phone:PhoneApplicationPage.Resources>
 
+	</phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalAlignment="Top" Height="768">
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="BLACKOUT" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+		<!--LayoutRoot is the root grid where all page content is placed-->
+		<Grid x:Name="LayoutRoot" Height="1119" Width="480" VerticalAlignment="Bottom">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
-    </Grid>
+			<!--TitlePanel contains the name of the application and page title-->
+			<StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+				<TextBlock x:Name="ApplicationTitle" Text="BLACKOUT" Style="{StaticResource PhoneTextNormalStyle}"/>
+				<TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+			</StackPanel>
+			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1">
+				<TextBlock TextWrapping="Wrap" Text="Please rate and review BlackOut in the Windows Phone marketplace.  You may also leave suggestions or feedback that will help us improve future versions!" VerticalAlignment="Top" FontSize="18.667" Height="78" FontFamily="Segoe WP" CacheMode="BitmapCache" d:LayoutOverrides="HorizontalAlignment" />
+				<Button Content="Rate &amp; Review" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top" Height="82" x:Name="btnRateAndReview" Click="btnRateAndReview_Click" />
+				<toolkit:ToggleSwitch Header="Play Sounds" Margin="0,8,0,0" VerticalAlignment="Top" Height="113" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" x:Name="tglPlaySounds" Click="tglPlaySounds_Click" Background="White"/>
+				<Grid Grid.ColumnSpan="2" Height="109" Margin="0" VerticalAlignment="Top" Name="gridSoundVolume">
+					<Slider Value="100" Maximum="100" LargeChange="25" SmallChange="5" RenderTransformOrigin="0.47,0.422" HorizontalAlignment="Right" Width="216" Name="sliderVolume" ValueChanged="sliderVolume_ValueChanged" IsEnabledChanged="sliderVolume_IsEnabledChanged" Margin="0,0,22,0" />
+					<TextBlock Margin="13,8,0,0" TextWrapping="Wrap" Text="Sound Volume" FontSize="18.667" d:LayoutOverrides="GridBox" FontFamily="Segoe WP" HorizontalAlignment="Left" Width="270" Height="32" VerticalAlignment="Top" Foreground="{StaticResource PhoneBorderBrush}" Name="lblSoundVolume" />
+					<TextBlock Margin="13,38,0,8" TextWrapping="Wrap" Text="100%" FontSize="29.333" HorizontalAlignment="Left" Width="135" FontFamily="Segoe WP SemiLight" Name="txtSliderVolume" d:LayoutOverrides="HorizontalAlignment" />
+				</Grid>
+				<toolkit:ToggleSwitch x:Name="tglShowMoveCounter" Header="Show Move Counter" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Click="tglShowMoveCounter_Click"/>
+				<toolkit:ToggleSwitch x:Name="tglShowTimer" Header="Show Timer" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" Click="tglShowTimer_Click"/>
+				<toolkit:ToggleSwitch x:Name="tglShowLevel" Header="Show Level" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowLevel_Click"/>
+				<toolkit:ToggleSwitch x:Name="tglShowLevel_Copy" Header="Show Hints" Margin="0" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowLevel_Click"/>
+				<Button Content="Clear Scores" Margin="0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="80" x:Name="btnClearHighScores" Click="btnClearHighScores_Click" Width="254" HorizontalAlignment="Left" />
+
+			</StackPanel>
+
+			<!--ContentPanel - place additional content here-->
+		</Grid>
+ 
+	</ScrollViewer>
  
     <!--Sample code showing usage of ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>

@@ -323,7 +323,7 @@
     					<toolkit:ListPickerItem Content="Custom" FontSize="24" FontFamily="Segoe WP Semibold" Height="56" Background="{x:Null}"/>
     				</toolkit:ListPicker>
     				<HyperlinkButton x:Name="btnNewGame" Content="new game" Margin="24,0,0,0" VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnNewGame_Click"/>
-    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom"/>
+    				<HyperlinkButton x:Name="btnDesignBoard" Content="level designer" Margin="24,0,0,157" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnDesignBoard_Click" VerticalAlignment="Bottom" Visibility="Collapsed"/>
     				<HyperlinkButton x:Name="btnChangeColor" Content="change color" Margin="24,0,0,73" FontSize="26.667" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnChangeColor_Click"/>
     				<HyperlinkButton x:Name="btnSettings" Content="settings" Margin="24,0,0,8" FontSize="48" HorizontalAlignment="Left" Style="{StaticResource HyperlinkButtonStyle1}" VerticalAlignment="Bottom" Click="btnSettings_Click"/>
     				<toolkit:ListPicker x:Name="lpDifficulty" Margin="169,48,122,0" VerticalAlignment="Top" Height="182" Header="" HeaderTemplate="{StaticResource DataTemplate3}" Foreground="#BFFFFFFF" Background="{x:Null}" FontSize="18.667" Style="{StaticResource ListPickerStyle1}" SelectedIndex="1" ListPickerMode="Expanded">

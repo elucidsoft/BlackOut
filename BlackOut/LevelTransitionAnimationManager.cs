@@ -43,12 +43,15 @@ namespace BlackOut
         {
             for (int row = 0; row < 5; row++)
             {
-                _swooshSound2.Play(1.00f, Convert.ToSingle(1 - (row + 1) * .10), 0);
                 for (int column = 0; column < 5; column++)
                 {
                     _board[column, row].FlashOnAnimation.Begin();
                     _board[column, row].FlashOnAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
-                    
+                    if (_gameManager.GameData.GameSettings.PlaySounds)
+                    {
+                        _swooshSound2.Play(1.00f, Convert.ToSingle(1 - (row + 1) * .10), 0);
+                    }
+
                     _board[column, row].TurnLeftAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
                     _board[column, row].TurnLeftAnimation.Begin();
                 }

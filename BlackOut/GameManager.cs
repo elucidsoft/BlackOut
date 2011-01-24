@@ -380,7 +380,7 @@ namespace BlackOut
                 {
                     DisplayGrid(true, TempLevels.EmptyBoard);
 
-                    _levelTransitionAnimationManager.Begin(0, 35, () =>
+                    _levelTransitionAnimationManager.Begin(50, 35, () =>
                     {
                         LoadLevel(_gameState.Level);
                         DisplayGrid(true);
@@ -435,10 +435,14 @@ namespace BlackOut
             _usedHints.Clear();
 
             float volume = Convert.ToSingle(_gameData.GameSettings.SoundVolume / 125);
-            if(_gameData.GameSettings.PlaySounds && blockIsOn)
-                App.GameManager._soundEffectTileOff.Play(volume, 0, 0);
-            else
-                App.GameManager._soundEffectTileOn.Play(volume, 0, 0);
+
+            if (_gameData.GameSettings.PlaySounds)
+            {
+                if (blockIsOn)
+                    App.GameManager._soundEffectTileOff.Play(volume, 0, 0);
+                else
+                    App.GameManager._soundEffectTileOn.Play(volume, 0, 0);
+            }
 
             if (OnGridBlockClicked != null)
                 OnGridBlockClicked(this, new GridBlockClickedEventArgs(_gameState.Moves));
