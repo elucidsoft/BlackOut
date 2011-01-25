@@ -53,10 +53,10 @@ namespace BlackOut
         {
             get 
             {
-               // if (_highestLevel == null)
-                    return 338;
+                if (_highestLevel == null)
+                    return 1;
 
-                //return _highestLevel.Value; 
+                return _highestLevel.Value; 
             }
             set { _highestLevel = value; }
         }

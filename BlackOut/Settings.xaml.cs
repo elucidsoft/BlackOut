@@ -68,6 +68,7 @@ namespace BlackOut
             tglShowMoveCounter.IsChecked = App.GameManager.GameData.GameSettings.ShowMoveCounter;
             tglShowLevel.IsChecked = App.GameManager.GameData.GameSettings.ShowLevel;
             tglShowTimer.IsChecked = App.GameManager.GameData.GameSettings.ShowTimer;
+            tglShowHints.IsChecked = App.GameManager.GameData.GameSettings.ShowHintCount;
         }
 
         private void tglShowMoveCounter_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -83,6 +84,11 @@ namespace BlackOut
         private void tglShowLevel_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             App.GameManager.GameData.GameSettings.ShowLevel = tglShowLevel.IsChecked.Value;
+        }
+
+        private void tglShowHints_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            App.GameManager.GameData.GameSettings.ShowHintCount = tglShowHints.IsChecked.Value;
         }
     }
 }

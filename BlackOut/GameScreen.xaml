@@ -52,14 +52,22 @@
 			</Grid.ColumnDefinitions>
 		</Grid>
 		<Grid Height="176" Background="Black">
-			<TextBlock HorizontalAlignment="Left" Margin="296,7,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" Foreground="White"/>
-			<TextBlock Margin="403,5,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Height="44" VerticalAlignment="Top" Foreground="White" />
-			<TextBlock Margin="8,51,0,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" HorizontalAlignment="Left" Width="154" Height="45" VerticalAlignment="Top" Foreground="White" />
-			<TextBlock Margin="139,54,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Left" Width="94" Height="75" VerticalAlignment="Top" x:Name="tbMoves" Foreground="White" />
-			<TextBlock Margin="0,51,96,0" TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Right" Width="88" Foreground="White"/>
-			<TextBlock Margin="0,51,6,0" TextWrapping="Wrap" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" x:Name="tbHints" Foreground="White" Text="0" />
-            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Margin="10,7,0,0" Text="Time" TextWrapping="Wrap" Width="154" Height="45" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment" Foreground="White" />
-            <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="139,7,0,0" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" x:Name="tbTime" Height="41" VerticalAlignment="Top" Foreground="White" />
+			<Grid x:Name="grdLevelLabel" HorizontalAlignment="Right" Height="44" Margin="0,5,6,0" VerticalAlignment="Top" Width="178">
+				<TextBlock HorizontalAlignment="Left" Margin="0,2,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Foreground="White" d:LayoutOverrides="HorizontalAlignment"/>
+				<TextBlock Margin="107,0,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Foreground="White" />
+			</Grid>
+			<Grid x:Name="grdMovesLabel" HorizontalAlignment="Left" Margin="8,51,0,47" Width="225">
+				<TextBlock Margin="0,0,94,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="45" VerticalAlignment="Top" Foreground="White" />
+				<TextBlock Margin="0,3,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Right" Width="94" Height="75" VerticalAlignment="Top" x:Name="tbMoves" Foreground="White" />
+			</Grid>
+			<Grid x:Name="grdHintsLabel" HorizontalAlignment="Right" Margin="0,51,6,83" Width="178">
+				<TextBlock TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88" Foreground="White"/>
+				<TextBlock TextWrapping="Wrap" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" x:Name="tbHints" Foreground="White" Text="0" />
+			</Grid>
+			<Grid x:Name="grdTimeLabel" Height="45" Margin="10,7,197,0" VerticalAlignment="Top">
+				<TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Text="Time" TextWrapping="Wrap" Width="125" Height="45" VerticalAlignment="Top" Foreground="White" />
+				<TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="129,0,0,4" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" x:Name="tbTime" Foreground="White" />
+			</Grid>
         </Grid>
 
 	</StackPanel>

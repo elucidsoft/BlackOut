@@ -32,6 +32,16 @@ namespace BlackOut
             App.GameManager.Initialize(grid);
             App.GameManager.DisplayGrid(false);
             isDirty = true;
+
+            ShowLabels();
+        }
+
+        private void ShowLabels()
+        {
+            grdMovesLabel.Visibility = (App.GameManager.GameData.GameSettings.ShowMoveCounter == false) ? Visibility.Collapsed : Visibility.Visible;
+            grdHintsLabel.Visibility = (App.GameManager.GameData.GameSettings.ShowHintCount == false) ? Visibility.Collapsed : Visibility.Visible;
+            grdLevelLabel.Visibility = (App.GameManager.GameData.GameSettings.ShowLevel == false) ? Visibility.Collapsed : Visibility.Visible;
+            grdTimeLabel.Visibility = (App.GameManager.GameData.GameSettings.ShowTimer == false) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -138,7 +148,7 @@ namespace BlackOut
         }
 
         private void ResetDisplay()
-        {
+        {        
             tbHints.Foreground = new SolidColorBrush(Colors.White);
             tbLevel.Text = App.GameManager.Level.ToString();
             tbMoves.Text = App.GameManager.Moves.ToString();

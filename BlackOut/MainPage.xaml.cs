@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Notification;
 using System.Threading;
 using Microsoft.Phone.Tasks;
+using System.Windows.Threading;
 
 namespace BlackOut
 {
@@ -56,14 +57,11 @@ namespace BlackOut
                 LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
             }
 
-
             AddHighScores();
             isDirty = true;
             LoadDifficulty();
 
             ShowContinue();
-
-            panorama.DefaultItem = panorama.Items[App.MainMenuSelectedIndex];
         }
 
         private void ShowContinue()
@@ -105,7 +103,7 @@ namespace BlackOut
 
         private void btnContinue_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -257,7 +255,7 @@ namespace BlackOut
 
         private void btnOtherGames_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-        	 try
+            try
             {
                 MarketplaceSearchTask task = new MarketplaceSearchTask();
                 task.ContentType = MarketplaceContentType.Applications;
@@ -268,6 +266,11 @@ namespace BlackOut
             {
                 System.Windows.MessageBox.Show("Could not open the marketplace on the phone...");
             }
+        }
+
+        private void panorama_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        {
+            panorama.DefaultItem = panorama.Items[App.MainMenuSelectedIndex];
         }
     }
 }

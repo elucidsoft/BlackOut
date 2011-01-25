@@ -138,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="levels.dat" />
+    <Content Include="SplashScreenImage.jpg" />
     <Content Include="swoosh1.wav" />
     <Content Include="swoosh2.wav" />
     <Content Include="tile_off.wav" />

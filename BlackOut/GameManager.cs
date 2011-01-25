@@ -393,6 +393,7 @@ namespace BlackOut
 
         private void Reset()
         {
+            _usedHints.Clear();
             _gameState.Seconds = 0;
             _gameState.Moves = 0;
             _gameState.HintsUsed = 0;

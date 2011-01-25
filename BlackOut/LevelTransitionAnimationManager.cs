@@ -11,6 +11,8 @@ using System.Windows.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
+using System.Windows.Threading;
+using System.Threading;
 
 namespace BlackOut
 {
@@ -24,6 +26,7 @@ namespace BlackOut
         private SoundEffect _swooshSound1 = null;
         private SoundEffect _swooshSound2 = null;
         private float volume = 0;
+        private Action _rotateAction;
 
         public LevelTransitionAnimationManager(GameManager gameManager, Block[,] board)
         {
@@ -47,16 +50,19 @@ namespace BlackOut
                 {
                     _board[column, row].FlashOnAnimation.Begin();
                     _board[column, row].FlashOnAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
-                    if (_gameManager.GameData.GameSettings.PlaySounds)
-                    {
-                        _swooshSound2.Play(1.00f, Convert.ToSingle(1 - (row + 1) * .10), 0);
-                    }
 
-                    _board[column, row].TurnLeftAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime);
+                    _board[column, row].TurnLeftAnimation.BeginTime = TimeSpan.FromMilliseconds(startTime + 250);
                     _board[column, row].TurnLeftAnimation.Begin();
+                }
+
+                if (_gameManager.GameData.GameSettings.PlaySounds)
+                {
+                    _swooshSound2.Play(1.00f, Convert.ToSingle(1 - (row + 1) * .10), 0);
                 }
             }
         }
+
+       
 
         private int FlashLeftRight(int startTime, int speed)
         {
@@ -79,13 +85,17 @@ namespace BlackOut
             return delay;
         }
 
-        public int Begin(int startTime, int speed, Action action)
+        public void Begin(int startTime, int speed, Action action)
+        {
+            _action = action;
+            RotateBoardBlocks(0);
+            StartFlashRowBlocks(startTime, speed);
+        }
+
+        private int StartFlashRowBlocks(int startTime, int speed)
         {
             int delay = 0;
             TimeSpan beginTime = new TimeSpan();
-            _action = action;
-
-            RotateBoardBlocks(0);
             for (int i = 0; i < 5; i++)
             {
                 beginTime = TimeSpan.FromMilliseconds(startTime) + TimeSpan.FromMilliseconds(delay);
@@ -99,7 +109,6 @@ namespace BlackOut
 
                 FlashRowBlocks(beginTime, i);
             }
-
             return delay;
         }
 
