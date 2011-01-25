@@ -26,7 +26,6 @@ namespace BlackOut
         private SoundEffect _swooshSound1 = null;
         private SoundEffect _swooshSound2 = null;
         private float volume = 0;
-        private Action _rotateAction;
 
         public LevelTransitionAnimationManager(GameManager gameManager, Block[,] board)
         {

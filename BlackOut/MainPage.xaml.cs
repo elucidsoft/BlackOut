@@ -34,6 +34,7 @@ namespace BlackOut
                 App.GameManager.GameData.GameSettings.BackgroundColor = Resources["PhoneAccentColor"].ToString();
             }
 
+            LoadDifficulty();
             ShowContinue();
             LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
         }
@@ -68,11 +69,12 @@ namespace BlackOut
         {
             if (App.GameManager.GameData.GameState.Seconds > 0)
             {
-                btnContinue.Visibility = Visibility.Visible;
+                tbDifficulty.Text = App.GameManager.GameData.DifficultyString();
+                grdContinue.Visibility = Visibility.Visible;
             }
             else
             {
-                btnContinue.Visibility = Visibility.Collapsed;
+                grdContinue.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -109,7 +111,7 @@ namespace BlackOut
         private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             MessageBoxResult result = MessageBoxResult.Cancel;
-            if (App.GameManager.GameData.HighestLevel > 1)
+            if (App.GameManager.GameData.GameState.Seconds > 0 || App.GameManager.GameData.GameState.Moves > 0)
             {
                 result = MessageBox.Show("You have an existing game, starting a new one will clear the progress of the previous!", "", MessageBoxButton.OKCancel);
             }
@@ -118,15 +120,14 @@ namespace BlackOut
             {
                 App.GameManager.GameData.HighestLevel = 1;
                 App.GameManager.GameData.Scores.Clear();
+
+                SetDifficulty();
+                App.GameManager.ReInitialize();
+                GameData.LoadPreBuiltLevels(App.GameManager.GameData);
+                //GameData.LoadCustomLevels(App.GameManager.GameData);
+                App.GameManager.Start(1);
+                NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
             }
-
-
-            SetDifficulty();
-            App.GameManager.ReInitialize();
-            GameData.LoadPreBuiltLevels(App.GameManager.GameData);
-            //GameData.LoadCustomLevels(App.GameManager.GameData);
-            App.GameManager.Start(1);
-            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
         }
 
         private void SetDifficulty()
@@ -271,6 +272,15 @@ namespace BlackOut
         private void panorama_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             panorama.DefaultItem = panorama.Items[App.MainMenuSelectedIndex];
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (App.MainMenuSelectedIndex == 1)
+            {
+                e.Cancel = true;
+                NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
+            }
         }
     }
 }

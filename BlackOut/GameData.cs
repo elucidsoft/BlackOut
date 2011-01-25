@@ -178,5 +178,20 @@ namespace BlackOut
 
 
         }
+
+        public string DifficultyString()
+        {
+            switch (Difficulty)
+            {
+                case 0:
+                    return "Exert";
+                case 1:
+                    return "Easy";
+                case 2:
+                    return "Normal";
+            }
+
+            return "";
+        }
     }
 }

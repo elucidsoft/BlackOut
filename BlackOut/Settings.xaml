@@ -43,7 +43,7 @@
 				<toolkit:ToggleSwitch x:Name="tglShowMoveCounter" Header="Show Move Counter" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Click="tglShowMoveCounter_Click"/>
 				<toolkit:ToggleSwitch x:Name="tglShowTimer" Header="Show Timer" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" Click="tglShowTimer_Click"/>
 				<toolkit:ToggleSwitch x:Name="tglShowLevel" Header="Show Level" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowLevel_Click"/>
-				<toolkit:ToggleSwitch x:Name="tglShowHints" Header="Show Hints" Margin="0" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowHints_Click"/>
+				<toolkit:ToggleSwitch x:Name="tglShowHints" Header="Hints" Margin="0" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowHints_Click"/>
 				<Button Content="Clear Scores" Margin="0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="80" x:Name="btnClearHighScores" Click="btnClearHighScores_Click" Width="254" HorizontalAlignment="Left" />
 
 			</StackPanel>

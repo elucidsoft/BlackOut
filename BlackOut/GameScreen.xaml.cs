@@ -90,7 +90,7 @@ namespace BlackOut
             abiBtnPrev.IsEnabled = false;
             abiBtnNext.IsEnabled = false;
 
-            if (hintMax > 0)
+            if (hintMax > 0 && App.GameManager.GameData.GameSettings.ShowHintCount == true)
             {
                 abiBtnHint.IsEnabled = true;
             }
@@ -227,7 +227,12 @@ namespace BlackOut
         private void appBarMnuHighScores_Click(object sender, System.EventArgs e)
         {
             App.MainMenuSelectedIndex = 1;
-            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+            NavigationService.GoBack();
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            App.GameManager.Pause();
         }
     }
 }

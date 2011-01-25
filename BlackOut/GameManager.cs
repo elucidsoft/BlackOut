@@ -44,8 +44,10 @@ namespace BlackOut
         private SoundEffect _soundEffectTileOn = null;
         private SoundEffect _soundEffectTileOff = null;
 
+        private DispatcherTimer _audioTimer;
         private LevelTransitionAnimationManager _levelTransitionAnimationManager;
         private ResetBoardAnimationManager _resetBoardAnimationManager;
+        private bool _paused = false;
 
         #region Initialization/Constructor/Begin/Reset
 
@@ -54,12 +56,7 @@ namespace BlackOut
             _gameData = gameData;
             _gameState = gameData.GameState;
 
-            DispatcherTimer audioTimer = new DispatcherTimer();
-            audioTimer.Interval = TimeSpan.FromMilliseconds(500);
-            audioTimer.Start();
-            audioTimer.Tick +=new EventHandler((object o, EventArgs e) => {
-                FrameworkDispatcher.Update();                
-            });
+            SetupAudioTimer();
             
             using (Stream stream = TitleContainer.OpenStream("tile_on.wav"))
                 _soundEffectTileOff = SoundEffect.FromStream(stream);
@@ -71,11 +68,22 @@ namespace BlackOut
             _timer = new Timer(tcb, null, Timeout.Infinite, Timeout.Infinite);
         }
 
+        private void SetupAudioTimer()
+        {
+            _audioTimer = new DispatcherTimer();
+            _audioTimer.Interval = TimeSpan.FromMilliseconds(500);
+            _audioTimer.Tick += new EventHandler((object o, EventArgs e) =>
+            {
+                FrameworkDispatcher.Update();
+            });
+        }
+
         public void Initialize(Grid grid)
         {
             InitializeBlocks();
             _grid = grid;
             InitializeGridBlocks();
+            _audioTimer.Start();
             _timer.Change(1000, 1000);
         }
 
@@ -400,6 +408,13 @@ namespace BlackOut
 
             if (OnResetBoardCompleted != null)
                 OnResetBoardCompleted(this, EventArgs.Empty);
+        }
+
+        public void Pause()
+        {
+            _paused = true;
+            _timer.Change(Timeout.Infinite, Timeout.Infinite);
+            _audioTimer.Stop();
         }
 
         internal void BlockClicked(int row, int column, bool blockIsOn)

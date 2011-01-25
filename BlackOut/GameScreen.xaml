@@ -12,7 +12,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White">
+    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White" BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="0.9" BackgroundColor="Black" ForegroundColor="White">
             <shell:ApplicationBar.MenuItems>
