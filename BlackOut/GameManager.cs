@@ -47,7 +47,6 @@ namespace BlackOut
         private DispatcherTimer _audioTimer;
         private LevelTransitionAnimationManager _levelTransitionAnimationManager;
         private ResetBoardAnimationManager _resetBoardAnimationManager;
-        private bool _paused = false;
 
         #region Initialization/Constructor/Begin/Reset
 
@@ -412,9 +411,14 @@ namespace BlackOut
 
         public void Pause()
         {
-            _paused = true;
             _timer.Change(Timeout.Infinite, Timeout.Infinite);
             _audioTimer.Stop();
+        }
+
+        public void Resume()
+        {
+            _timer.Change(250, 1000);
+            _audioTimer.Start();
         }
 
         internal void BlockClicked(int row, int column, bool blockIsOn)

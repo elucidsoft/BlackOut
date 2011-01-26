@@ -18,6 +18,7 @@ namespace BlackOut
     public partial class GameScreen : PhoneApplicationPage
     {
         bool isDirty = false;
+        bool adOverlayOpened = false;
 
         public GameScreen()
         {
@@ -26,7 +27,7 @@ namespace BlackOut
 //#if DEBUG 
 //            adControl.TestMode = true;
 //#else
-//            adControl.TestMode = false;
+//            adControl. = false;
 //#endif
             
             App.GameManager.Initialize(grid);
@@ -234,7 +235,41 @@ namespace BlackOut
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (adOverlayOpened)
+            {
+                EnableDisableAppBars(true);
+                UpdatePreviousAndNextButtons();
+                App.GameManager.Resume();
+                adOverlayOpened = false;
+            }
+            else
+            {
+                App.GameManager.Pause();
+            }
+        }
+
+        private void adControl_MMOverlayOpened(object sender, EventArgs e)
+        {
+            adOverlayOpened = true;
+            EnableDisableAppBars(false);
             App.GameManager.Pause();
+        }
+
+        private void EnableDisableAppBars(bool state)
+        {
+            ApplicationBarIconButton abiBtnPrev = ((ApplicationBarIconButton)ApplicationBar.Buttons[0]);
+            ApplicationBarIconButton abiBtnNext = ((ApplicationBarIconButton)ApplicationBar.Buttons[1]);
+            ApplicationBarIconButton abiBtnReset = ((ApplicationBarIconButton)ApplicationBar.Buttons[2]);
+            ApplicationBarIconButton abiBtnHint = ((ApplicationBarIconButton)ApplicationBar.Buttons[3]);
+            ApplicationBarMenuItem abmItmMainMenu = ((ApplicationBarMenuItem)ApplicationBar.MenuItems[0]);
+            ApplicationBarMenuItem abmItmHighScores = ((ApplicationBarMenuItem)ApplicationBar.MenuItems[1]);
+
+            abmItmMainMenu.IsEnabled = state;
+            abmItmHighScores.IsEnabled = state;
+            abiBtnReset.IsEnabled = state;
+            abiBtnHint.IsEnabled = state;
+            abiBtnPrev.IsEnabled = state;
+            abiBtnNext.IsEnabled = state;
         }
     }
 }

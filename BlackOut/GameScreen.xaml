@@ -5,7 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"
+    xmlns:ad="clr-namespace:mmiWP7SDK;assembly=WP7SDK"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -26,7 +26,15 @@
     </phone:PhoneApplicationPage.ApplicationBar>
     <StackPanel Margin="0,0,0,72" Orientation="Vertical" Background="Black">
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80">
-            <Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" /> 
+        	<Grid>
+<!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
+        		<ad:MMAdView x:Name="adControl" Height="80" Width="480"  RefreshTimer="60" AdType="MMBannerAdTop" Apid="29950" MMOverlayOpened="adControl_MMOverlayOpened" />
+        		<Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="Black" Width="80"/>
+        		<Rectangle Fill="Black" HorizontalAlignment="Right" Stroke="Black" Width="80"/>
+        		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="12" VerticalAlignment="Bottom"/>
+        		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="15" VerticalAlignment="Top"/>
+        	</Grid>
+            <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
         </Grid>
         <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid" Margin="0,13,0,0">
