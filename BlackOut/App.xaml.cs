@@ -12,8 +12,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-//using Microsoft.Advertising.Mobile.UI;
+using Microsoft.Advertising.Mobile.UI;
 using Microsoft.Phone.Notification;
+
 
 namespace BlackOut
 {
@@ -142,11 +143,11 @@ namespace BlackOut
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
 
-//#if DEBUG
-//            AdControl.TestMode = true;
-//#else
-//            AdControl.TestMode = false;
-//#endif
+#if DEBUG
+            AdControl.TestMode = true;
+#else
+            AdControl.TestMode = false;
+#endif
         }
 
         // Do not add any additional code to this method

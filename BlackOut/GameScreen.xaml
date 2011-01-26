@@ -5,8 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-     xmlns:AldarIT_SuperAds="clr-namespace:AldarIT.SuperAds;assembly=AldarIT.SuperAds" 
-    xmlns:AldarIT_SuperAds_AdProviders="clr-namespace:AldarIT.SuperAds.AdProviders;assembly=AldarIT.SuperAds"
+    xmlns:Ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -26,13 +25,8 @@
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     <StackPanel Margin="0,0,0,72" Orientation="Vertical" Background="Black">
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,20,12,0" Height="60">
-            <AldarIT_SuperAds:AdControl x:Name="adControl" VerticalAlignment="Top">
-                <AldarIT_SuperAds:AdControl.AdProviders>
-                    <AldarIT_SuperAds_AdProviders:AdmobAdProvider PublisherID="a14c5eede2e2f35" Priority="1"/>
-                    <AldarIT_SuperAds_AdProviders:SmaatoAdProvider AdSpaceID="65736516" PublisherID="923832900" Priority="0"/>
-                </AldarIT_SuperAds:AdControl.AdProviders>
-            </AldarIT_SuperAds:AdControl>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80">
+            <Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" /> 
         </Grid>
         <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid" Margin="0,13,0,0">

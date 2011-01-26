@@ -321,8 +321,8 @@
 			</controls:Panorama.Background>
 			<controls:PanoramaItem x:Name="panItemGame" Header="game" Width="434" FontSize="24" Height="617" Style="{StaticResource PanoramaItemStyle1}" Foreground="#DEFFFFFF">
 				<Grid HorizontalAlignment="Left" Width="422">
-					<Grid x:Name="grdContinue" Margin="11,202,62,0" Height="104" VerticalAlignment="Top">
-						<HyperlinkButton x:Name="btnContinue" Content="continue game..." FontSize="48" HorizontalAlignment="Right" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click" Width="341" Margin="0,2,8,47"/>
+					<Grid x:Name="grdContinue" Margin="11,207,62,0" Height="104" VerticalAlignment="Top">
+						<HyperlinkButton x:Name="btnContinue" Content="continue game..." FontSize="48" Style="{StaticResource HyperlinkButtonStyle1}" Click="btnContinue_Click" Margin="8,2,17,47"/>
 						<TextBlock Margin="44,0,0,1" TextWrapping="Wrap" Text="Difficulty:" FontSize="24" FontFamily="Segoe WP Semibold" Foreground="#8CFFFFFF" HorizontalAlignment="Left" Width="114" Height="36" VerticalAlignment="Bottom"/>
 						<TextBlock x:Name="tbDifficulty" Margin="0,0,67,0" TextWrapping="Wrap" FontSize="24" FontFamily="Segoe WP Semibold" Foreground="#8CFFFFFF" Height="36" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="114" Text="Normal"/>
 					</Grid>

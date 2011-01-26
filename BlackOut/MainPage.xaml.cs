@@ -110,24 +110,26 @@ namespace BlackOut
 
         private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBoxResult.Cancel;
             if (App.GameManager.GameData.GameState.Seconds > 0 || App.GameManager.GameData.GameState.Moves > 0)
             {
-                result = MessageBox.Show("You have an existing game, starting a new one will clear the progress of the previous!", "", MessageBoxButton.OKCancel);
+                if (MessageBox.Show("You have an existing game, starting a new one will clear the progress of the previous!", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                {
+                    App.GameManager.GameData.HighestLevel = 1;
+                    App.GameManager.GameData.Scores.Clear();
+                }
+                else
+                {
+                    return;
+                }
             }
 
-            if (result == MessageBoxResult.OK)
-            {
-                App.GameManager.GameData.HighestLevel = 1;
-                App.GameManager.GameData.Scores.Clear();
+            SetDifficulty();
+            App.GameManager.ReInitialize();
+            GameData.LoadPreBuiltLevels(App.GameManager.GameData);
+            //GameData.LoadCustomLevels(App.GameManager.GameData);
+            App.GameManager.Start(1);
+            NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
 
-                SetDifficulty();
-                App.GameManager.ReInitialize();
-                GameData.LoadPreBuiltLevels(App.GameManager.GameData);
-                //GameData.LoadCustomLevels(App.GameManager.GameData);
-                App.GameManager.Start(1);
-                NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
-            }
         }
 
         private void SetDifficulty()
@@ -217,7 +219,7 @@ namespace BlackOut
             {
                 EmailComposeTask emailTask = new EmailComposeTask();
                 emailTask.To = "support@elucidsoft.com";
-                emailTask.Subject = "Hanoi Support";
+                emailTask.Subject = "BlackOut Support";
                 emailTask.Show();
             }
             catch

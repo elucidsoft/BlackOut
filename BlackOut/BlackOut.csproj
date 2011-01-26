@@ -50,8 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AldarIT.SuperAds">
-      <HintPath>Shared\AldarIT.SuperAds.dll</HintPath>
+    <Reference Include="Microsoft.Advertising.Mobile.UI">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Advertising SDK for Windows Phone 7\Microsoft.Advertising.Mobile.UI.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />

@@ -23,12 +23,12 @@ namespace BlackOut
         {
             InitializeComponent();
 
-#if DEBUG 
-            adControl.TestMode = true;
-#else
-            adControl.TestMode = false;
-#endif
-
+//#if DEBUG 
+//            adControl.TestMode = true;
+//#else
+//            adControl.TestMode = false;
+//#endif
+            
             App.GameManager.Initialize(grid);
             App.GameManager.DisplayGrid(false);
             isDirty = true;
@@ -64,6 +64,8 @@ namespace BlackOut
             tbHints.Text = String.Format("{0}/{1}", App.GameManager.HintsUsed, App.GameManager.HintsMax);
             UpdatePreviousAndNextButtons();
             isDirty = false;
+
+            
         }
 
         void GameManager_OnResetBoardCompleted(object sender, EventArgs e)
