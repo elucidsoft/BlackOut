@@ -27,7 +27,7 @@ namespace BlackOut
 //#if DEBUG 
 //            adControl.TestMode = true;
 //#else
-//            adControl. = false;
+//            adControl.TestMode = false;
 //#endif
             
             App.GameManager.Initialize(grid);

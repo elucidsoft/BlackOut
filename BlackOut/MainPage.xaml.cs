@@ -298,7 +298,7 @@ namespace BlackOut
 
         private void appBarBtnHowTo_Click(object sender, System.EventArgs e)
         {
-        	// TODO: Add event handler implementation here.
+            NavigationService.Navigate(new Uri("/HowTo.xaml", UriKind.Relative));
         }
     }
 }
