@@ -18,7 +18,7 @@ namespace BlackOut
     public partial class GameScreen : PhoneApplicationPage
     {
         bool isDirty = false;
-        bool adOverlayOpened = false;
+        //bool adOverlayOpened = false;
 
         public GameScreen()
         {
@@ -235,24 +235,24 @@ namespace BlackOut
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (adOverlayOpened)
-            {
-                EnableDisableAppBars(true);
-                UpdatePreviousAndNextButtons();
-                App.GameManager.Resume();
-                adOverlayOpened = false;
-            }
-            else
-            {
-                App.GameManager.Pause();
-            }
+            //if (adOverlayOpened)
+            //{
+            //    EnableDisableAppBars(true);
+            //    UpdatePreviousAndNextButtons();
+            //    App.GameManager.Resume();
+            //    adOverlayOpened = false;
+            //}
+            //else
+            //{
+            //    App.GameManager.Pause();
+            //}
         }
 
         private void adControl_MMOverlayOpened(object sender, EventArgs e)
         {
-            adOverlayOpened = true;
-            EnableDisableAppBars(false);
-            App.GameManager.Pause();
+            //adOverlayOpened = true;
+            //EnableDisableAppBars(false);
+            //App.GameManager.Pause();
         }
 
         private void EnableDisableAppBars(bool state)
@@ -270,6 +270,16 @@ namespace BlackOut
             abiBtnHint.IsEnabled = state;
             abiBtnPrev.IsEnabled = state;
             abiBtnNext.IsEnabled = state;
+        }
+
+        private void adControl_AdEngaged(object sender, EventArgs e)
+        {
+            App.GameManager.Pause();
+        }
+
+        private void adControl_AdDisengaged(object sender, EventArgs e)
+        {
+            App.GameManager.Resume();
         }
     }
 }

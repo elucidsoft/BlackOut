@@ -5,7 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ad="clr-namespace:mmiWP7SDK;assembly=WP7SDK"
+    xmlns:Ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -27,12 +27,13 @@
     <StackPanel Orientation="Vertical" Background="Black" Margin="0,0,0,-69">
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80">
         	<Grid>
-<!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
-        		<ad:MMAdView x:Name="adControl" Height="80" Width="480"  RefreshTimer="60" AdType="MMBannerAdTop" Apid="29950" MMOverlayOpened="adControl_MMOverlayOpened" />
+                <Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" AdEngaged="adControl_AdEngaged" AdDisengaged="adControl_AdDisengaged" />
+        		<!--<ad:MMAdView x:Name="adControl" Height="80" Width="480"  RefreshTimer="60" AdType="MMBannerAdTop" Apid="29950" MMOverlayOpened="adControl_MMOverlayOpened" />
         		<Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="Black" Width="80"/>
         		<Rectangle Fill="Black" HorizontalAlignment="Right" Stroke="Black" Width="80"/>
         		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="12" VerticalAlignment="Bottom"/>
         		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="15" VerticalAlignment="Top"/>
+                -->
              </Grid>
             <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
         </Grid>

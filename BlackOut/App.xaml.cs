@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Phone.Notification;
+using Microsoft.Advertising.Mobile.UI;
 
 
 namespace BlackOut
@@ -142,11 +143,11 @@ namespace BlackOut
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
 
-//#if DEBUG
-//            AdControl.TestMode = true;
-//#else
-//            AdControl.TestMode = false;
-//#endif
+#if DEBUG
+                        AdControl.TestMode = true;
+#else
+            AdControl.TestMode = false;
+#endif
         }
 
         // Do not add any additional code to this method
