@@ -55,6 +55,7 @@ namespace BlackOut
             }
             else
             {
+                ApplicationBar.IsVisible = true;
                 LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
             }
 
@@ -63,11 +64,12 @@ namespace BlackOut
             LoadDifficulty();
 
             ShowContinue();
+            ApplicationBar.IsVisible = true;
         }
 
         private void ShowContinue()
         {
-            if (App.GameManager.GameData.GameState.Seconds > 0)
+            if (IsExistingGame())
             {
                 tbDifficulty.Text = App.GameManager.GameData.DifficultyString();
                 grdContinue.Visibility = Visibility.Visible;
@@ -76,6 +78,11 @@ namespace BlackOut
             {
                 grdContinue.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private static bool IsExistingGame()
+        {
+            return App.GameManager.GameData.GameState.Seconds > 0 || App.GameManager.GameData.GameState.Level > 1 || App.GameManager.GameData.HighestLevel > 1 || App.GameManager.GameData.GameState.Moves > 0;
         }
 
         #endregion
@@ -110,7 +117,7 @@ namespace BlackOut
 
         private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (App.GameManager.GameData.GameState.Seconds > 0 || App.GameManager.GameData.GameState.Moves > 0)
+            if (IsExistingGame())
             {
                 if (MessageBox.Show("You have an existing game, starting a new one will clear the progress of the previous!", "", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                 {
@@ -148,10 +155,7 @@ namespace BlackOut
             }
         }
 
-        private void btnChangeColor_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/ChangeColor.xaml", UriKind.Relative));
-        }
+
 
         private void btnDesignBoard_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -160,15 +164,11 @@ namespace BlackOut
             NavigationService.Navigate(new Uri("/CreateLevel.xaml", UriKind.Relative));
         }
 
-        private void btnSettings_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
-        }
-
         void PhaseBackgroundAnimation_Completed(object sender, EventArgs e)
         {
             panItemScores.Opacity = 1;
             panItemAbout.Opacity = 1;
+            
             _phaseBackgroundAnimation.Completed -= new EventHandler(PhaseBackgroundAnimation_Completed);
         }
 
@@ -283,6 +283,22 @@ namespace BlackOut
                 e.Cancel = true;
                 NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
             }
+        }
+
+        private void appBarBtnTheme_Click(object sender, System.EventArgs e)
+        {
+            ApplicationBar.IsVisible = false;
+            NavigationService.Navigate(new Uri("/ChangeColor.xaml", UriKind.Relative));
+        }
+
+        private void appBarBtnSettings_Click(object sender, System.EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
+        }
+
+        private void appBarBtnHowTo_Click(object sender, System.EventArgs e)
+        {
+        	// TODO: Add event handler implementation here.
         }
     }
 }

@@ -63,9 +63,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
-    <Reference Include="WP7SDK">
-      <HintPath>Shared\WP7SDK.dll</HintPath>
-    </Reference>
+    <Reference Include="WP7SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -137,6 +135,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icons\appbar.feature.settings.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="icons\appbar.questionmark.rest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="levels.dat" />
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="swoosh1.wav" />
@@ -190,6 +194,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icons\color_light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="main_bg.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

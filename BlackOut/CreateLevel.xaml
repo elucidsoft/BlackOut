@@ -10,8 +10,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress" Unloaded="PhoneApplicationPage_Unloaded" Background="Black">
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" shell:SystemTray.IsVisible="True">
 	<phone:PhoneApplicationPage.Foreground>
 		<SolidColorBrush Color="White"/>
 	</phone:PhoneApplicationPage.Foreground>
