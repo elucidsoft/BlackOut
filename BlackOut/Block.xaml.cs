@@ -99,51 +99,39 @@ namespace BlackOut
         {
             if (!TestBlock)
             {
-               App.GameManager.BlockClicked(row, column, !isBlockLit);
+                App.GameManager.BlockClicked(row, column, !isBlockLit);
             }
             else
             {
                 if (!isBlockLit)
-                    TurnOn();
+                    TurnOn(false);
                 else
-                    TurnOff();
+                    TurnOff(false);
 
                 App.GameManager.TestBlockClicked(row, column);
             }
         }
 
-        public void TurnOn()
+        public void TurnOn(bool forceOn)
         {
-
             HintAnimation.Stop();
             ellipse.Opacity = 0;
 
-            if (!isBlockLit)
-            {
-                isBlockLit = true;
-
+            if(!isBlockLit || forceOn)
                 TurnOnAnimation.Begin();
-                //App.GameManager.soundEffectTileOn.Play(.75f, 0, 0);
-                //  TurnOnAnimation.SkipToFill();
-            }
 
+            isBlockLit = true;
         }
 
-        public void TurnOff()
+        public void TurnOff(bool forceOff)
         {
-
             HintAnimation.Stop();
             ellipse.Opacity = 0;
-
+            
+            if(isBlockLit || forceOff)
+                TurnOffAnimation.Begin();
 
             isBlockLit = false;
-
-    
-                TurnOffAnimation.Begin();
-               // App.GameManager.soundEffectTileOff.Play(.75f, 0, 0);
-
-                //TurnOffAnimation.SkipToFill();
-            
         }
 
         public void FlashOn()
@@ -160,7 +148,7 @@ namespace BlackOut
             HintAnimation.AutoReverse = true;
 
             ShowHintAnimation.Begin();
-            
+
         }
 
         void ShowHintAnimation_Completed(object sender, EventArgs e)

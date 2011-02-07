@@ -50,8 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Advertising.Mobile.UI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Advertising SDK for Windows Phone 7\Microsoft.Advertising.Mobile.UI.dll</HintPath>
+    <Reference Include="AdDuplex.AdControl.Silverlight">
+      <HintPath>Shared\AdDuplex.AdControl.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone" />
@@ -62,12 +62,14 @@
     <Reference Include="Polenter.SharpSerializer.Silverlight">
       <HintPath>Shared\Polenter.SharpSerializer.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
+    <Reference Include="WP7SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -159,7 +161,9 @@
     <Content Include="tile_off.wav" />
     <Content Include="tile_on.wav" />
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -206,6 +210,8 @@
     <Resource Include="02.jpg" />
     <Resource Include="03.jpg" />
     <Resource Include="main_bg.png" />
+    <Resource Include="test.jpg" />
+    <Resource Include="test.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

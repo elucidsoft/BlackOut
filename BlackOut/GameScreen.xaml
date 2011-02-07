@@ -5,7 +5,8 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Ad="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI"
+    xmlns:ad="clr-namespace:mmiWP7SDK;assembly=WP7SDK"
+    xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.AdControl.Silverlight"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -26,53 +27,57 @@
     </phone:PhoneApplicationPage.ApplicationBar>
     <StackPanel Orientation="Vertical" Background="Black" Margin="0,0,0,-69">
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80">
-        	<Grid>
-                <Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" AdEngaged="adControl_AdEngaged" AdDisengaged="adControl_AdDisengaged" />
-        		<!--<ad:MMAdView x:Name="adControl" Height="80" Width="480"  RefreshTimer="60" AdType="MMBannerAdTop" Apid="29950" MMOverlayOpened="adControl_MMOverlayOpened" />
-        		<Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="Black" Width="80"/>
-        		<Rectangle Fill="Black" HorizontalAlignment="Right" Stroke="Black" Width="80"/>
-        		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="12" VerticalAlignment="Bottom"/>
-        		<Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="15" VerticalAlignment="Top"/>
-                -->
-             </Grid>
+            <Grid>
+                <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" AdEngaged="adControl_AdEngaged" AdDisengaged="adControl_AdDisengaged" />-->
+                <Grid x:Name="adGrid" Visibility="Collapsed">
+                    <ad:MMAdView x:Name="adControl" Height="80"  Width="480" AdType="MMBannerAdTop" RefreshTimer="-1"  MMOverlayOpened="adControl_MMOverlayOpened"  />
+                    <Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="Black" Width="80"/>
+                    <Rectangle Fill="Black" HorizontalAlignment="Right" Stroke="Black" Width="80"/>
+                    <Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="12" VerticalAlignment="Bottom"/>
+                    <Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="15" VerticalAlignment="Top"/>
+                </Grid>
+                <Grid x:Name="adDuplexGrid" Visibility="Collapsed">
+                    <adduplex:AdControl x:Name="adDuplex" xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.AdControl.Silverlight" Grid.Row="2" AppId="1191"/>
+                </Grid>
+            </Grid>
             <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
         </Grid>
         <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid" Margin="0,13,0,0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="96" />
-				<RowDefinition Height="96" />
-				<RowDefinition Height="96" />
-				<RowDefinition Height="96" />
-				<RowDefinition Height="96" />
-			</Grid.RowDefinitions>
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="96" />
-				<ColumnDefinition Width="96" />
-				<ColumnDefinition Width="96" />
-				<ColumnDefinition Width="96" />
-				<ColumnDefinition Width="96" />
-			</Grid.ColumnDefinitions>
-		</Grid>
-		<Grid Height="176" Background="Black">
-			<Grid x:Name="grdLevelLabel" HorizontalAlignment="Right" Height="44" Margin="0,5,6,0" VerticalAlignment="Top" Width="178">
-				<TextBlock HorizontalAlignment="Left" Margin="0,2,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Foreground="White" d:LayoutOverrides="HorizontalAlignment"/>
-				<TextBlock Margin="107,0,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Foreground="White" />
-			</Grid>
-			<Grid x:Name="grdMovesLabel" HorizontalAlignment="Left" Margin="8,51,0,47" Width="225">
-				<TextBlock Margin="0,0,94,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="45" VerticalAlignment="Top" Foreground="White" />
-				<TextBlock Margin="0,3,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Right" Width="94" Height="75" VerticalAlignment="Top" x:Name="tbMoves" Foreground="White" />
-			</Grid>
-			<Grid x:Name="grdHintsLabel" HorizontalAlignment="Right" Margin="0,51,6,83" Width="178">
-				<TextBlock TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88" Foreground="White"/>
-				<TextBlock TextWrapping="Wrap" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" x:Name="tbHints" Foreground="White" Text="0" />
-			</Grid>
-			<Grid x:Name="grdTimeLabel" Height="45" Margin="10,7,197,0" VerticalAlignment="Top">
-				<TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Text="Time" TextWrapping="Wrap" Width="125" Height="45" VerticalAlignment="Top" Foreground="White" />
-				<TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="129,0,0,4" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" x:Name="tbTime" Foreground="White" />
-			</Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="96" />
+                <RowDefinition Height="96" />
+                <RowDefinition Height="96" />
+                <RowDefinition Height="96" />
+                <RowDefinition Height="96" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="96" />
+                <ColumnDefinition Width="96" />
+                <ColumnDefinition Width="96" />
+                <ColumnDefinition Width="96" />
+                <ColumnDefinition Width="96" />
+            </Grid.ColumnDefinitions>
+        </Grid>
+        <Grid Height="176" Background="Black">
+            <Grid x:Name="grdLevelLabel" HorizontalAlignment="Right" Height="44" Margin="0,5,6,0" VerticalAlignment="Top" Width="178">
+                <TextBlock HorizontalAlignment="Left" Margin="0,2,0,0" TextWrapping="Wrap" Text="Level" CacheMode="BitmapCache" Width="88" FontSize="32" FontFamily="Segoe WP SemiLight" Foreground="White" d:LayoutOverrides="HorizontalAlignment"/>
+                <TextBlock Margin="107,0,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="71" x:Name="tbLevel" Foreground="White" />
+            </Grid>
+            <Grid x:Name="grdMovesLabel" HorizontalAlignment="Left" Margin="8,51,0,47" Width="225">
+                <TextBlock Margin="0,0,94,0" TextWrapping="Wrap" Text="Moves" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="45" VerticalAlignment="Top" Foreground="White" />
+                <TextBlock Margin="0,3,0,0" TextWrapping="Wrap" Text="0" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" RenderTransformOrigin="0.661,1.618" HorizontalAlignment="Right" Width="94" Height="75" VerticalAlignment="Top" x:Name="tbMoves" Foreground="White" />
+            </Grid>
+            <Grid x:Name="grdHintsLabel" HorizontalAlignment="Right" Margin="0,51,6,83" Width="178">
+                <TextBlock TextWrapping="Wrap" Text="Hints" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP SemiLight" Height="42" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88" Foreground="White"/>
+                <TextBlock TextWrapping="Wrap" CacheMode="BitmapCache" FontSize="32" FontFamily="Segoe WP Light" HorizontalAlignment="Right" Width="71" Height="41" VerticalAlignment="Top" x:Name="tbHints" Foreground="White" Text="0" />
+            </Grid>
+            <Grid x:Name="grdTimeLabel" Height="45" Margin="10,7,197,0" VerticalAlignment="Top">
+                <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP SemiLight" FontSize="32" HorizontalAlignment="Left" Text="Time" TextWrapping="Wrap" Width="125" Height="45" VerticalAlignment="Top" Foreground="White" />
+                <TextBlock CacheMode="BitmapCache" FontFamily="Segoe WP Light" FontSize="32" HorizontalAlignment="Left" Margin="129,0,0,4" RenderTransformOrigin="0.661,1.618" Text="00:00:00" TextWrapping="Wrap" Width="144" x:Name="tbTime" Foreground="White" />
+            </Grid>
         </Grid>
 
-	</StackPanel>
+    </StackPanel>
 
 </phone:PhoneApplicationPage>

@@ -18,23 +18,24 @@ namespace BlackOut
     public partial class GameScreen : PhoneApplicationPage
     {
         bool isDirty = false;
-        //bool adOverlayOpened = false;
+        bool adOverlayOpened = false;
 
         public GameScreen()
         {
             InitializeComponent();
-
-//#if DEBUG 
-//            adControl.TestMode = true;
-//#else
-//            adControl.TestMode = false;
-//#endif
+            
+#if DEBUG 
+            adDuplex.IsTest = true;
+#else
+            adDuplex.IsTest = false;
+#endif
             
             App.GameManager.Initialize(grid);
             App.GameManager.DisplayGrid(false);
             isDirty = true;
 
             ShowLabels();
+            SetupAds();
         }
 
         private void ShowLabels()
@@ -67,6 +68,29 @@ namespace BlackOut
             isDirty = false;
 
             
+        }
+
+        private void SetupAds()
+        {
+            string apid = "29950";
+            Random rand = new Random();
+            if (rand.NextDouble() > .25)
+            {
+                adControl.Apid = apid;
+                adControl.RefreshTimer = 60;
+                adGrid.Visibility = Visibility.Visible;
+                adDuplexGrid.Visibility = Visibility.Collapsed;
+                adDuplex.IsTest = true;
+                adControl.CallForAd();
+            }
+            else
+            {
+                adGrid.Visibility = Visibility.Collapsed;
+                adControl.RefreshTimer = -1;
+                adControl.Apid = String.Empty;
+                adDuplexGrid.Visibility = Visibility.Visible;
+                adDuplex.IsTest = false;
+            }
         }
 
         void GameManager_OnResetBoardCompleted(object sender, EventArgs e)
@@ -235,24 +259,24 @@ namespace BlackOut
 
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            //if (adOverlayOpened)
-            //{
-            //    EnableDisableAppBars(true);
-            //    UpdatePreviousAndNextButtons();
-            //    App.GameManager.Resume();
-            //    adOverlayOpened = false;
-            //}
-            //else
-            //{
-            //    App.GameManager.Pause();
-            //}
+            if (adOverlayOpened)
+            {
+                EnableDisableAppBars(true);
+                UpdatePreviousAndNextButtons();
+                App.GameManager.Resume();
+                adOverlayOpened = false;
+            }
+            else
+            {
+                App.GameManager.Pause();
+            }
         }
 
         private void adControl_MMOverlayOpened(object sender, EventArgs e)
         {
-            //adOverlayOpened = true;
-            //EnableDisableAppBars(false);
-            //App.GameManager.Pause();
+            adOverlayOpened = true;
+            EnableDisableAppBars(false);
+            App.GameManager.Pause();
         }
 
         private void EnableDisableAppBars(bool state)

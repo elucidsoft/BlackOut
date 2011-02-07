@@ -215,30 +215,34 @@ namespace BlackOut
                 for (int column = 0; column < 5; column++)
                 {
                     Block block = _boardBlocks[column, row];
-                    block.SetValue(Grid.RowProperty, row);
-                    block.SetValue(Grid.ColumnProperty, column);
-                    block.Width = 88;
-                    block.Height = 88;
-                    block.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
-                    block.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
-                    block.column = column;
-                    block.row = row;
+                    if (isRefresh == false)
+                    {
+                        block.SetValue(Grid.RowProperty, row);
+                        block.SetValue(Grid.ColumnProperty, column);
+                        block.Width = 88;
+                        block.Height = 88;
+                        block.SetValue(Grid.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+                        block.SetValue(Grid.VerticalAlignmentProperty, VerticalAlignment.Center);
+                        block.column = column;
+                        block.row = row;
+
+                        RotateTransform rotateTransform = new RotateTransform();
+                        rotateTransform.Angle = 0;
+
+                        block.RenderTransform = rotateTransform;
+                    }
 
                     if (_gameState.Level == -1)
                         block.TestBlock = true;
 
-                    RotateTransform rotateTransform = new RotateTransform();
-                    rotateTransform.Angle = 0;
-
-                    block.RenderTransform = rotateTransform;
 
                     if (level[column, row] > 0)
                     {
-                        block.TurnOn();
+                        block.TurnOn(!isRefresh);
                     }
                     else
                     {
-                        block.TurnOff();
+                        block.TurnOff(!isRefresh);
                     }
                 }
             }
@@ -512,7 +516,7 @@ namespace BlackOut
 
             if (_gameData.Scores.Count < _gameState.Level)
             {
-                _gameData.Scores.Add(new Score(gs.Level, gs.Level, gs.HintsUsed, gs.Seconds));
+                _gameData.Scores.Add(new Score(gs.Moves, gs.Level, gs.HintsUsed, gs.Seconds));
             }
             else
             {

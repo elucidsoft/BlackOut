@@ -89,6 +89,11 @@
 				</Setter.Value>
 			</Setter>
 		</Style>
+		<DataTemplate x:Key="DataTemplate1">
+			<Grid Height="20" RenderTransformOrigin="-0.5,0.5" Width="243">
+				<TextBlock HorizontalAlignment="Left" Margin="0,-3,0,-4" TextWrapping="Wrap" Text="{Binding Mode=OneWay}" d:LayoutOverrides="Height" FontFamily="Segoe WP Semibold" FontSize="18.667" Foreground="White"/>
+			</Grid>
+		</DataTemplate>
 
 	</phone:PhoneApplicationPage.Resources>
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -108,21 +113,21 @@
 			</StackPanel>
 			<StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1">
 				<TextBlock TextWrapping="Wrap" Text="Please rate and review BlackOut in the Windows Phone marketplace.  You may also leave suggestions or feedback that will help us improve future versions!" VerticalAlignment="Top" FontSize="18.667" Height="78" FontFamily="Segoe WP" CacheMode="BitmapCache" d:LayoutOverrides="HorizontalAlignment" Foreground="#DEFFFFFF" />
-				<Button Content="Rate &amp; Review" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top" Height="82" x:Name="btnRateAndReview" Click="btnRateAndReview_Click" Foreground="#DEFFFFFF" />
-				<toolkit:ToggleSwitch Header="Play Sounds" Margin="0,8,0,0" VerticalAlignment="Top" Height="113" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" x:Name="tglPlaySounds" Click="tglPlaySounds_Click" Background="White" Foreground="#DEFFFFFF"/>
+				<Button Content="Rate &amp; Review" HorizontalAlignment="Left" Margin="0,8,0,0" VerticalAlignment="Top" Height="82" x:Name="btnRateAndReview" Click="btnRateAndReview_Click" Foreground="#DEFFFFFF" Style="{StaticResource ButtonWhite}" />
+				<toolkit:ToggleSwitch Header="Play Sounds" Margin="0,8,0,0" VerticalAlignment="Top" Height="113" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" x:Name="tglPlaySounds" Click="tglPlaySounds_Click" Background="White" Foreground="#DEFFFFFF" HeaderTemplate="{StaticResource DataTemplate1}"/>
 				<Grid Grid.ColumnSpan="2" Height="109" Margin="0" VerticalAlignment="Top" Name="gridSoundVolume">
 					<Slider Value="100" Maximum="100" LargeChange="25" SmallChange="5" RenderTransformOrigin="0.47,0.422" HorizontalAlignment="Right" Width="216" Name="sliderVolume" ValueChanged="sliderVolume_ValueChanged" IsEnabledChanged="sliderVolume_IsEnabledChanged" Margin="0,0,22,0" >
 						<Slider.Foreground>
 							<SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
 						</Slider.Foreground>
 					</Slider>
-					<TextBlock Margin="13,8,0,0" TextWrapping="Wrap" Text="Sound Volume" FontSize="18.667" d:LayoutOverrides="GridBox" FontFamily="Segoe WP" HorizontalAlignment="Left" Width="270" Height="32" VerticalAlignment="Top" Foreground="White" Name="lblSoundVolume" />
-					<TextBlock Margin="13,38,0,8" TextWrapping="Wrap" Text="100%" FontSize="29.333" HorizontalAlignment="Left" Width="135" FontFamily="Segoe WP SemiLight" Name="txtSliderVolume" d:LayoutOverrides="HorizontalAlignment" Foreground="White" />
+					<TextBlock Margin="13,8,0,0" TextWrapping="Wrap" Text="Sound Volume" FontSize="18.667" d:LayoutOverrides="GridBox" FontFamily="Segoe WP Semibold" HorizontalAlignment="Left" Width="270" Height="32" VerticalAlignment="Top" Foreground="White" Name="lblSoundVolume" />
+					<TextBlock Margin="13,35,0,11" TextWrapping="Wrap" Text="100%" FontSize="32" HorizontalAlignment="Left" Width="135" FontFamily="Segoe WP Light" Name="txtSliderVolume" d:LayoutOverrides="HorizontalAlignment" Foreground="#DDFFFFFF" />
 				</Grid>
-				<toolkit:ToggleSwitch x:Name="tglShowMoveCounter" Header="Show Move Counter" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Click="tglShowMoveCounter_Click" Foreground="#DEFFFFFF"/>
-				<toolkit:ToggleSwitch x:Name="tglShowTimer" Header="Show Timer" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" Click="tglShowTimer_Click" Foreground="#DEFFFFFF"/>
-				<toolkit:ToggleSwitch x:Name="tglShowLevel" Header="Show Level" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowLevel_Click" Foreground="#DEFFFFFF"/>
-				<toolkit:ToggleSwitch x:Name="tglShowHints" Header="Hints" Margin="0" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowHints_Click" Foreground="#DEFFFFFF"/>
+				<toolkit:ToggleSwitch x:Name="tglShowMoveCounter" Header="Show Move Counter" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Click="tglShowMoveCounter_Click" Foreground="#DEFFFFFF" HeaderTemplate="{StaticResource DataTemplate1}"/>
+				<toolkit:ToggleSwitch x:Name="tglShowTimer" Header="Show Timer" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" Click="tglShowTimer_Click" Foreground="#DEFFFFFF" HeaderTemplate="{StaticResource DataTemplate1}"/>
+				<toolkit:ToggleSwitch x:Name="tglShowLevel" Header="Show Level" Margin="0" Grid.ColumnSpan="2" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowLevel_Click" Foreground="#DEFFFFFF" HeaderTemplate="{StaticResource DataTemplate1}"/>
+				<toolkit:ToggleSwitch x:Name="tglShowHints" Header="Hints" Margin="0" FontSize="32" IsChecked="True" Height="120" VerticalAlignment="Bottom" Click="tglShowHints_Click" Foreground="#DEFFFFFF" HeaderTemplate="{StaticResource DataTemplate1}"/>
 				<Button Content="Clear Scores" Margin="0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" Height="80" x:Name="btnClearHighScores" Click="btnClearHighScores_Click" Width="254" HorizontalAlignment="Left" Foreground="#DEFFFFFF" Style="{StaticResource ButtonWhite}" />
 
 			</StackPanel>

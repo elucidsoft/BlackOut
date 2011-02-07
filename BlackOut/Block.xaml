@@ -52,9 +52,10 @@
 		<Storyboard x:Name="FlipAnimation">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationX)" Storyboard.TargetName="LayoutRoot">
 				<EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-				<EasingDoubleKeyFrame KeyTime="0:0:0.333" Value="-180"/>
-				<DiscreteDoubleKeyFrame KeyTime="0:0:0.5"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-100"/>
+				<EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0"/>
 			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimation Duration="0:0:0.5" To="0" Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="image" d:IsOptimized="True"/>
 		</Storyboard>
 	</UserControl.Resources>
 
@@ -65,6 +66,14 @@
     	<Grid.RenderTransform>
     		<CompositeTransform/>
     	</Grid.RenderTransform>
+        <Image x:Name="image" Source="test.png" Stretch="None" RenderTransformOrigin="-147,0">
+        	<Image.Projection>
+        		<PlaneProjection/>
+        	</Image.Projection>
+        	<Image.RenderTransform>
+        		<CompositeTransform/>
+        	</Image.RenderTransform>
+        </Image>
         <Button Width="90" Height="90" BorderThickness="0" Opacity="0" Click="Button_Click" Background="{x:Null}" />
         <Ellipse x:Name="ellipse" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="65" Height="65" StrokeThickness="0" Opacity="0" IsHitTestVisible="False">
         	<Ellipse.Fill>
