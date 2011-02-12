@@ -100,7 +100,7 @@
 			<Setter Property="Template">
 				<Setter.Value>
 					<ControlTemplate TargetType="ContentControl">
-						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Width="286"/>
+						<ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Margin="21,0,-106,0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
@@ -122,7 +122,7 @@
 								<RowDefinition Height="*"/>
 							</Grid.RowDefinitions>
 							<ContentPresenter Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0,-43,0,0" Grid.Row="1" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Grid.ColumnSpan="2"/>
-							<ContentControl x:Name="header" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Margin="5,0,-76,58" d:LayoutOverrides="GridBox" Style="{StaticResource ContentControlStyle1}">
+							<ContentControl x:Name="header" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" FontSize="{StaticResource PhoneFontSizeExtraExtraLarge}" FontFamily="{StaticResource PhoneFontFamilySemiLight}" Margin="5,0,54,58" Style="{StaticResource ContentControlStyle1}" Grid.ColumnSpan="2">
 								<ContentControl.RenderTransform>
 									<TranslateTransform x:Name="headerTransform"/>
 								</ContentControl.RenderTransform>
@@ -383,7 +383,7 @@
 					<TextBlock Height="33" Margin="39,56,0,0" TextWrapping="Wrap" Text="game options" VerticalAlignment="Top" FontSize="24" Foreground="#BEFFFFFF" FontFamily="Segoe WP Light" HorizontalAlignment="Left" Width="166"/>
 				</Grid>
 			</controls:PanoramaItem>
-			<controls:PanoramaItem x:Name="panItemScores" Header="scores" Style="{StaticResource PanoramaItemStyle1}" Margin="0,0,-15,0">
+			<controls:PanoramaItem x:Name="panItemScores" Header="high scores" Style="{StaticResource PanoramaItemStyle1}" Margin="0,0,-15,0">
 				<Grid Margin="11,0,7,0">
 					<ListBox x:Name="lstScores" Margin="0,38,8,77" Background="{x:Null}" Foreground="{x:Null}" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" HorizontalAlignment="Right" Width="391"/>
 					<Rectangle Height="43" VerticalAlignment="Top" StrokeThickness="2" Fill="#28000000" Margin="18,-9,0,0" HorizontalAlignment="Left" Width="392"/>

@@ -75,10 +75,10 @@ namespace BlackOut
             {
                 GameData gameData = GameData.LoadGameData();
                 GameManager = new GameManager(gameData);
-                if (gameData.GameState.Level > 0)
-                {
-                    GameManager.LoadLevel(gameData.GameState.Level);
-                }
+                //if (gameData.GameState.Level > 0)
+                //{
+                //    GameManager.LoadLevel(gameData.GameState.Level);
+                //}
             }
         }
 
@@ -109,9 +109,6 @@ namespace BlackOut
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            if (e.ExceptionObject.Message == "error")
-                e.Handled = true;
-
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
@@ -142,11 +139,12 @@ namespace BlackOut
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
 
-//#if DEBUG
-//                        AdControl.TestMode = true;
-//#else
-//            AdControl.TestMode = false;
-//#endif
+#if DEBUG
+            Microsoft.Advertising.Mobile.UI.AdControl.TestMode = true;
+
+#else
+            Microsoft.Advertising.Mobile.UI.AdControl.TestMode = false;
+#endif
         }
 
         // Do not add any additional code to this method

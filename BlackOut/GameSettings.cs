@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using Polenter.Serialization;
 
 namespace BlackOut
 {
@@ -20,6 +21,8 @@ namespace BlackOut
         private bool? _showHintCount;
         private bool? _showLevel;
         private double? _soundVolume;
+        private string _theme;
+        private bool _themeChanged = false;
 
         public string BackgroundColor
         {
@@ -37,6 +40,29 @@ namespace BlackOut
             {
                 _backgroundColor = value;
             }
+        }
+
+        public string Theme
+        {
+            get
+            {
+                if (_theme == null)
+                    return String.Empty;
+
+                return _theme;
+            }
+            set
+            {
+                _themeChanged = true;
+                _theme = value;
+            }
+        }
+
+        [ExcludeFromSerialization]
+        public bool ThemeChanged
+        {
+            get { return _themeChanged; }
+            set { _themeChanged = false; }
         }
 
         public bool PlaySounds

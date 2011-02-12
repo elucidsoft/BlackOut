@@ -5,8 +5,6 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ad="clr-namespace:mmiWP7SDK;assembly=WP7SDK"
-    xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.AdControl.Silverlight"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -26,21 +24,20 @@
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     <StackPanel Orientation="Vertical" Background="Black" Margin="0,0,0,-69">
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80">
-            <Grid>
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80" Width="480">
+            <Grid x:Name="adGrid" Height="80" Width="480">
                 <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" AdEngaged="adControl_AdEngaged" AdDisengaged="adControl_AdDisengaged" />-->
-                <Grid x:Name="adGrid" Visibility="Collapsed">
-                    <ad:MMAdView x:Name="adControl" Height="80"  Width="480" AdType="MMBannerAdTop" RefreshTimer="-1"  MMOverlayOpened="adControl_MMOverlayOpened"  />
-                    <Rectangle Fill="Black" HorizontalAlignment="Left" Stroke="Black" Width="80"/>
-                    <Rectangle Fill="Black" HorizontalAlignment="Right" Stroke="Black" Width="80"/>
-                    <Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="12" VerticalAlignment="Bottom"/>
-                    <Rectangle Fill="Black" Stroke="Black" Margin="80,0" Height="15" VerticalAlignment="Top"/>
+                <!--<Grid x:Name="adGrid" Visibility="Collapsed">
+                    <AldarIT_SuperAds:AdControl x:Name="adControl" VerticalAlignment="Bottom" TestMode="False" >
+                        <AldarIT_SuperAds:AdControl.AdProviders>
+                            <AldarIT_SuperAds_AdProviders:SmaatoAdProvider AdSpaceID="65737140" PublisherID="923832900" />
+                        </AldarIT_SuperAds:AdControl.AdProviders>
+                    </AldarIT_SuperAds:AdControl>
                 </Grid>
                 <Grid x:Name="adDuplexGrid" Visibility="Collapsed">
                     <adduplex:AdControl x:Name="adDuplex" xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.AdControl.Silverlight" Grid.Row="2" AppId="1191"/>
-                </Grid>
+                </Grid>-->
             </Grid>
-            <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" />-->
         </Grid>
         <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>
         <Grid Height="480" Width="480" VerticalAlignment="Top" HorizontalAlignment="Center" Background="Black" x:Name="grid" Margin="0,13,0,0">

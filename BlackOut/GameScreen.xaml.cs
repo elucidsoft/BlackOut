@@ -10,8 +10,11 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-//using Microsoft.Advertising.Mobile.UI;
+using Microsoft.Advertising.Mobile.UI;
 using Microsoft.Phone.Shell;
+using System.Windows.Threading;
+using System.Device.Location;
+using System.Diagnostics;
 
 namespace BlackOut
 {
@@ -19,17 +22,12 @@ namespace BlackOut
     {
         bool isDirty = false;
         bool adOverlayOpened = false;
+        GeoCoordinateWatcher gcw;
 
         public GameScreen()
         {
             InitializeComponent();
-            
-#if DEBUG 
-            adDuplex.IsTest = true;
-#else
-            adDuplex.IsTest = false;
-#endif
-            
+
             App.GameManager.Initialize(grid);
             App.GameManager.DisplayGrid(false);
             isDirty = true;
@@ -67,30 +65,7 @@ namespace BlackOut
             UpdatePreviousAndNextButtons();
             isDirty = false;
 
-            
-        }
 
-        private void SetupAds()
-        {
-            string apid = "29950";
-            Random rand = new Random();
-            if (rand.NextDouble() > .25)
-            {
-                adControl.Apid = apid;
-                adControl.RefreshTimer = 60;
-                adGrid.Visibility = Visibility.Visible;
-                adDuplexGrid.Visibility = Visibility.Collapsed;
-                adDuplex.IsTest = true;
-                adControl.CallForAd();
-            }
-            else
-            {
-                adGrid.Visibility = Visibility.Collapsed;
-                adControl.RefreshTimer = -1;
-                adControl.Apid = String.Empty;
-                adDuplexGrid.Visibility = Visibility.Visible;
-                adDuplex.IsTest = false;
-            }
         }
 
         void GameManager_OnResetBoardCompleted(object sender, EventArgs e)
@@ -98,7 +73,7 @@ namespace BlackOut
             Dispatcher.BeginInvoke(() =>
             {
                 ResetDisplay();
-                
+
             });
         }
 
@@ -135,6 +110,11 @@ namespace BlackOut
             if (currentLevel < highestLevel)
             {
                 abiBtnNext.IsEnabled = true;
+            }
+
+            if (App.GameManager.HintsUsed >= App.GameManager.HintsMax)
+            {
+                abiBtnHint.IsEnabled = false;
             }
         }
 
@@ -175,7 +155,7 @@ namespace BlackOut
         }
 
         private void ResetDisplay()
-        {        
+        {
             tbHints.Foreground = new SolidColorBrush(Colors.White);
             tbLevel.Text = App.GameManager.Level.ToString();
             tbMoves.Text = App.GameManager.Moves.ToString();
@@ -208,13 +188,13 @@ namespace BlackOut
             {
                 ((ApplicationBarIconButton)ApplicationBar.Buttons[3]).IsEnabled = false;
             }
-            
-            if (((App.GameManager.HintsUsed ) / 3) == (App.GameManager.HintsMax / 3))
+
+            if (((App.GameManager.HintsUsed) / 3) == (App.GameManager.HintsMax / 3))
             {
                 tbHints.Foreground = new SolidColorBrush(Colors.Yellow);
             }
-            
-            if(((App.GameManager.HintsUsed ) / 2) == (App.GameManager.HintsMax / 2))
+
+            if (((App.GameManager.HintsUsed) / 2) == (App.GameManager.HintsMax / 2))
             {
                 tbHints.Foreground = new SolidColorBrush(Colors.Red);
             }
@@ -248,7 +228,7 @@ namespace BlackOut
 
         private void appBarMnuMainMenu_Click(object sender, System.EventArgs e)
         {
-        	NavigationService.GoBack();
+            NavigationService.GoBack();
         }
 
         private void appBarMnuHighScores_Click(object sender, System.EventArgs e)
@@ -305,5 +285,72 @@ namespace BlackOut
         {
             App.GameManager.Resume();
         }
+
+        #region Ad Setup
+
+        private void SetupAds()
+        {
+            adGrid.Children.Clear();
+            AdControl adControl = new AdControl();
+            adControl.Name = "adControl";
+            adControl.ApplicationId = "7a6e48b6-2793-4796-9323-162bdbbf364a";
+            adControl.AdUnitId = "10012784";
+            adControl.RotationEnabled = true;
+            adControl.AdControlError += new EventHandler<ErrorEventArgs>(adControl_AdControlError);
+
+            SetAdGeoLocation();
+            adGrid.Children.Add(adControl);
+
+            DispatcherTimer checkAdTimer = new DispatcherTimer();
+            checkAdTimer.Interval = TimeSpan.FromSeconds(30);
+            checkAdTimer.Start();
+            checkAdTimer.Tick += ((object sender, EventArgs e) =>
+            {
+                if (adControl.Visibility == Visibility.Collapsed)
+                {
+                    AddAdDuplex();
+                    checkAdTimer.Stop();
+                }
+            });
+        }
+
+        private void SetAdGeoLocation()
+        {
+            gcw = new GeoCoordinateWatcher();
+
+            gcw.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(gcw_PositionChanged);
+            gcw.Start();
+        }
+
+        void gcw_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            AdControl adControl = adGrid.FindName("adControl") as AdControl;
+            if (adControl != null)
+            {
+                adControl.Location = new Location(e.Position.Location.Latitude, e.Position.Location.Longitude);
+            }
+            gcw.Stop();
+        }
+
+        void adControl_AdControlError(object sender, ErrorEventArgs e)
+        {
+            Dispatcher.BeginInvoke(() =>
+            {
+                AddAdDuplex();
+            });
+        }
+
+        private void AddAdDuplex()
+        {
+            adGrid.Children.Clear();
+            AdDuplex.AdControl adDuplex = new AdDuplex.AdControl();
+            adDuplex.AppId = "1191";
+            adDuplex.IsTest = false;
+            adDuplex.VerticalAlignment = VerticalAlignment.Bottom;
+
+            adGrid.Children.Add(adDuplex);
+        }
+
+        #endregion
     }
 }

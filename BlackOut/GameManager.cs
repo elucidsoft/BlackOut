@@ -71,6 +71,7 @@ namespace BlackOut
         {
             _audioTimer = new DispatcherTimer();
             _audioTimer.Interval = TimeSpan.FromMilliseconds(500);
+            _audioTimer.Start();
             _audioTimer.Tick += new EventHandler((object o, EventArgs e) =>
             {
                 FrameworkDispatcher.Update();
@@ -82,7 +83,6 @@ namespace BlackOut
             InitializeBlocks();
             _grid = grid;
             InitializeGridBlocks();
-            _audioTimer.Start();
             _timer.Change(1000, 1000);
         }
 
@@ -514,21 +514,28 @@ namespace BlackOut
         {
             GameState gs = _gameState;
 
-            if (_gameData.Scores.Count < _gameState.Level)
+            if (_gameData.Scores.Count < _gameState.Level) 
             {
+                //new score (board never played)
                 _gameData.Scores.Add(new Score(gs.Moves, gs.Level, gs.HintsUsed, gs.Seconds));
             }
             else
             {
+                //previous score (board played prior)
                 for (int i = 0; i < _gameData.Scores.Count; i++)
                 {
                     Score s = _gameData.Scores[i];
                     if (s.Level == Level)
                     {
-                        s.Hints = gs.HintsUsed;
-                        s.Level = gs.Level;
-                        s.Moves = gs.Moves;
-                        s.Seconds = gs.Seconds;
+                        if ((gs.HintsUsed <= s.Hints && gs.Seconds < s.Seconds && gs.Moves <= s.Moves) ||
+                            (gs.HintsUsed <= s.Hints && (gs.Seconds / 1.50) <= s.Seconds && gs.Moves < s.Moves) ||
+                            (gs.HintsUsed > s.Hints && gs.Seconds < s.Seconds && gs.Moves < s.Moves))
+                        {
+                            s.Hints = gs.HintsUsed;
+                            s.Level = gs.Level;
+                            s.Moves = gs.Moves;
+                            s.Seconds = gs.Seconds;
+                        }
                     }
                 }
             }

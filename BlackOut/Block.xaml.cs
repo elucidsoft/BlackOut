@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
 
 namespace BlackOut
 {
@@ -40,9 +41,26 @@ namespace BlackOut
 
             LayoutRoot.Background = backgroundBrush;
 
+            ApplyTheme();
+
             InitializeTurnOnStoryBoardAnimation();
             InitializeTurnOffStoryBoardAnimation();
             InitializeFlashOnStoryBoardAnimation();
+        }
+
+        private void ApplyTheme()
+        {
+            string theme = App.GameManager.GameData.GameSettings.Theme;
+           
+            if (theme == "aqua")
+            {
+                image.Opacity = .4;
+                image.Source = new BitmapImage(new Uri("themes/aqua/block_overlay.jpg", UriKind.Relative));
+            }
+            else if (theme == "led")
+            {
+                image.Source = new BitmapImage(new Uri("themes/led/block_overlay.png", UriKind.Relative));
+            }
         }
 
         private void InitializeTurnOffStoryBoardAnimation()

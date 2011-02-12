@@ -14,6 +14,7 @@ using Microsoft.Phone.Notification;
 using System.Threading;
 using Microsoft.Phone.Tasks;
 using System.Windows.Threading;
+using System.Windows.Media.Imaging;
 
 namespace BlackOut
 {
@@ -36,19 +37,38 @@ namespace BlackOut
 
             LoadDifficulty();
             ShowContinue();
+            SetBackground();
             LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            ApplyTheme();
+
+            AddHighScores();
+            isDirty = true;
+            LoadDifficulty();
+
+            ShowContinue();
+            ApplicationBar.IsVisible = true;
+        }
+
+        private void ApplyTheme()
+        {
             if (isDirty == true)
             {
-                if (((SolidColorBrush)LayoutRoot.Background).Color.ToString() != App.GameManager.GameData.GameSettings.BackgroundColor)
+                if (((SolidColorBrush)LayoutRoot.Background).Color.ToString() != App.GameManager.GameData.GameSettings.BackgroundColor || App.GameManager.GameData.GameSettings.ThemeChanged)
                 {
+                    SetBackground();
+
                     panItemScores.Opacity = 0;
+                    panItemScores.Visibility = Visibility.Collapsed;
+
                     panItemAbout.Opacity = 0;
+                    panItemAbout.Visibility = Visibility.Collapsed;
+
                     CreatePhaseBackgroundAnimation();
-                    _phaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(750);
+                    _phaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(1500);
                     _phaseBackgroundAnimation.Begin();
                     _phaseBackgroundAnimation.Completed += new EventHandler(PhaseBackgroundAnimation_Completed);
                 }
@@ -58,13 +78,32 @@ namespace BlackOut
                 ApplicationBar.IsVisible = true;
                 LayoutRoot.Background = new SolidColorBrush(ColorConverter.Convert(App.GameManager.GameData.GameSettings.BackgroundColor));
             }
+        }
 
-            AddHighScores();
-            isDirty = true;
-            LoadDifficulty();
+        private void SetBackground()
+        {
+            string theme = App.GameManager.GameData.GameSettings.Theme;
+            if (theme == "aqua")
+            {
+                ChangeBackgroundImage("themes/aqua/main_bg.png");
+            }
+            else if (theme == "led")
+            {
+                ChangeBackgroundImage("themes/led/main_bg.png");
+            }
+            else
+            {
+                ChangeBackgroundImage("main_bg.png");
+            }
+        }
 
-            ShowContinue();
-            ApplicationBar.IsVisible = true;
+        private void ChangeBackgroundImage(string image)
+        {
+            panorama.Background = null;
+            ImageBrush imageBrush = new ImageBrush();
+            imageBrush.ImageSource = new BitmapImage(new Uri(image, UriKind.Relative));
+            imageBrush.Stretch = Stretch.UniformToFill;
+            panorama.Background = imageBrush;
         }
 
         private void ShowContinue()
@@ -167,8 +206,12 @@ namespace BlackOut
         void PhaseBackgroundAnimation_Completed(object sender, EventArgs e)
         {
             panItemScores.Opacity = 1;
+            panItemScores.Visibility = Visibility.Visible;
+
             panItemAbout.Opacity = 1;
-            
+            panItemAbout.Visibility = Visibility.Visible;
+
+            App.GameManager.GameData.GameSettings.ThemeChanged = false;
             _phaseBackgroundAnimation.Completed -= new EventHandler(PhaseBackgroundAnimation_Completed);
         }
 

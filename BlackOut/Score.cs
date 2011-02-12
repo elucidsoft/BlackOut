@@ -13,6 +13,8 @@ namespace BlackOut
 {
     public class Score
     {
+        private int _moves;
+
         public Score() { }
 
         public Score(int moves, int level, int hints, long seconds)
@@ -23,7 +25,11 @@ namespace BlackOut
             this.Seconds = seconds;
         }
 
-        public int Moves { get; set; }
+        public int Moves 
+        {
+            get { return _moves + 1; } //this is like this because original release had a bug where moves was zero based
+            set { _moves = value; }
+        }
 
         public int Level { get; set; }
 

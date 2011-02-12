@@ -53,6 +53,9 @@
     <Reference Include="AdDuplex.AdControl.Silverlight">
       <HintPath>Shared\AdDuplex.AdControl.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Advertising.Mobile.UI">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Advertising SDK for Windows Phone 7\Microsoft.Advertising.Mobile.UI.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls" />
@@ -62,6 +65,7 @@
     <Reference Include="Polenter.SharpSerializer.Silverlight">
       <HintPath>Shared\Polenter.SharpSerializer.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="System.Device" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -69,7 +73,6 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="System.Xml" />
-    <Reference Include="WP7SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -158,6 +161,10 @@
     <Content Include="SplashScreenImage.jpg" />
     <Content Include="swoosh1.wav" />
     <Content Include="swoosh2.wav" />
+    <Resource Include="themes\aqua\block_overlay.jpg" />
+    <Resource Include="themes\aqua\main_bg.png" />
+    <Resource Include="themes\led\main_bg.png" />
+    <Resource Include="themes\led\block_overlay.png" />
     <Content Include="tile_off.wav" />
     <Content Include="tile_on.wav" />
     <None Include="Properties\AppManifest.xml" />
@@ -210,8 +217,6 @@
     <Resource Include="02.jpg" />
     <Resource Include="03.jpg" />
     <Resource Include="main_bg.png" />
-    <Resource Include="test.jpg" />
-    <Resource Include="test.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
