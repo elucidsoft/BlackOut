@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.0">
-    <App xmlns="" ProductID="{b24c7a98-51db-44d5-ad36-9f53a6dcd9e5}" Title="BlackOut" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.games"  Author="Elucidsoft" Description="BlackOut" Publisher="Elucidsoft">
+    <App xmlns="" ProductID="{b24c7a98-51db-44d5-ad36-9f53a6dcd9e5}" Title="BlackOut" RuntimeType="Silverlight" Version="1.1.0.0" Genre="apps.games"  Author="Elucidsoft" Description="BlackOut" Publisher="Elucidsoft">
         <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
         <Capabilities>
             <Capability Name="ID_CAP_IDENTITY_DEVICE"/>
