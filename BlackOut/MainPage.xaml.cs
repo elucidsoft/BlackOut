@@ -1,19 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.Notification;
-using System.Threading;
 using Microsoft.Phone.Tasks;
-using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 
 namespace BlackOut
@@ -70,7 +61,7 @@ namespace BlackOut
                     CreatePhaseBackgroundAnimation();
                     _phaseBackgroundAnimation.BeginTime = TimeSpan.FromMilliseconds(1500);
                     _phaseBackgroundAnimation.Begin();
-                    _phaseBackgroundAnimation.Completed += new EventHandler(PhaseBackgroundAnimation_Completed);
+                    _phaseBackgroundAnimation.Completed += PhaseBackgroundAnimation_Completed;
                 }
             }
             else
@@ -149,12 +140,7 @@ namespace BlackOut
             NavigationService.Navigate(new Uri("/GameScreen.xaml", UriKind.Relative));
         }
 
-        private void btnContinue_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btnNewGame_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void btnNewGame_Click(object sender, RoutedEventArgs e)
         {
             if (IsExistingGame())
             {
@@ -196,7 +182,7 @@ namespace BlackOut
 
 
 
-        private void btnDesignBoard_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void btnDesignBoard_Click(object sender, RoutedEventArgs e)
         {
             App.GameManager.ReInitialize();
             App.GameManager.Start(-1);
@@ -212,7 +198,7 @@ namespace BlackOut
             panItemAbout.Visibility = Visibility.Visible;
 
             App.GameManager.GameData.GameSettings.ThemeChanged = false;
-            _phaseBackgroundAnimation.Completed -= new EventHandler(PhaseBackgroundAnimation_Completed);
+            _phaseBackgroundAnimation.Completed -= PhaseBackgroundAnimation_Completed;
         }
 
         private void AddHighScores()
@@ -230,9 +216,7 @@ namespace BlackOut
             for (int i = 0; i < App.GameManager.GameData.Scores.Count; i++)
             {
                 Score s = App.GameManager.GameData.Scores[i];
-                ListBoxItem lbi = new ListBoxItem();
-                lbi.Style = (Style)Resources["ListBoxItemStyle1"];
-                lbi.DataContext = s;
+                ListBoxItem lbi = new ListBoxItem { Style = (Style)Resources["ListBoxItemStyle1"], DataContext = s };
                 lbi.ApplyTemplate();
                 lstScores.Items.Add(lbi);
             }
@@ -256,65 +240,59 @@ namespace BlackOut
             }
         }
 
-        private void lnkSupportEmail_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void lnkSupportEmail_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                EmailComposeTask emailTask = new EmailComposeTask();
-                emailTask.To = "support@elucidsoft.com";
-                emailTask.Subject = "BlackOut Support";
+                EmailComposeTask emailTask = new EmailComposeTask { To = "support@elucidsoft.com", Subject = "BlackOut Support" };
                 emailTask.Show();
             }
             catch
             {
-                System.Windows.MessageBox.Show("Could not open the email application on the phone...");
+                MessageBox.Show("Could not open the email application on the phone...");
             }
         }
 
-        private void lnkSupportSite_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void lnkSupportSite_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                WebBrowserTask task = new WebBrowserTask();
-                task.URL = "http://getsatisfaction.com/elucidsoft";
+                WebBrowserTask task = new WebBrowserTask { URL = "http://getsatisfaction.com/elucidsoft" };
                 task.Show();
             }
             catch
             {
-                System.Windows.MessageBox.Show("Could not open the browser application on the phone...");
+                MessageBox.Show("Could not open the browser application on the phone...");
             }
         }
 
-        private void lnkSite_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void lnkSite_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                WebBrowserTask task = new WebBrowserTask();
-                task.URL = "http://www.elucidsoft.com/";
+                WebBrowserTask task = new WebBrowserTask { URL = "http://www.elucidsoft.com/" };
                 task.Show();
             }
             catch
             {
-                System.Windows.MessageBox.Show("Could not open the browser application on the phone...");
+                MessageBox.Show("Could not open the browser application on the phone...");
             }
         }
 
-        private void btnOtherGames_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void btnOtherGames_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                MarketplaceSearchTask task = new MarketplaceSearchTask();
-                task.ContentType = MarketplaceContentType.Applications;
-                task.SearchTerms = "Elucidsoft LLC";
+                MarketplaceSearchTask task = new MarketplaceSearchTask { ContentType = MarketplaceContentType.Applications, SearchTerms = "Elucidsoft LLC" };
                 task.Show();
             }
             catch
             {
-                System.Windows.MessageBox.Show("Could not open the marketplace on the phone...");
+                MessageBox.Show("Could not open the marketplace on the phone...");
             }
         }
 
-        private void panorama_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void panorama_Loaded(object sender, RoutedEventArgs e)
         {
             panorama.DefaultItem = panorama.Items[App.MainMenuSelectedIndex];
         }
@@ -328,18 +306,18 @@ namespace BlackOut
             }
         }
 
-        private void appBarBtnTheme_Click(object sender, System.EventArgs e)
+        private void appBarBtnTheme_Click(object sender, EventArgs e)
         {
             ApplicationBar.IsVisible = false;
             NavigationService.Navigate(new Uri("/ChangeColor.xaml", UriKind.Relative));
         }
 
-        private void appBarBtnSettings_Click(object sender, System.EventArgs e)
+        private void appBarBtnSettings_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Settings.xaml", UriKind.Relative));
         }
 
-        private void appBarBtnHowTo_Click(object sender, System.EventArgs e)
+        private void appBarBtnHowTo_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/HowTo.xaml", UriKind.Relative));
         }

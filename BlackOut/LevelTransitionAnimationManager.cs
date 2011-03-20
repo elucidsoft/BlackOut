@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using System.IO;
-using System.Windows.Threading;
-using System.Threading;
 
 namespace BlackOut
 {
@@ -21,7 +10,7 @@ namespace BlackOut
         private bool disposed = false;
 
         private Block[,] _board;
-        private GameManager _gameManager;
+        private readonly GameManager _gameManager;
         private Action _action;
         private SoundEffect _swooshSound1 = null;
         private SoundEffect _swooshSound2 = null;
@@ -135,7 +124,7 @@ namespace BlackOut
 
             if (i == 4)
             {
-                _board[4, 4].FlashOnAnimation.Completed += new EventHandler(FlashOnRowsAnimation_Completed);
+                _board[4, 4].FlashOnAnimation.Completed += FlashOnRowsAnimation_Completed;
             }
         }
 
@@ -163,20 +152,20 @@ namespace BlackOut
 
             if (i == 4)
             {
-                _board[4, 4].FlashOnAnimation.Completed += new EventHandler(FlashOnColumnsAnimation_Completed);
+                _board[4, 4].FlashOnAnimation.Completed += FlashOnColumnsAnimation_Completed;
             }
         }
 
         void FlashOnColumnsAnimation_Completed(object sender, EventArgs e)
         {
-            _board[4, 4].FlashOnAnimation.Completed -= new EventHandler(FlashOnColumnsAnimation_Completed);
+            _board[4, 4].FlashOnAnimation.Completed -= FlashOnColumnsAnimation_Completed;
             _action();
         }
 
         void FlashOnRowsAnimation_Completed(object sender, EventArgs e)
         {
             FlashLeftRight(0, 35);
-            _board[4, 4].FlashOnAnimation.Completed -= new EventHandler(FlashOnRowsAnimation_Completed);
+            _board[4, 4].FlashOnAnimation.Completed -= FlashOnRowsAnimation_Completed;
         }
 
         

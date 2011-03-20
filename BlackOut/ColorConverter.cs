@@ -1,4 +1,6 @@
 ﻿using System.Windows.Media;
+using System;
+using Sys = System;
 
 namespace BlackOut
 {
@@ -9,21 +11,21 @@ namespace BlackOut
             string val = value.ToString();
             val = val.Replace("#", "");
 
-            byte a = System.Convert.ToByte("ff", 16);
+            byte a = Sys.Convert.ToByte("ff", 16);
             byte pos = 0;
             if (val.Length == 8)
             {
-                a = System.Convert.ToByte(val.Substring(pos, 2), 16);
+                a = Sys.Convert.ToByte(val.Substring(pos, 2), 16);
                 pos = 2;
             }
 
-            byte r = System.Convert.ToByte(val.Substring(pos, 2), 16);
+            byte r = Sys.Convert.ToByte(val.Substring(pos, 2), 16);
             pos += 2;
 
-            byte g = System.Convert.ToByte(val.Substring(pos, 2), 16);
+            byte g = Sys.Convert.ToByte(val.Substring(pos, 2), 16);
             pos += 2;
 
-            byte b = System.Convert.ToByte(val.Substring(pos, 2), 16);
+            byte b = Sys.Convert.ToByte(val.Substring(pos, 2), 16);
 
             Color col = Color.FromArgb(a, r, g, b);
 
@@ -33,7 +35,7 @@ namespace BlackOut
         public static object ConvertBack(object value)
         {
             SolidColorBrush val = value as SolidColorBrush;
-            return "#" + val.Color.A.ToString() + val.Color.R.ToString() + val.Color.G.ToString() + val.Color.B.ToString();
+            return String.Format("#{0}{1}{2}{3}", val.Color.A, val.Color.R, val.Color.G, val.Color.B);
         }        
     }
 }

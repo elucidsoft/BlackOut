@@ -1,27 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using Microsoft.Advertising.Mobile.UI;
 using Microsoft.Phone.Shell;
 using System.Windows.Threading;
 using System.Device.Location;
-using System.Diagnostics;
+using Google.AdMob.Ads.WindowsPhone7;
 
 namespace BlackOut
 {
     public partial class GameScreen : PhoneApplicationPage
     {
         bool isDirty = false;
-        bool adOverlayOpened = false;
+        bool adShown = false;
+
         GeoCoordinateWatcher gcw;
 
         public GameScreen()
@@ -46,12 +38,12 @@ namespace BlackOut
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            App.GameManager.LevelCompleted += new EventHandler<EventArgs>(Instance_LevelCompleted);
-            App.GameManager.LevelLoaded += new EventHandler<LevelLoadedEventArgs>(Instance_LevelLoaded);
-            App.GameManager.OnTimerChanged += new EventHandler<GameTimerTickEventArgs>(GameManager_OnTimerChanged);
-            App.GameManager.OnGridBlockClicked += new EventHandler<GridBlockClickedEventArgs>(GameManager_OnGridBlockClicked);
-            App.GameManager.OnHintUsed += new EventHandler<EventArgs>(GameManager_OnHintUsed);
-            App.GameManager.OnResetBoardCompleted += new EventHandler<EventArgs>(GameManager_OnResetBoardCompleted);
+            App.GameManager.LevelCompleted += Instance_LevelCompleted;
+            App.GameManager.LevelLoaded += Instance_LevelLoaded;
+            App.GameManager.OnTimerChanged += GameManager_OnTimerChanged;
+            App.GameManager.OnGridBlockClicked += GameManager_OnGridBlockClicked;
+            App.GameManager.OnHintUsed += GameManager_OnHintUsed;
+            App.GameManager.OnResetBoardCompleted += GameManager_OnResetBoardCompleted;
 
             App.MainMenuSelectedIndex = 0;
             if (isDirty == false)
@@ -65,7 +57,11 @@ namespace BlackOut
             UpdatePreviousAndNextButtons();
             isDirty = false;
 
-
+            if (adShown == true)
+            {
+                adShown = false;
+                App.GameManager.Resume();
+            }
         }
 
         void GameManager_OnResetBoardCompleted(object sender, EventArgs e)
@@ -80,7 +76,6 @@ namespace BlackOut
         private void UpdatePreviousAndNextButtons()
         {
             int currentLevel = App.GameManager.GameData.GameState.Level;
-            int totalLevels = App.GameManager.GameData.Levels.Count;
             int highestLevel = App.GameManager.GameData.HighestLevel;
             int hintMax = App.GameManager.GameData.GameState.HintMax;
 
@@ -163,25 +158,25 @@ namespace BlackOut
             tbTime.Text = String.Format("{0:HH:mm:ss}", new DateTime(TimeSpan.FromSeconds(App.GameManager.Seconds).Ticks));
         }
 
-        private void appBarBtnReset_Click(object sender, System.EventArgs e)
+        private void appBarBtnReset_Click(object sender, EventArgs e)
         {
             App.GameManager.BeginResetBoard(true);
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            App.GameManager.LevelCompleted -= new EventHandler<EventArgs>(Instance_LevelCompleted);
-            App.GameManager.LevelLoaded -= new EventHandler<LevelLoadedEventArgs>(Instance_LevelLoaded);
-            App.GameManager.OnTimerChanged -= new EventHandler<GameTimerTickEventArgs>(GameManager_OnTimerChanged);
-            App.GameManager.OnGridBlockClicked -= new EventHandler<GridBlockClickedEventArgs>(GameManager_OnGridBlockClicked);
-            App.GameManager.OnHintUsed -= new EventHandler<EventArgs>(GameManager_OnHintUsed);
-            App.GameManager.OnResetBoardCompleted -= new EventHandler<EventArgs>(GameManager_OnResetBoardCompleted);
+            App.GameManager.LevelCompleted -= Instance_LevelCompleted;
+            App.GameManager.LevelLoaded -= Instance_LevelLoaded;
+            App.GameManager.OnTimerChanged -= GameManager_OnTimerChanged;
+            App.GameManager.OnGridBlockClicked -= GameManager_OnGridBlockClicked;
+            App.GameManager.OnHintUsed -= GameManager_OnHintUsed;
+            App.GameManager.OnResetBoardCompleted -= GameManager_OnResetBoardCompleted;
 
 
             grid.Children.Clear();
         }
 
-        private void appBarBtnHint_Click(object sender, System.EventArgs e)
+        private void appBarBtnHint_Click(object sender, EventArgs e)
         {
             App.GameManager.ShowHint();
             if (App.GameManager.HintsUsed >= App.GameManager.HintsMax)
@@ -200,7 +195,7 @@ namespace BlackOut
             }
         }
 
-        private void appBarBtnNextLevel_Click(object sender, System.EventArgs e)
+        private void appBarBtnNextLevel_Click(object sender, EventArgs e)
         {
             int index = App.GameManager.Level + 1;
             if (index < App.GameManager.GameData.Levels.Count)
@@ -213,7 +208,7 @@ namespace BlackOut
             }
         }
 
-        private void appBarBtnPrevLevel_Click(object sender, System.EventArgs e)
+        private void appBarBtnPrevLevel_Click(object sender, EventArgs e)
         {
             int index = App.GameManager.Level - 1;
             if (index > 0)
@@ -226,40 +221,18 @@ namespace BlackOut
             }
         }
 
-        private void appBarMnuMainMenu_Click(object sender, System.EventArgs e)
+        private void appBarMnuMainMenu_Click(object sender, EventArgs e)
         {
             NavigationService.GoBack();
         }
 
-        private void appBarMnuHighScores_Click(object sender, System.EventArgs e)
+        private void appBarMnuHighScores_Click(object sender, EventArgs e)
         {
             App.MainMenuSelectedIndex = 1;
             NavigationService.GoBack();
         }
 
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (adOverlayOpened)
-            {
-                EnableDisableAppBars(true);
-                UpdatePreviousAndNextButtons();
-                App.GameManager.Resume();
-                adOverlayOpened = false;
-            }
-            else
-            {
-                App.GameManager.Pause();
-            }
-        }
-
-        private void adControl_MMOverlayOpened(object sender, EventArgs e)
-        {
-            adOverlayOpened = true;
-            EnableDisableAppBars(false);
-            App.GameManager.Pause();
-        }
-
-        private void EnableDisableAppBars(bool state)
+         private void EnableDisableAppBars(bool state)
         {
             ApplicationBarIconButton abiBtnPrev = ((ApplicationBarIconButton)ApplicationBar.Buttons[0]);
             ApplicationBarIconButton abiBtnNext = ((ApplicationBarIconButton)ApplicationBar.Buttons[1]);
@@ -276,81 +249,45 @@ namespace BlackOut
             abiBtnNext.IsEnabled = state;
         }
 
-        private void adControl_AdEngaged(object sender, EventArgs e)
-        {
-            App.GameManager.Pause();
-        }
-
-        private void adControl_AdDisengaged(object sender, EventArgs e)
-        {
-            App.GameManager.Resume();
-        }
-
         #region Ad Setup
 
         private void SetupAds()
         {
-            adGrid.Children.Clear();
-            AdControl adControl = new AdControl();
-            adControl.Name = "adControl";
-            adControl.ApplicationId = "7a6e48b6-2793-4796-9323-162bdbbf364a";
-            adControl.AdUnitId = "10012784";
-            adControl.RotationEnabled = true;
-            adControl.AdControlError += new EventHandler<ErrorEventArgs>(adControl_AdControlError);
-
-            SetAdGeoLocation();
-            adGrid.Children.Add(adControl);
-
-            DispatcherTimer checkAdTimer = new DispatcherTimer();
-            checkAdTimer.Interval = TimeSpan.FromSeconds(30);
-            checkAdTimer.Start();
-            checkAdTimer.Tick += ((object sender, EventArgs e) =>
-            {
-                if (adControl.Visibility == Visibility.Collapsed)
-                {
-                    AddAdDuplex();
-                    checkAdTimer.Stop();
-                }
-            });
+           
         }
 
         private void SetAdGeoLocation()
         {
             gcw = new GeoCoordinateWatcher();
 
-            gcw.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(gcw_PositionChanged);
+            gcw.PositionChanged += gcw_PositionChanged;
             gcw.Start();
         }
 
         void gcw_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
-            AdControl adControl = adGrid.FindName("adControl") as AdControl;
-            if (adControl != null)
+            if (e.Position.Location.IsUnknown)
             {
-                adControl.Location = new Location(e.Position.Location.Latitude, e.Position.Location.Longitude);
+                adControl.GpsLocation = null;
             }
-            gcw.Stop();
-        }
-
-        void adControl_AdControlError(object sender, ErrorEventArgs e)
-        {
-            Dispatcher.BeginInvoke(() =>
+            else
             {
-                AddAdDuplex();
-            });
-        }
-
-        private void AddAdDuplex()
+                adControl.GpsLocation = new GpsLocation()
+                {
+                    Accuracy = e.Position.Location.HorizontalAccuracy,
+                    Latitude = e.Position.Location.Latitude,
+                    Longitude = e.Position.Location.Longitude
+                };
+            }
+        } 
+        
+        private void adControl_AdPresentingScreen(object sender, RoutedEventArgs e)
         {
-            adGrid.Children.Clear();
-            AdDuplex.AdControl adDuplex = new AdDuplex.AdControl();
-            adDuplex.AppId = "1191";
-            adDuplex.IsTest = false;
-            adDuplex.VerticalAlignment = VerticalAlignment.Bottom;
-
-            adGrid.Children.Add(adDuplex);
+            adShown = true;
+            App.GameManager.Pause();
         }
 
         #endregion
+
     }
 }

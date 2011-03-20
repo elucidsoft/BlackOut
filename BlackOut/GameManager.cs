@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Windows.Resources;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -30,19 +23,19 @@ namespace BlackOut
         public event EventHandler<EventArgs> OnHintUsed;
         public event EventHandler<EventArgs> OnResetBoardCompleted;
 
-        private List<int> _randomBoardHashes = new List<int>();
-        private List<int> _usedHints = new List<int>();
+        private readonly List<int> _randomBoardHashes = new List<int>();
+        private readonly List<int> _usedHints = new List<int>();
         private Block[,] _boardBlocks;
 
         private bool _levelTransitionInProgress = false;
         private bool _resetBoardInProgress = false;
 
         private Grid _grid;
-        private GameData _gameData;
+        private readonly GameData _gameData;
         private GameState _gameState;
-        private Timer _timer;
-        private SoundEffect _soundEffectTileOn = null;
-        private SoundEffect _soundEffectTileOff = null;
+        private readonly Timer _timer;
+        private readonly SoundEffect _soundEffectTileOn = null;
+        private readonly SoundEffect _soundEffectTileOff = null;
 
         private DispatcherTimer _audioTimer;
         private LevelTransitionAnimationManager _levelTransitionAnimationManager;
@@ -69,13 +62,12 @@ namespace BlackOut
 
         private void SetupAudioTimer()
         {
-            _audioTimer = new DispatcherTimer();
-            _audioTimer.Interval = TimeSpan.FromMilliseconds(500);
+            _audioTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
             _audioTimer.Start();
-            _audioTimer.Tick += new EventHandler((object o, EventArgs e) =>
-            {
-                FrameworkDispatcher.Update();
-            });
+            _audioTimer.Tick += (object o, EventArgs e) =>
+                                {
+                                    FrameworkDispatcher.Update();
+                                };
         }
 
         public void Initialize(Grid grid)
@@ -285,7 +277,7 @@ namespace BlackOut
 
             _randomBoardHashes.Add(board.GetHashCode());
 
-            Debug.WriteLine(board.GetHashCode() + " " + tries);
+            Debug.WriteLine(String.Format("{0} {1}", board.GetHashCode(), tries));
             return board;
         }
 

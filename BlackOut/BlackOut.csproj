@@ -50,11 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdDuplex.AdControl.Silverlight">
-      <HintPath>Shared\AdDuplex.AdControl.Silverlight.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Advertising.Mobile.UI">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\Microsoft Advertising SDK for Windows Phone 7\Microsoft.Advertising.Mobile.UI.dll</HintPath>
+    <Reference Include="Google.AdMob.Ads.WindowsPhone7">
+      <HintPath>Shared\Google.AdMob.Ads.WindowsPhone7.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone" />
@@ -88,6 +85,7 @@
     <Compile Include="HowTo.xaml.cs">
       <DependentUpon>HowTo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LevelLoadedType.cs" />
     <Compile Include="Score.cs" />
     <Compile Include="CreateLevel.xaml.cs">
       <DependentUpon>CreateLevel.xaml</DependentUpon>

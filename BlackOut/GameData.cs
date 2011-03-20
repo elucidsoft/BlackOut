@@ -1,25 +1,12 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.IO.IsolatedStorage;
-using System.Xml.Serialization;
 using System.IO;
 using Polenter.Serialization;
-using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 
 namespace BlackOut
 {
-    public enum LevelLoadedType { None, PreBuilt, Custom };
-
     public class GameData
     {
         private const string LEVEL_DATA_FILENAME = "levelData.bin";
@@ -184,11 +171,12 @@ namespace BlackOut
             switch (Difficulty)
             {
                 case 0:
-                    return "Exert";
+                    return "Expert";
                 case 1:
                     return "Easy";
                 case 2:
                     return "Normal";
+
             }
 
             return "";

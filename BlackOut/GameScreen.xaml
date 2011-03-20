@@ -5,12 +5,13 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:google="clr-namespace:Google.AdMob.Ads.WindowsPhone7.WPF;assembly=Google.AdMob.Ads.WindowsPhone7"
     x:Class="BlackOut.GameScreen"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White" BackKeyPress="PhoneApplicationPage_BackKeyPress">
+    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" Unloaded="PhoneApplicationPage_Unloaded" Background="Black" Foreground="White">
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Opacity="1" BackgroundColor="#D81A1A1A" ForegroundColor="White">
             <shell:ApplicationBar.MenuItems>
@@ -26,17 +27,7 @@
     <StackPanel Orientation="Vertical" Background="Black" Margin="0,0,0,-69">
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0" Height="80" Width="480">
             <Grid x:Name="adGrid" Height="80" Width="480">
-                <!--<Ad:AdControl x:Name="adControl" AdUnitId="10012784" ApplicationId="7a6e48b6-2793-4796-9323-162bdbbf364a" Background="Black" d:LayoutOverrides="Width, HorizontalMargin" AdEngaged="adControl_AdEngaged" AdDisengaged="adControl_AdDisengaged" />-->
-                <!--<Grid x:Name="adGrid" Visibility="Collapsed">
-                    <AldarIT_SuperAds:AdControl x:Name="adControl" VerticalAlignment="Bottom" TestMode="False" >
-                        <AldarIT_SuperAds:AdControl.AdProviders>
-                            <AldarIT_SuperAds_AdProviders:SmaatoAdProvider AdSpaceID="65737140" PublisherID="923832900" />
-                        </AldarIT_SuperAds:AdControl.AdProviders>
-                    </AldarIT_SuperAds:AdControl>
-                </Grid>
-                <Grid x:Name="adDuplexGrid" Visibility="Collapsed">
-                    <adduplex:AdControl x:Name="adDuplex" xmlns:adduplex="clr-namespace:AdDuplex;assembly=AdDuplex.AdControl.Silverlight" Grid.Row="2" AppId="1191"/>
-                </Grid>-->
+                <google:BannerAd x:Name="adControl" AdUnitID="a14d8535f8a62d2" AdPresentingScreen="adControl_AdPresentingScreen"/>
             </Grid>
         </Grid>
         <TextBlock TextWrapping="Wrap" Text="BlackOut" Margin="10,6,0,0" FontSize="32" FontFamily="Segoe WP SemiLight" CacheMode="BitmapCache"/>

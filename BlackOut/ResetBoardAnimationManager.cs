@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using System.Diagnostics;
 
 namespace BlackOut
 {
@@ -20,10 +10,10 @@ namespace BlackOut
         private bool disposed = false;
 
         private Block[,] _board;
-        private GameManager _gameManager;
+        private readonly GameManager _gameManager;
         private Action _action;
-        private SoundEffect _swooshSound = null;
-        private float volume = 0;
+        private readonly SoundEffect _swooshSound = null;
+        private readonly float volume = 0;
 
         public ResetBoardAnimationManager(GameManager gameManager, Block[,] board)
         {
@@ -73,7 +63,7 @@ namespace BlackOut
 
             if (i == 4)
             {
-                _board[4, 4].FlipAnimation.Completed += new EventHandler(FlipAnimation_Completed);
+                _board[4, 4].FlipAnimation.Completed += FlipAnimation_Completed;
             }
         }
 
@@ -99,15 +89,6 @@ namespace BlackOut
             _board[4, i].FlashOnAnimation.BeginTime = beginTime;
             _board[4, i].FlashOnAnimation.Begin();
 
-            if (i == 4)
-            {
-                _board[4, 4].FlashOnAnimation.Completed += new EventHandler(FlashOnAnimation_Completed);
-            }
-        }
-
-        void FlashOnAnimation_Completed(object sender, EventArgs e)
-        {
-            
         }
 
         void FlipAnimation_Completed(object sender, EventArgs e)

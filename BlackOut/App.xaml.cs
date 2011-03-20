@@ -138,13 +138,6 @@ namespace BlackOut
 
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
-
-#if DEBUG
-            Microsoft.Advertising.Mobile.UI.AdControl.TestMode = true;
-
-#else
-            Microsoft.Advertising.Mobile.UI.AdControl.TestMode = false;
-#endif
         }
 
         // Do not add any additional code to this method

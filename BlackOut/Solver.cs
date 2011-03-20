@@ -5,14 +5,6 @@ namespace BlackOut
     {
         int[,] _currentBoard;
 
-        static readonly int [,] _goalBoard = new int[5, 5] {
-                                {1, 1, 1, 1, 1},
-			                    {1, 1, 1, 1, 1},
-			                    {1, 1, 1, 1, 1},
-			                    {1, 1, 1, 1, 1},
-			                    {1, 1, 1, 1, 1}
-                             };
-
         static readonly int[,] _hintBoard = new int[5, 5] {
                                 {0, 0, 0, 0, 0},
 			                    {0, 0, 0, 0, 0},
@@ -52,10 +44,10 @@ namespace BlackOut
 
         public Solver(int[,] board)
         {
-            this._currentBoard = board;
+            _currentBoard = board;
         }
 
-        private void CopyArray(int[] src, int[] dest)
+        private static void CopyArray(int[] src, int[] dest)
         {
             for (int i = 0; i < src.Length; i++)
             {
@@ -63,7 +55,7 @@ namespace BlackOut
             }
         }
 
-        private void AddToArray(int[] src, int[] v)
+        private static void AddToArray(int[] src, int[] v)
         {
             for (int i = 0; i < src.Length; i++)
             {
@@ -71,7 +63,7 @@ namespace BlackOut
             }
         }
 
-        private int Weight(int[] v)
+        private static int Weight(int[] v)
         {
             int t = 0;
             for (int i = 0; i < v.Length; i++)
@@ -162,8 +154,6 @@ namespace BlackOut
                     currentState[i] = 1;
                 }
             }
-
-            dotprod = 0;
             for (int i = 0; i < 25; i++)
             {
                 dotprod = (dotprod + currentState[i] * _n1[i]) % 2;
